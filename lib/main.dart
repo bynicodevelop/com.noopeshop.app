@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/config/bloc_register.dart';
+import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/screens/home_screen.dart';
 import 'package:com_noopeshop_app/screens/splash_screen.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
@@ -82,7 +84,21 @@ class App extends StatelessWidget {
         title: 'NoopEshop',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xFF161819),
+          scaffoldBackgroundColor: kBackgroundColor,
+          textTheme: GoogleFonts.ralewayTextTheme().copyWith(
+            headline1: Theme.of(context).textTheme.headline1!.copyWith(
+              color: Colors.white,
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withOpacity(.6),
+                  blurRadius: 5,
+                  offset: const Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
         ),
         home: BlocListener<SystemBloc, SystemState>(
           listener: (context, state) {

@@ -3,7 +3,7 @@ import 'package:com_noopeshop_app/models/feed_model.dart';
 const List<Map<String, dynamic>> products = [
   {
     "id": "1",
-    "title": "Product 1",
+    "title": "Body Lotion - Fitness extreme",
     "description": "This is a product description",
     "media": "assets/samples/1.png",
     "mediaType": "MediaTypeEnum.image",

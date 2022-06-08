@@ -23,81 +23,89 @@ class _FeedComponentState extends State<FeedComponent> {
     return BlocBuilder<FeedBloc, FeedState>(
       bloc: context.read<FeedBloc>()..add(const OnLoadFeedEvent()),
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 20.0,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(
-              50.0,
-            ),
-            child: PageView(
-              onPageChanged: (value) {
+        return PageView(
+          onPageChanged: (value) {
+            context.read<SystemBloc>().add(
+                  const OnUpdateSystemEvent(
+                    key: "swipe",
+                    value: true,
+                  ),
+                );
+
+            if (value > _currentIndex) {
+              context.read<SwipeBloc>().add(OnSwipeUpEvent());
+            } else {
+              context.read<SwipeBloc>().add(OnSwipeDownEvent());
+            }
+
+            setState(() => _currentIndex = value);
+          },
+          scrollDirection: Axis.vertical,
+          children: (state as FeedInitialState).feeds.map((product) {
+            return GestureDetector(
+              onDoubleTap: () {
                 context.read<SystemBloc>().add(
                       const OnUpdateSystemEvent(
-                        key: "swipe",
+                        key: "favorite",
                         value: true,
                       ),
                     );
-
-                if (value > _currentIndex) {
-                  context.read<SwipeBloc>().add(OnSwipeUpEvent());
-                } else {
-                  context.read<SwipeBloc>().add(OnSwipeDownEvent());
-                }
-
-                setState(() => _currentIndex = value);
               },
-              scrollDirection: Axis.vertical,
-              children: (state as FeedInitialState).feeds.map((product) {
-                return GestureDetector(
-                  onDoubleTap: () {
-                    context.read<SystemBloc>().add(
-                          const OnUpdateSystemEvent(
-                            key: "favorite",
-                            value: true,
-                          ),
-                        );
-                  },
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      product.mediaType == MediaTypeEnum.image
-                          ? Image.asset(
-                              product.media,
-                              fit: BoxFit.cover,
-                            )
-                          : VideoPlayerWidget(
-                              feedModel: product,
-                            ),
-                      BlocBuilder<SystemBloc, SystemState>(
-                        builder: (context, state) {
-                          final SystemModel systemModel =
-                              (state as SystemInitialState).system;
-
-                          if (!systemModel.hasSwipe) {
-                            return const TutorialWidget(
-                              icon: Icons.swipe_up_outlined,
-                              title: "Swipe up to see more",
-                            );
-                          }
-
-                          if (!systemModel.hasAddToFavorites) {
-                            return const TutorialWidget(
-                              icon: Icons.touch_app_outlined,
-                              title: "Double tap to add to favorites",
-                            );
-                          }
-
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  product.mediaType == MediaTypeEnum.image
+                      ? Image.asset(
+                          product.media,
+                          fit: BoxFit.cover,
+                        )
+                      : VideoPlayerWidget(
+                          feedModel: product,
+                        ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.15),
+                    ),
                   ),
-                );
-              }).toList(),
-            ),
-          ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 70.0,
+                        left: 20.0,
+                      ),
+                      child: Text(
+                        product.title,
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+                  ),
+                  BlocBuilder<SystemBloc, SystemState>(
+                    builder: (context, state) {
+                      final SystemModel systemModel =
+                          (state as SystemInitialState).system;
+
+                      if (!systemModel.hasSwipe) {
+                        return const TutorialWidget(
+                          icon: Icons.swipe_up_outlined,
+                          title: "Swipe up to see more",
+                        );
+                      }
+
+                      if (!systemModel.hasAddToFavorites) {
+                        return const TutorialWidget(
+                          icon: Icons.touch_app_outlined,
+                          title: "Double tap to add to favorites",
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         );
       },
     );
