@@ -58,8 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           setState(() => _currentIndex = index);
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
             ),
@@ -67,7 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.favorite_border_outlined,
+              _currentIndex == 1
+                  ? Icons.favorite
+                  : Icons.favorite_border_outlined,
             ),
             label: 'Search',
           ),
