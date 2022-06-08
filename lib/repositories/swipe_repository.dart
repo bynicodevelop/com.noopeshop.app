@@ -1,0 +1,3 @@
+class SwipeRepository {
+  const SwipeRepository();
+}
