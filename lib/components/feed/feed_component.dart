@@ -1,3 +1,4 @@
+import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
@@ -45,12 +46,17 @@ class _FeedComponentState extends State<FeedComponent> {
           children: (state as FeedInitialState).feeds.map((product) {
             return GestureDetector(
               onDoubleTap: () {
+                // TODO: Ajouter une condition pour savoir si le système est configuré (à voir)
                 context.read<SystemBloc>().add(
                       const OnUpdateSystemEvent(
                         key: "favorite",
                         value: true,
                       ),
                     );
+
+                context
+                    .read<FavoriteButtonBloc>()
+                    .add(OnFavoriteButtonPressed());
               },
               child: Stack(
                 fit: StackFit.expand,

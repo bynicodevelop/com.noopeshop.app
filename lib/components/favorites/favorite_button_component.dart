@@ -20,48 +20,62 @@ class FavoriteButtonComponent extends StatelessWidget {
           isBlur ? .2 : 1,
         ),
         radius: defaultSize,
-        child: Icon(
-          isLiked ? Icons.favorite : Icons.favorite_border_rounded,
-          size: defaultSize / .9,
-          color: isLiked ? Colors.pink : kBackgroundColor,
+        child: AnimatedSwitcher(
+          duration: const Duration(
+            milliseconds: 300,
+          ),
+          transitionBuilder: (child, anim) => FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+          child: isLiked
+              ? Icon(
+                  Icons.favorite,
+                  key: const ValueKey('icon1'),
+                  color: Colors.pink,
+                  size: defaultSize / .9,
+                )
+              : Icon(
+                  Icons.favorite_border,
+                  key: const ValueKey('icon2'),
+                  size: defaultSize / .9,
+                  color: kBackgroundColor,
+                ),
         ),
       );
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<FavoriteButtonBloc>(
-      create: (context) => FavoriteButtonBloc(),
-      child: BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
-        builder: (context, state) {
-          final isLiked = (state as FavoriteButtonInitialState).isLiked;
+    return BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
+      builder: (context, state) {
+        final isLiked = (state as FavoriteButtonInitialState).isLiked;
 
-          return ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => context
-                    .read<FavoriteButtonBloc>()
-                    .add(OnFavoriteButtonPressed()),
-                child: blurButton
-                    ? BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: 10.0,
-                          sigmaY: 10.0,
-                        ),
-                        child: _button(
-                          isLiked,
-                          isBlur: blurButton,
-                        ),
-                      )
-                    : _button(
+        return ClipOval(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => context
+                  .read<FavoriteButtonBloc>()
+                  .add(OnFavoriteButtonPressed()),
+              child: blurButton
+                  ? BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 10.0,
+                        sigmaY: 10.0,
+                      ),
+                      child: _button(
                         isLiked,
                         isBlur: blurButton,
                       ),
-              ),
+                    )
+                  : _button(
+                      isLiked,
+                      isBlur: blurButton,
+                    ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
