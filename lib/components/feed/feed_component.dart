@@ -23,10 +23,13 @@ class _FeedComponentState extends State<FeedComponent> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FeedBloc, FeedState>(
-      bloc: context.read<FeedBloc>()..add(const OnLoadFeedEvent()),
       builder: (context, state) {
-        return PageView(
-          onPageChanged: (value) {
+        final List<FeedModel> feeds = (state as FeedInitialState).feeds;
+
+        print("BlocBuilder feeds.length: ${feeds.length}");
+
+        return PageView.builder(
+          onPageChanged: (int value) {
             context.read<SystemBloc>().add(
                   const OnUpdateSystemEvent(
                     key: "swipe",
@@ -36,6 +39,11 @@ class _FeedComponentState extends State<FeedComponent> {
 
             if (value > _currentIndex) {
               context.read<SwipeBloc>().add(OnSwipeUpEvent());
+              context.read<FeedBloc>().add(
+                    OnLoadFeedEvent(
+                      index: value,
+                    ),
+                  );
             } else {
               context.read<SwipeBloc>().add(OnSwipeDownEvent());
             }
@@ -43,7 +51,8 @@ class _FeedComponentState extends State<FeedComponent> {
             setState(() => _currentIndex = value);
           },
           scrollDirection: Axis.vertical,
-          children: (state as FeedInitialState).feeds.map((product) {
+          itemCount: feeds.length,
+          itemBuilder: (context, index) {
             return GestureDetector(
               onDoubleTap: () {
                 // TODO: Ajouter une condition pour savoir si le système est configuré (à voir)
@@ -61,13 +70,13 @@ class _FeedComponentState extends State<FeedComponent> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  product.mediaType == MediaTypeEnum.image
+                  feeds[index].mediaType == MediaTypeEnum.image
                       ? Image.asset(
-                          product.media,
+                          feeds[index].media,
                           fit: BoxFit.cover,
                         )
                       : VideoPlayerWidget(
-                          feedModel: product,
+                          feedModel: feeds[index],
                         ),
                   Container(
                     decoration: BoxDecoration(
@@ -90,7 +99,7 @@ class _FeedComponentState extends State<FeedComponent> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  product.title,
+                                  state.feeds[index].title,
                                   style: Theme.of(context).textTheme.headline1,
                                 ),
                               ),
@@ -129,7 +138,7 @@ class _FeedComponentState extends State<FeedComponent> {
                 ],
               ),
             );
-          }).toList(),
+          },
         );
       },
     );

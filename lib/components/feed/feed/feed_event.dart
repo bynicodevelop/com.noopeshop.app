@@ -8,5 +8,14 @@ abstract class FeedEvent extends Equatable {
 }
 
 class OnLoadFeedEvent extends FeedEvent {
-  const OnLoadFeedEvent();
+  final int index;
+
+  const OnLoadFeedEvent({
+    this.index = 0,
+  });
+
+  @override
+  List<Object> get props => [
+        index,
+      ];
 }

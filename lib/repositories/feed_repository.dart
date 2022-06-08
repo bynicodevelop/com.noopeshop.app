@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 
 const List<Map<String, dynamic>> products = [
@@ -32,17 +35,52 @@ const List<Map<String, dynamic>> products = [
 ];
 
 class FeedRepository {
-  Future<List<FeedModel>> getFeed() async {
-    await Future.delayed(
-      const Duration(
-        seconds: 1,
+  final FirebaseFirestore firebaseFirestore;
+
+  final int _limit = 2;
+
+  QueryDocumentSnapshot<Map<String, dynamic>>? _lastVisible;
+
+  final List<FeedModel> _feeds = [];
+
+  FeedRepository({
+    required this.firebaseFirestore,
+  });
+
+  Future<List<FeedModel>> getFeed(int index) async {
+    if (index != 0 && (index + 1) < _feeds.length) {
+      return _feeds;
+    }
+
+    late QuerySnapshot<Map<String, dynamic>> querySnapshot;
+
+    Query<Map<String, dynamic>> query =
+        firebaseFirestore.collection('products').orderBy(
+              'createdAt',
+              descending: true,
+            );
+
+    if (_lastVisible != null) {
+      query = query.startAfterDocument(_lastVisible!);
+    }
+
+    querySnapshot = await query.limit(_limit).get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return _feeds;
+    }
+
+    _lastVisible = querySnapshot.docs.last;
+
+    _feeds.addAll(
+      querySnapshot.docs.map(
+        (doc) => FeedModel.fromJson({
+          "id": doc.id,
+          ...doc.data(),
+        }),
       ),
     );
 
-    return products
-        .map((product) => FeedModel.fromJson(
-              product,
-            ))
-        .toList();
+    return _feeds;
   }
 }

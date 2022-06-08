@@ -15,10 +15,13 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   }) : super(const FeedInitialState(
           feeds: [],
         )) {
-    on<FeedEvent>((event, emit) async {
-      final List<FeedModel> feeds = await feedRepository.getFeed();
+    on<OnLoadFeedEvent>((event, emit) async {
+      final List<FeedModel> feeds = await feedRepository.getFeed(
+        event.index,
+      );
 
       emit(FeedInitialState(
+        refresh: DateTime.now().microsecondsSinceEpoch,
         feeds: feeds,
       ));
     });

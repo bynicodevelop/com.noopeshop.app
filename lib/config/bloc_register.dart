@@ -30,7 +30,9 @@ class BlocRegister extends StatelessWidget {
   Widget build(BuildContext context) {
     final SystemRepository systemRepository = SystemRepository();
 
-    final FeedRepository feedRepository = FeedRepository();
+    final FeedRepository feedRepository = FeedRepository(
+      firebaseFirestore: firebaseFirestore,
+    );
 
     final AuthenticationRepository authenticationRepository =
         AuthenticationRepository(
@@ -54,7 +56,7 @@ class BlocRegister extends StatelessWidget {
         BlocProvider<FeedBloc>(
           create: (context) => FeedBloc(
             feedRepository: feedRepository,
-          ),
+          )..add(const OnLoadFeedEvent()),
         ),
         BlocProvider<SwipeBloc>(
           create: (context) => SwipeBloc(
