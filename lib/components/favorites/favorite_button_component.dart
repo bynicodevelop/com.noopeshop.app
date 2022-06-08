@@ -1,10 +1,31 @@
+import 'dart:ui';
+
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteButtonComponent extends StatelessWidget {
-  const FavoriteButtonComponent({Key? key}) : super(key: key);
+  final double defaultSize;
+  final bool blurButton;
+
+  const FavoriteButtonComponent({
+    Key? key,
+    this.defaultSize = 16.0,
+    this.blurButton = false,
+  }) : super(key: key);
+
+  Widget _button(bool isLiked, {bool isBlur = false}) => CircleAvatar(
+        backgroundColor: Colors.white.withOpacity(
+          isBlur ? .2 : 1,
+        ),
+        radius: defaultSize,
+        child: Icon(
+          isLiked ? Icons.favorite : Icons.favorite_border_rounded,
+          size: defaultSize / .9,
+          color: isLiked ? Colors.pink : kBackgroundColor,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +37,26 @@ class FavoriteButtonComponent extends StatelessWidget {
 
           return ClipOval(
             child: Material(
+              color: Colors.transparent,
               child: InkWell(
                 onTap: () => context
                     .read<FavoriteButtonBloc>()
                     .add(OnFavoriteButtonPressed()),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 16.0,
-                  child: Icon(
-                    isLiked ? Icons.favorite : Icons.favorite_border_rounded,
-                    size: 16.0 / .9,
-                    color: isLiked ? Colors.pink : kBackgroundColor,
-                  ),
-                ),
+                child: blurButton
+                    ? BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: 10.0,
+                          sigmaY: 10.0,
+                        ),
+                        child: _button(
+                          isLiked,
+                          isBlur: blurButton,
+                        ),
+                      )
+                    : _button(
+                        isLiked,
+                        isBlur: blurButton,
+                      ),
               ),
             ),
           );

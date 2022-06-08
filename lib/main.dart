@@ -88,7 +88,7 @@ class App extends StatelessWidget {
           textTheme: GoogleFonts.ralewayTextTheme().copyWith(
             headline1: Theme.of(context).textTheme.headline1!.copyWith(
               color: Colors.white,
-              fontSize: 40,
+              fontSize: 35.0,
               fontWeight: FontWeight.bold,
               shadows: [
                 Shadow(

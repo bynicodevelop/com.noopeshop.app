@@ -1,3 +1,4 @@
+import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/system_model.dart';
@@ -68,15 +69,32 @@ class _FeedComponentState extends State<FeedComponent> {
                     ),
                   ),
                   Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         bottom: 70.0,
-                        left: 20.0,
                       ),
-                      child: Text(
-                        product.title,
-                        style: Theme.of(context).textTheme.headline1,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  product.title,
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
+                              ),
+                              const FavoriteButtonComponent(
+                                defaultSize: 25.0,
+                                blurButton: true,
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
