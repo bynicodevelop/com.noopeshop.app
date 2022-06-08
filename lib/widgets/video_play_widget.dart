@@ -24,7 +24,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _controller = VideoPlayerController.asset(
       widget.feedModel.media,
     )..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
         _controller.play();
       });
@@ -33,7 +32,18 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return VideoPlayer(_controller);
+    return _controller.value.isInitialized
+        ? VideoPlayer(
+            _controller,
+          )
+        : const SizedBox.shrink();
   }
 }
