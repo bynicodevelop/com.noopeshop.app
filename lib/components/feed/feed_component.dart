@@ -26,8 +26,6 @@ class _FeedComponentState extends State<FeedComponent> {
       builder: (context, state) {
         final List<FeedModel> feeds = (state as FeedInitialState).feeds;
 
-        print("BlocBuilder feeds.length: ${feeds.length}");
-
         return PageView.builder(
           onPageChanged: (int value) {
             context.read<SystemBloc>().add(
