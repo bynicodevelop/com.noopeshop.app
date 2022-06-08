@@ -6,8 +6,34 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: FeedComponent(),
+    return Scaffold(
+      body: const FeedComponent(),
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedIconTheme: const IconThemeData(
+          color: Colors.grey,
+        ),
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite_border_outlined,
+            ),
+            label: 'Search',
+          ),
+        ],
+      ),
     );
   }
 }

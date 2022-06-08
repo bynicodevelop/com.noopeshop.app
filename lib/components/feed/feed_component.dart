@@ -23,71 +23,81 @@ class _FeedComponentState extends State<FeedComponent> {
     return BlocBuilder<FeedBloc, FeedState>(
       bloc: context.read<FeedBloc>()..add(const OnLoadFeedEvent()),
       builder: (context, state) {
-        return PageView(
-          onPageChanged: (value) {
-            context.read<SystemBloc>().add(
-                  const OnUpdateSystemEvent(
-                    key: "swipe",
-                    value: true,
-                  ),
-                );
-
-            if (value > _currentIndex) {
-              context.read<SwipeBloc>().add(OnSwipeUpEvent());
-            } else {
-              context.read<SwipeBloc>().add(OnSwipeDownEvent());
-            }
-
-            setState(() => _currentIndex = value);
-          },
-          scrollDirection: Axis.vertical,
-          children: (state as FeedInitialState).feeds.map((product) {
-            return GestureDetector(
-              onDoubleTap: () {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 20.0,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              50.0,
+            ),
+            child: PageView(
+              onPageChanged: (value) {
                 context.read<SystemBloc>().add(
                       const OnUpdateSystemEvent(
-                        key: "favorite",
+                        key: "swipe",
                         value: true,
                       ),
                     );
+
+                if (value > _currentIndex) {
+                  context.read<SwipeBloc>().add(OnSwipeUpEvent());
+                } else {
+                  context.read<SwipeBloc>().add(OnSwipeDownEvent());
+                }
+
+                setState(() => _currentIndex = value);
               },
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  product.mediaType == MediaTypeEnum.image
-                      ? Image.asset(
-                          product.media,
-                          fit: BoxFit.cover,
-                        )
-                      : VideoPlayerWidget(
-                          feedModel: product,
-                        ),
-                  BlocBuilder<SystemBloc, SystemState>(
-                    builder: (context, state) {
-                      final SystemModel systemModel =
-                          (state as SystemInitialState).system;
-
-                      if (!systemModel.hasSwipe) {
-                        return const TutorialWidget(
-                          icon: Icons.swipe_up_outlined,
-                          title: "Swipe up to see more",
+              scrollDirection: Axis.vertical,
+              children: (state as FeedInitialState).feeds.map((product) {
+                return GestureDetector(
+                  onDoubleTap: () {
+                    context.read<SystemBloc>().add(
+                          const OnUpdateSystemEvent(
+                            key: "favorite",
+                            value: true,
+                          ),
                         );
-                      }
+                  },
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      product.mediaType == MediaTypeEnum.image
+                          ? Image.asset(
+                              product.media,
+                              fit: BoxFit.cover,
+                            )
+                          : VideoPlayerWidget(
+                              feedModel: product,
+                            ),
+                      BlocBuilder<SystemBloc, SystemState>(
+                        builder: (context, state) {
+                          final SystemModel systemModel =
+                              (state as SystemInitialState).system;
 
-                      if (!systemModel.hasAddToFavorites) {
-                        return const TutorialWidget(
-                          icon: Icons.touch_app_outlined,
-                          title: "Double tap to add to favorites",
-                        );
-                      }
+                          if (!systemModel.hasSwipe) {
+                            return const TutorialWidget(
+                              icon: Icons.swipe_up_outlined,
+                              title: "Swipe up to see more",
+                            );
+                          }
 
-                      return const SizedBox.shrink();
-                    },
+                          if (!systemModel.hasAddToFavorites) {
+                            return const TutorialWidget(
+                              icon: Icons.touch_app_outlined,
+                              title: "Double tap to add to favorites",
+                            );
+                          }
+
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }).toList(),
+                );
+              }).toList(),
+            ),
+          ),
         );
       },
     );

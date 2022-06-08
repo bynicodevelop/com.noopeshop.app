@@ -81,6 +81,9 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'NoopEshop',
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xFF161819),
+        ),
         home: BlocListener<SystemBloc, SystemState>(
           listener: (context, state) {
             if ((state as SystemInitialState).status ==
