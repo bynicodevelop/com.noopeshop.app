@@ -7,4 +7,28 @@ abstract class FavoriteButtonEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnFavoriteButtonPressed extends FavoriteButtonEvent {}
+class OnInitilizeFavoriteButtonEvent extends FavoriteButtonEvent {
+  final ProductModel productModel;
+
+  const OnInitilizeFavoriteButtonEvent({
+    required this.productModel,
+  });
+
+  @override
+  List<Object> get props => [
+        productModel,
+      ];
+}
+
+class OnFavoriteButtonPressed extends FavoriteButtonEvent {
+  final ProductModel productModel;
+
+  const OnFavoriteButtonPressed({
+    required this.productModel,
+  });
+
+  @override
+  List<Object> get props => [
+        productModel,
+      ];
+}

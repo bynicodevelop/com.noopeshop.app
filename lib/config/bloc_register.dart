@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
+import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/repositories/authentication_repository.dart';
+import 'package:com_noopeshop_app/repositories/favorite_repository.dart';
 import 'package:com_noopeshop_app/repositories/feed_repository.dart';
 import 'package:com_noopeshop_app/repositories/system_repository.dart';
 import 'package:com_noopeshop_app/repositories/swipe_repository.dart';
@@ -31,6 +34,7 @@ class BlocRegister extends StatelessWidget {
     final SystemRepository systemRepository = SystemRepository();
 
     final FeedRepository feedRepository = FeedRepository(
+      firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
     );
 
@@ -41,6 +45,11 @@ class BlocRegister extends StatelessWidget {
 
     const SwipeRepository swipeRepository = SwipeRepository();
 
+    final FavoriteRepository favoriteRepository = FavoriteRepository(
+      firebaseAuth: firebaseAuth,
+      firebaseFirestore: firebaseFirestore,
+    );
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<SystemBloc>(
@@ -48,9 +57,24 @@ class BlocRegister extends StatelessWidget {
             systemRepository: systemRepository,
           )..add(OnInitSystemEvent()),
         ),
-        BlocProvider(
+        BlocProvider<FeedBloc>(
+          create: (context) => FeedBloc(
+            feedRepository: feedRepository,
+          )..add(const OnLoadFeedEvent()),
+        ),
+        BlocProvider<FavoritesBloc>(
+          create: (context) => FavoritesBloc(
+            favoriteRepository: favoriteRepository,
+          ),
+        ),
+        BlocProvider<BootstrapBloc>(
           create: (context) => BootstrapBloc(
             authenticationRepository: authenticationRepository,
+          ),
+        ),
+        BlocProvider<FavoriteButtonBloc>(
+          create: (context) => FavoriteButtonBloc(
+            favoriteRepository: favoriteRepository,
           ),
         ),
         BlocProvider<FeedBloc>(

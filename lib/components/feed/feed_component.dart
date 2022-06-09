@@ -2,6 +2,7 @@ import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/system_model.dart';
 import 'package:com_noopeshop_app/services/swipe/swipe_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
@@ -24,7 +25,7 @@ class _FeedComponentState extends State<FeedComponent> {
   Widget build(BuildContext context) {
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
-        final List<FeedModel> feeds = (state as FeedInitialState).feeds;
+        final List<ProductModel> feeds = (state as FeedInitialState).feeds;
 
         return PageView.builder(
           onPageChanged: (int value) {
@@ -61,9 +62,9 @@ class _FeedComponentState extends State<FeedComponent> {
                       ),
                     );
 
-                context
-                    .read<FavoriteButtonBloc>()
-                    .add(OnFavoriteButtonPressed());
+                context.read<FavoriteButtonBloc>().add(OnFavoriteButtonPressed(
+                      productModel: feeds[index],
+                    ));
               },
               child: Stack(
                 fit: StackFit.expand,
@@ -74,7 +75,7 @@ class _FeedComponentState extends State<FeedComponent> {
                           fit: BoxFit.cover,
                         )
                       : VideoPlayerWidget(
-                          feedModel: feeds[index],
+                          productModel: feeds[index],
                         ),
                   Container(
                     decoration: BoxDecoration(
@@ -101,7 +102,8 @@ class _FeedComponentState extends State<FeedComponent> {
                                   style: Theme.of(context).textTheme.headline1,
                                 ),
                               ),
-                              const FavoriteButtonComponent(
+                              FavoriteButtonComponent(
+                                productModel: state.feeds[index],
                                 defaultSize: 25.0,
                                 blurButton: true,
                               )

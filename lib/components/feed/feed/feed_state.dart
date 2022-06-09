@@ -9,7 +9,7 @@ abstract class FeedState extends Equatable {
 
 class FeedInitialState extends FeedState {
   final int refresh;
-  final List<FeedModel> feeds;
+  final List<ProductModel> feeds;
 
   const FeedInitialState({
     required this.feeds,

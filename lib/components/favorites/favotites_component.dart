@@ -1,6 +1,8 @@
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
-import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const List<Map<String, dynamic>> products = [
   {
@@ -44,68 +46,90 @@ class FavoritesComponent extends StatelessWidget {
           ),
         ),
       ),
-      body: GridView.count(
-        padding: const EdgeInsets.all(
-          22.0,
-        ),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 2,
-        childAspectRatio: 9 / 14,
-        children: products
-            .map((product) => Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 12.0,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16.0),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.asset(
-                                product['media'],
-                                fit: BoxFit.cover,
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: 10.0,
-                                  right: 10.0,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: FavoriteButtonComponent(),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        product["title"],
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: .9,
+      body: BlocBuilder<FavoritesBloc, FavoritesState>(
+        bloc: context.read<FavoritesBloc>()..add(OnLoadFavorites()),
+        builder: (context, state) {
+          final List<ProductModel> favorites =
+              (state as FavoritesInitialState).favorites;
+
+          return favorites.isNotEmpty
+              ? GridView.builder(
+                  padding: const EdgeInsets.all(
+                    22.0,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    childAspectRatio: 9 / 14,
+                  ),
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 12.0,
                             ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ))
-            .toList(),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(16.0),
+                              ),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.asset(
+                                    favorites[index].media,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 10.0,
+                                      right: 10.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: FavoriteButtonComponent(
+                                        // TODO: Attention !!!!
+                                        productModel: favorites[index],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            favorites[index].title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: .9,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    );
+                  })
+              : const Center(
+                  child: Text(
+                    'No favorites yet',
+                  ),
+                );
+        },
       ),
     );
   }

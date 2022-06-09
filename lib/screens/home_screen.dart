@@ -1,8 +1,6 @@
-import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favotites_component.dart';
 import 'package:com_noopeshop_app/components/feed/feed_component.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,17 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(
             50.0,
           ),
-          child: BlocProvider<FavoriteButtonBloc>(
-            create: (context) => FavoriteButtonBloc(),
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (int index) =>
-                  setState(() => _currentIndex = index),
-              children: const [
-                FeedComponent(),
-                FavoritesComponent(),
-              ],
-            ),
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (int index) => setState(() => _currentIndex = index),
+            children: const [
+              FeedComponent(),
+              FavoritesComponent(),
+            ],
           ),
         ),
       ),

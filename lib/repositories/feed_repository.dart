@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:com_noopeshop_app/models/feed_model.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const List<Map<String, dynamic>> products = [
   {
@@ -35,19 +36,27 @@ const List<Map<String, dynamic>> products = [
 ];
 
 class FeedRepository {
+  final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
   final int _limit = 2;
 
   QueryDocumentSnapshot<Map<String, dynamic>>? _lastVisible;
 
-  final List<FeedModel> _feeds = [];
+  final List<ProductModel> _feeds = [];
 
   FeedRepository({
+    required this.firebaseAuth,
     required this.firebaseFirestore,
   });
 
-  Future<List<FeedModel>> getFeed(int index) async {
+  Future<List<ProductModel>> getFeed(int index) async {
+    final User? user = firebaseAuth.currentUser;
+
+    if (user == null) {
+      throw Exception("User is not logged in");
+    }
+
     if (index != 0 && (index + 1) < _feeds.length) {
       return _feeds;
     }
@@ -73,12 +82,24 @@ class FeedRepository {
     _lastVisible = querySnapshot.docs.last;
 
     _feeds.addAll(
-      querySnapshot.docs.map(
-        (doc) => FeedModel.fromJson({
-          "id": doc.id,
-          ...doc.data(),
-        }),
-      ),
+      await Future.wait(querySnapshot.docs.map(
+        (product) async {
+          DocumentSnapshot<Map<String, dynamic>> favoriteDocumentSnapshot =
+              await firebaseFirestore
+                  .collection("users")
+                  .doc(user.uid)
+                  .collection("favorites")
+                  .doc(product.id)
+                  .get();
+
+          return ProductModel.fromJson({
+            "id": product.id,
+            "reference": product.reference,
+            ...product.data(),
+            "isFavorite": favoriteDocumentSnapshot.exists,
+          });
+        },
+      )),
     );
 
     return _feeds;

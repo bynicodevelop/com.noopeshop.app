@@ -1,13 +1,13 @@
-import 'package:com_noopeshop_app/models/feed_model.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
-  final FeedModel feedModel;
+  final ProductModel productModel;
 
   const VideoPlayerWidget({
     Key? key,
-    required this.feedModel,
+    required this.productModel,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.initState();
 
     _controller = VideoPlayerController.asset(
-      widget.feedModel.media,
+      widget.productModel.media,
     )..initialize().then((_) {
         setState(() {});
         _controller.play();

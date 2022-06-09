@@ -1,6 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
-import 'package:com_noopeshop_app/models/feed_model.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/repositories/feed_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -16,7 +16,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           feeds: [],
         )) {
     on<OnLoadFeedEvent>((event, emit) async {
-      final List<FeedModel> feeds = await feedRepository.getFeed(
+      final List<ProductModel> feeds = await feedRepository.getFeed(
         event.index,
       );
 

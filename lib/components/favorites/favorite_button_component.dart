@@ -2,15 +2,18 @@ import 'dart:ui';
 
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteButtonComponent extends StatelessWidget {
+  final ProductModel productModel;
   final double defaultSize;
   final bool blurButton;
 
   const FavoriteButtonComponent({
     Key? key,
+    required this.productModel,
     this.defaultSize = 16.0,
     this.blurButton = false,
   }) : super(key: key);
@@ -47,16 +50,22 @@ class FavoriteButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
+      bloc: context.read<FavoriteButtonBloc>()
+        ..add(OnInitilizeFavoriteButtonEvent(
+          productModel: productModel,
+        )),
       builder: (context, state) {
-        final isLiked = (state as FavoriteButtonInitialState).isLiked;
+        bool isLiked = (state as FavoriteButtonInitialState).isLiked;
 
         return ClipOval(
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => context
-                  .read<FavoriteButtonBloc>()
-                  .add(OnFavoriteButtonPressed()),
+              onTap: () => context.read<FavoriteButtonBloc>().add(
+                    OnFavoriteButtonPressed(
+                      productModel: productModel,
+                    ),
+                  ),
               child: blurButton
                   ? BackdropFilter(
                       filter: ImageFilter.blur(
