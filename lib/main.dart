@@ -107,6 +107,7 @@ class App extends StatelessWidget {
             builder: (context, state) {
               final BootstrapStatusEnum status =
                   (state as BootstrapInitialState).status;
+
               if (status != BootstrapStatusEnum.onReadyBootstrap) {
                 return const SplashScreen();
               }

@@ -46,6 +46,12 @@ class BootstrapBloc extends Bloc<BootstrapEvent, BootstrapState> {
     on<OnReadyBootstrapEvent>((event, emit) async {
       log("BootstrapBloc: OnReadyBootstrapEvent");
 
+      await Future.delayed(
+        const Duration(
+          milliseconds: 500,
+        ),
+      );
+
       emit(BootstrapInitialState(
         status: BootstrapStatusEnum.onReadyBootstrap,
         userModel: event.userModel,
