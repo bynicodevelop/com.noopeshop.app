@@ -7,6 +7,7 @@ class CustomThemeData {
     final ThemeData base = ThemeData.light();
 
     return base.copyWith(
+      primaryColor: Colors.white,
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: base.appBarTheme.copyWith(
         iconTheme: const IconThemeData(
@@ -43,7 +44,6 @@ class CustomThemeData {
         bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
               color: kBackgroundColor,
               fontSize: 14.0,
-              fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
       ),
@@ -66,6 +66,7 @@ class CustomThemeData {
     final ThemeData base = ThemeData.dark();
 
     return base.copyWith(
+      primaryColor: kBackgroundColor,
       scaffoldBackgroundColor: kBackgroundColor,
       appBarTheme: base.appBarTheme.copyWith(
         iconTheme: const IconThemeData(
@@ -102,7 +103,6 @@ class CustomThemeData {
         bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
               color: Colors.white,
               fontSize: 14.0,
-              fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
       ),

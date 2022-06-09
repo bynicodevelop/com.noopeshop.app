@@ -6,7 +6,7 @@ import 'package:com_noopeshop_app/widgets/video_play_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   final ProductModel productModel;
 
   const ProductScreen({
@@ -15,9 +15,15 @@ class ProductScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -26,11 +32,11 @@ class ProductScreen extends StatelessWidget {
           BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
             bloc: context.read<FavoriteButtonBloc>()
               ..add(OnInitilizeFavoriteButtonEvent(
-                productModel: productModel,
+                productModel: widget.productModel,
               )),
             builder: (context, state) {
               return FavoriteButtonComponent(
-                productModel: productModel,
+                productModel: widget.productModel,
                 defaultSize: 25.0,
                 transparentButton: true,
               );
@@ -39,19 +45,58 @@ class ProductScreen extends StatelessWidget {
         ],
       ),
       body: Stack(fit: StackFit.expand, children: [
-        productModel.mediaType == MediaTypeEnum.image
+        widget.productModel.mediaType == MediaTypeEnum.image
             ? Image.asset(
-                productModel.media,
+                widget.productModel.media,
                 fit: BoxFit.cover,
               )
             : VideoPlayerWidget(
-                productModel: productModel,
+                productModel: widget.productModel,
               ),
         Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.15),
           ),
         ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+              height: 130.0,
+              width: double.infinity,
+              padding: const EdgeInsets.all(
+                16.0,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(
+                    16.0,
+                  ),
+                  topRight: Radius.circular(
+                    16.0,
+                  ),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 8.0,
+                    ),
+                    child: Text(
+                      widget.productModel.title,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
+                  Text(
+                    widget.productModel.description,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
+              )),
+        )
       ]),
     );
   }
