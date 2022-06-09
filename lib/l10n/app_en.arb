@@ -2,5 +2,9 @@
     "favoritesAppBar": "Mes Favoris",
     "@favoritesAppBar": {
       "description": "Titre mes favoris"
+    },
+    "notFavoritesYet": "No favorites yet",
+    "@notFavoritesYet": {
+      "description": "Pas de favoris pour l'instant"
     }
 }

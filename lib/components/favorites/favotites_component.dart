@@ -111,9 +111,10 @@ class FavoritesComponent extends StatelessWidget {
                       ),
                     );
                   })
-              : const Center(
+              : Center(
                   child: Text(
-                    'No favorites yet',
+                    t(context)!.notFavoritesYet,
+                    style: Theme.of(context).textTheme.bodyText1!,
                   ),
                 );
         },

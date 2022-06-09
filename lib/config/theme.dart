@@ -40,6 +40,12 @@ class CustomThemeData {
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
+        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: kBackgroundColor,
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: .9,
+            ),
       ),
       bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
         unselectedIconTheme: IconThemeData(
@@ -90,6 +96,12 @@ class CustomThemeData {
         headline6: Theme.of(context).textTheme.headline2!.copyWith(
               color: Colors.white,
               fontSize: 20,
+              fontWeight: FontWeight.bold,
+              letterSpacing: .9,
+            ),
+        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: Colors.white,
+              fontSize: 14.0,
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
