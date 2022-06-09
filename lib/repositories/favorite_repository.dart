@@ -34,6 +34,10 @@ class FavoriteRepository {
         .collection("users")
         .doc(user.uid)
         .collection("favorites")
+        .orderBy(
+          "createdAt",
+          descending: true,
+        )
         .snapshots()
         .listen((snapshot) async {
       final List<ProductModel> favorites = (await Future.wait(

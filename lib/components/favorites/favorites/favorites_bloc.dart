@@ -13,7 +13,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     required this.favoriteRepository,
   }) : super(const FavoritesInitialState(favorites: [])) {
     favoriteRepository.favorites.listen((favorites) {
-      print(favorites);
       add(OnLoadedFavorites(
         favorites: favorites,
       ));

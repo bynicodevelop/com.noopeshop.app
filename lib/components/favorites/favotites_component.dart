@@ -1,32 +1,9 @@
+import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-const List<Map<String, dynamic>> products = [
-  {
-    "id": "1",
-    "title": "Body Lotion - Fitness extreme",
-    "description": "This is a product description",
-    "media": "assets/samples/1.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-  {
-    "id": "1",
-    "title": "Product 2",
-    "description": "This is a product description",
-    "media": "assets/samples/2.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-  {
-    "id": "1",
-    "title": "Product 3",
-    "description": "This is a product description",
-    "media": "assets/samples/3.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-];
 
 class FavoritesComponent extends StatelessWidget {
   const FavoritesComponent({Key? key}) : super(key: key);
@@ -93,9 +70,17 @@ class FavoritesComponent extends StatelessWidget {
                                     ),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: FavoriteButtonComponent(
-                                        // TODO: Attention !!!!
-                                        productModel: favorites[index],
+                                      child: BlocBuilder<FavoriteButtonBloc,
+                                          FavoriteButtonState>(
+                                        bloc: context.read<FavoriteButtonBloc>()
+                                          ..add(OnInitilizeFavoriteButtonEvent(
+                                            productModel: favorites[index],
+                                          )),
+                                        builder: (context, state) {
+                                          return FavoriteButtonComponent(
+                                            productModel: favorites[index],
+                                          );
+                                        },
                                       ),
                                     ),
                                   )
@@ -107,7 +92,7 @@ class FavoritesComponent extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            favorites[index].title,
+                            "${favorites[index].id} ${favorites[index].title} ",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
