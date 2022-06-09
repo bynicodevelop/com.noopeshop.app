@@ -52,97 +52,106 @@ class _FeedComponentState extends State<FeedComponent> {
           scrollDirection: Axis.vertical,
           itemCount: feeds.length,
           itemBuilder: (context, index) {
-            return GestureDetector(
-              onDoubleTap: () {
-                // TODO: Ajouter une condition pour savoir si le système est configuré (à voir)
-                context.read<SystemBloc>().add(
-                      const OnUpdateSystemEvent(
-                        key: "favorite",
-                        value: true,
-                      ),
-                    );
+            return BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
+              bloc: context.read<FavoriteButtonBloc>()
+                ..add(OnInitilizeFavoriteButtonEvent(
+                  productModel: feeds[_currentIndex],
+                )),
+              builder: (context, state) {
+                return GestureDetector(
+                  onDoubleTap: () {
+                    // TODO: Ajouter une condition pour savoir si le système est configuré (à voir)
+                    context.read<SystemBloc>().add(
+                          const OnUpdateSystemEvent(
+                            key: "favorite",
+                            value: true,
+                          ),
+                        );
 
-                context.read<FavoriteButtonBloc>().add(
-                      OnFavoriteButtonPressed(
-                        // Important de prendre le currentIndex pour eviter
-                        //un conflit avec tous les boutons like
-                        productModel: feeds[_currentIndex],
-                      ),
-                    );
-              },
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  feeds[index].mediaType == MediaTypeEnum.image
-                      ? Image.asset(
-                          feeds[index].media,
-                          fit: BoxFit.cover,
-                        )
-                      : VideoPlayerWidget(
-                          productModel: feeds[index],
+                    context.read<FavoriteButtonBloc>().add(
+                          OnFavoriteButtonPressed(
+                            // Important de prendre le currentIndex pour eviter
+                            //un conflit avec tous les boutons like
+                            productModel: feeds[_currentIndex],
+                          ),
+                        );
+                  },
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      feeds[index].mediaType == MediaTypeEnum.image
+                          ? Image.asset(
+                              feeds[index].media,
+                              fit: BoxFit.cover,
+                            )
+                          : VideoPlayerWidget(
+                              productModel: feeds[index],
+                            ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.15),
                         ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.15),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 70.0,
                       ),
-                      child: SizedBox(
-                        width: double.infinity,
+                      Align(
+                        alignment: Alignment.bottomCenter,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
+                          padding: const EdgeInsets.only(
+                            bottom: 70.0,
                           ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  state.feeds[index].title,
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
                               ),
-                              FavoriteButtonComponent(
-                                // Important de prendre le currentIndex pour eviter
-                                //un conflit avec tous les boutons like
-                                productModel: state.feeds[_currentIndex],
-                                defaultSize: 25.0,
-                                blurButton: true,
-                              )
-                            ],
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      feeds[index].title,
+                                      style:
+                                          Theme.of(context).textTheme.headline1,
+                                    ),
+                                  ),
+                                  FavoriteButtonComponent(
+                                    // Important de prendre le currentIndex pour eviter
+                                    //un conflit avec tous les boutons like
+                                    productModel: feeds[_currentIndex],
+                                    defaultSize: 25.0,
+                                    blurButton: true,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      BlocBuilder<SystemBloc, SystemState>(
+                        builder: (context, state) {
+                          final SystemModel systemModel =
+                              (state as SystemInitialState).system;
+
+                          if (!systemModel.hasSwipe) {
+                            return const TutorialWidget(
+                              icon: Icons.swipe_up_outlined,
+                              title: "Swipe up to see more",
+                            );
+                          }
+
+                          if (!systemModel.hasAddToFavorites) {
+                            return const TutorialWidget(
+                              icon: Icons.touch_app_outlined,
+                              title: "Double tap to add to favorites",
+                            );
+                          }
+
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
                   ),
-                  BlocBuilder<SystemBloc, SystemState>(
-                    builder: (context, state) {
-                      final SystemModel systemModel =
-                          (state as SystemInitialState).system;
-
-                      if (!systemModel.hasSwipe) {
-                        return const TutorialWidget(
-                          icon: Icons.swipe_up_outlined,
-                          title: "Swipe up to see more",
-                        );
-                      }
-
-                      if (!systemModel.hasAddToFavorites) {
-                        return const TutorialWidget(
-                          icon: Icons.touch_app_outlined,
-                          title: "Double tap to add to favorites",
-                        );
-                      }
-
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ],
-              ),
+                );
+              },
             );
           },
         );

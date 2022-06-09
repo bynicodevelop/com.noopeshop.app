@@ -9,13 +9,16 @@ abstract class FavoriteButtonState extends Equatable {
 
 class FavoriteButtonInitialState extends FavoriteButtonState {
   final ProductModel productModel;
+  final int refresh;
 
   const FavoriteButtonInitialState({
     required this.productModel,
+    this.refresh = 0,
   });
 
   @override
   List<Object> get props => [
         productModel,
+        refresh,
       ];
 }

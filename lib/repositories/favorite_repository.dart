@@ -34,8 +34,8 @@ class FavoriteRepository {
         .collection("users")
         .doc(user.uid)
         .collection("favorites")
-        .get()
-        .then((snapshot) async {
+        .snapshots()
+        .listen((snapshot) async {
       final List<ProductModel> favorites = (await Future.wait(
         snapshot.docs
             .map((QueryDocumentSnapshot<Map<String, dynamic>> favorite) async {

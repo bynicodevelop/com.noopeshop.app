@@ -28,6 +28,7 @@ class FavoriteButtonBloc
     on<OnUpdateFavoriteButtonEvent>((event, emit) async {
       emit(FavoriteButtonInitialState(
         productModel: event.productModel,
+        refresh: DateTime.now().microsecondsSinceEpoch,
       ));
     });
 

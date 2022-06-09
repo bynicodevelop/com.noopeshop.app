@@ -58,10 +58,10 @@ class _FavoriteButtonComponentState extends State<FavoriteButtonComponent> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FavoriteButtonBloc, FavoriteButtonState>(
-      bloc: context.read<FavoriteButtonBloc>()
-        ..add(OnInitilizeFavoriteButtonEvent(
-          productModel: widget.productModel,
-        )),
+      // bloc: context.read<FavoriteButtonBloc>()
+      //   ..add(OnInitilizeFavoriteButtonEvent(
+      //     productModel: widget.productModel,
+      //   )),
       listener: (context, state) {
         if ((state as FavoriteButtonInitialState).productModel.id ==
                 widget.productModel.id &&
