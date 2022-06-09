@@ -26,8 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
           bottom: 20.0,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(
-            50.0,
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(50.0),
+            bottomRight: Radius.circular(50.0),
           ),
           child: BlocBuilder<CurrentIndexBloc, CurrentIndexState>(
             builder: (context, state) {

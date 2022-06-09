@@ -3,6 +3,7 @@ import 'package:com_noopeshop_app/components/favorites/favorite_button_component
 import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/screens/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,63 +41,74 @@ class FavoritesComponent extends StatelessWidget {
                   ),
                   itemCount: favorites.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 12.0,
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductScreen(
+                              productModel: favorites[index],
                             ),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16.0),
+                          )),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 12.0,
                               ),
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.asset(
-                                    favorites[index].media,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: 10.0,
-                                      right: 10.0,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(16.0),
+                                ),
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    Image.asset(
+                                      favorites[index].media,
+                                      fit: BoxFit.cover,
                                     ),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: BlocBuilder<FavoriteButtonBloc,
-                                          FavoriteButtonState>(
-                                        bloc: context.read<FavoriteButtonBloc>()
-                                          ..add(OnInitilizeFavoriteButtonEvent(
-                                            productModel: favorites[index],
-                                          )),
-                                        builder: (context, state) {
-                                          return FavoriteButtonComponent(
-                                            productModel: favorites[index],
-                                          );
-                                        },
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 10.0,
+                                        right: 10.0,
                                       ),
-                                    ),
-                                  )
-                                ],
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: BlocBuilder<FavoriteButtonBloc,
+                                            FavoriteButtonState>(
+                                          bloc: context
+                                              .read<FavoriteButtonBloc>()
+                                            ..add(
+                                                OnInitilizeFavoriteButtonEvent(
+                                              productModel: favorites[index],
+                                            )),
+                                          builder: (context, state) {
+                                            return FavoriteButtonComponent(
+                                              productModel: favorites[index],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            favorites[index].title,
-                            style: Theme.of(context).textTheme.headline2!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              favorites[index].title,
+                              style: Theme.of(context).textTheme.headline2!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   })
               : const Center(

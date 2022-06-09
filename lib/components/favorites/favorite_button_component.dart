@@ -10,12 +10,14 @@ class FavoriteButtonComponent extends StatefulWidget {
   final ProductModel productModel;
   final double defaultSize;
   final bool blurButton;
+  final bool transparentButton;
 
   const FavoriteButtonComponent({
     Key? key,
     required this.productModel,
     this.defaultSize = 16.0,
     this.blurButton = false,
+    this.transparentButton = false,
   }) : super(key: key);
 
   @override
@@ -27,9 +29,11 @@ class _FavoriteButtonComponentState extends State<FavoriteButtonComponent> {
   bool _isFavorite = false;
 
   Widget _button(bool isLiked, {bool isBlur = false}) => CircleAvatar(
-        backgroundColor: Colors.white.withOpacity(
-          isBlur ? .2 : 1,
-        ),
+        backgroundColor: widget.transparentButton
+            ? Colors.transparent
+            : Colors.white.withOpacity(
+                isBlur ? .2 : 1,
+              ),
         radius: widget.defaultSize,
         child: AnimatedSwitcher(
           duration: const Duration(

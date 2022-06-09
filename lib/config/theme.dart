@@ -8,6 +8,11 @@ class CustomThemeData {
 
     return base.copyWith(
       scaffoldBackgroundColor: Colors.white,
+      appBarTheme: base.appBarTheme.copyWith(
+        iconTheme: const IconThemeData(
+          color: kBackgroundColor,
+        ),
+      ),
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
@@ -56,6 +61,11 @@ class CustomThemeData {
 
     return base.copyWith(
       scaffoldBackgroundColor: kBackgroundColor,
+      appBarTheme: base.appBarTheme.copyWith(
+        iconTheme: const IconThemeData(
+          color: kBackgroundColor,
+        ),
+      ),
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
