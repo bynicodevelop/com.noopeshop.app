@@ -13,21 +13,33 @@ class FavoriteButtonBloc
 
   FavoriteButtonBloc({
     required this.favoriteRepository,
-  }) : super(const FavoriteButtonInitialState()) {
+  }) : super(FavoriteButtonInitialState(productModel: ProductModel.empty())) {
     on<OnInitilizeFavoriteButtonEvent>((event, emit) async {
+      favoriteRepository.getProductModel({
+        "id": event.productModel.id,
+        "isFavorite": event.productModel.isFavorite,
+      }).listen((productModel) {
+        add(OnUpdateFavoriteButtonEvent(
+          productModel: productModel,
+        ));
+      });
+    });
+
+    on<OnUpdateFavoriteButtonEvent>((event, emit) async {
       emit(FavoriteButtonInitialState(
-        isLiked: event.productModel.isFavorite,
+        productModel: event.productModel,
       ));
     });
 
     on<OnFavoriteButtonPressed>((event, emit) async {
-      final FavoriteStatusEnum isLiked =
-          await favoriteRepository.toggleFavorite(
+      print(
+          "OnFavoriteButtonPressed event.productModel.id: ${event.productModel.id}");
+      final ProductModel productModel = await favoriteRepository.toggleFavorite(
         event.productModel.toJson(),
       );
 
       emit(FavoriteButtonInitialState(
-        isLiked: isLiked == FavoriteStatusEnum.liked,
+        productModel: productModel,
       ));
     });
   }

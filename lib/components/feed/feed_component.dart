@@ -62,9 +62,13 @@ class _FeedComponentState extends State<FeedComponent> {
                       ),
                     );
 
-                context.read<FavoriteButtonBloc>().add(OnFavoriteButtonPressed(
-                      productModel: feeds[index],
-                    ));
+                context.read<FavoriteButtonBloc>().add(
+                      OnFavoriteButtonPressed(
+                        // Important de prendre le currentIndex pour eviter
+                        //un conflit avec tous les boutons like
+                        productModel: feeds[_currentIndex],
+                      ),
+                    );
               },
               child: Stack(
                 fit: StackFit.expand,
@@ -103,7 +107,9 @@ class _FeedComponentState extends State<FeedComponent> {
                                 ),
                               ),
                               FavoriteButtonComponent(
-                                productModel: state.feeds[index],
+                                // Important de prendre le currentIndex pour eviter
+                                //un conflit avec tous les boutons like
+                                productModel: state.feeds[_currentIndex],
                                 defaultSize: 25.0,
                                 blurButton: true,
                               )

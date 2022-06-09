@@ -29,13 +29,13 @@ class FavoriteRepository {
     if (user == null) {
       throw Exception('User is not logged in');
     }
-    print(user.uid);
+
     firebaseFirestore
         .collection("users")
         .doc(user.uid)
         .collection("favorites")
-        .snapshots()
-        .listen((snapshot) async {
+        .get()
+        .then((snapshot) async {
       final List<ProductModel> favorites = (await Future.wait(
         snapshot.docs
             .map((QueryDocumentSnapshot<Map<String, dynamic>> favorite) async {
@@ -59,7 +59,7 @@ class FavoriteRepository {
     });
   }
 
-  Future<FavoriteStatusEnum> toggleFavorite(Map<String, dynamic> data) async {
+  Future<ProductModel> toggleFavorite(Map<String, dynamic> data) async {
     final User? user = firebaseAuth.currentUser;
 
     if (user == null) {
@@ -75,13 +75,52 @@ class FavoriteRepository {
     if (productDocumentSnapshot.exists) {
       await userRef.collection("favorites").doc(data['id']).delete();
 
-      return FavoriteStatusEnum.unliked;
+      return ProductModel.fromJson({
+        ...data,
+        "mediaType": data['mediaType'].toString(),
+        "isFavorite": false,
+      });
     } else {
       await userRef.collection("favorites").doc(data['id']).set({
         "productRef": data['reference'],
       });
 
-      return FavoriteStatusEnum.liked;
+      return ProductModel.fromJson({
+        ...data,
+        "mediaType": data['mediaType'].toString(),
+        "isFavorite": true,
+      });
     }
+  }
+
+  Stream<ProductModel> getProductModel(Map<String, dynamic> data) {
+    final User? user = firebaseAuth.currentUser;
+
+    if (user == null) {
+      throw Exception('User is not logged in');
+    }
+
+    return firebaseFirestore
+        .collection("products")
+        .doc(data["id"])
+        .snapshots()
+        .asyncMap(
+      (snapshot) async {
+        final DocumentSnapshot<Map<String, dynamic>> favoriteDocumentSnapshot =
+            await firebaseFirestore
+                .collection("users")
+                .doc(user.uid)
+                .collection("favorites")
+                .doc(snapshot.id)
+                .get();
+
+        return ProductModel.fromJson({
+          "id": snapshot.id,
+          "reference": snapshot.reference,
+          ...snapshot.data()!,
+          "isFavorite": favoriteDocumentSnapshot.exists,
+        });
+      },
+    );
   }
 }

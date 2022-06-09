@@ -8,7 +8,7 @@ class ProductModel extends Equatable {
   final String description;
   final String media;
   final MediaTypeEnum mediaType;
-  final DocumentReference reference;
+  final DocumentReference? reference;
   final bool isFavorite;
 
   const ProductModel({
@@ -17,7 +17,7 @@ class ProductModel extends Equatable {
     required this.description,
     required this.media,
     required this.mediaType,
-    required this.reference,
+    this.reference,
     this.isFavorite = false,
   });
 
@@ -31,6 +31,17 @@ class ProductModel extends Equatable {
           .firstWhere((element) => element.toString() == json['mediaType']),
       reference: json['reference'] as DocumentReference,
       isFavorite: json['isFavorite'] ?? false,
+    );
+  }
+
+  factory ProductModel.empty() {
+    return const ProductModel(
+      id: '',
+      title: '',
+      description: '',
+      media: '',
+      mediaType: MediaTypeEnum.image,
+      isFavorite: false,
     );
   }
 

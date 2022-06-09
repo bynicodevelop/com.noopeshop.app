@@ -6,7 +6,7 @@ import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoriteButtonComponent extends StatelessWidget {
+class FavoriteButtonComponent extends StatefulWidget {
   final ProductModel productModel;
   final double defaultSize;
   final bool blurButton;
@@ -18,11 +18,19 @@ class FavoriteButtonComponent extends StatelessWidget {
     this.blurButton = false,
   }) : super(key: key);
 
+  @override
+  State<FavoriteButtonComponent> createState() =>
+      _FavoriteButtonComponentState();
+}
+
+class _FavoriteButtonComponentState extends State<FavoriteButtonComponent> {
+  bool _isFavorite = false;
+
   Widget _button(bool isLiked, {bool isBlur = false}) => CircleAvatar(
         backgroundColor: Colors.white.withOpacity(
           isBlur ? .2 : 1,
         ),
-        radius: defaultSize,
+        radius: widget.defaultSize,
         child: AnimatedSwitcher(
           duration: const Duration(
             milliseconds: 300,
@@ -36,12 +44,12 @@ class FavoriteButtonComponent extends StatelessWidget {
                   Icons.favorite,
                   key: const ValueKey('icon1'),
                   color: Colors.pink,
-                  size: defaultSize / .9,
+                  size: widget.defaultSize / .9,
                 )
               : Icon(
                   Icons.favorite_border,
                   key: const ValueKey('icon2'),
-                  size: defaultSize / .9,
+                  size: widget.defaultSize / .9,
                   color: kBackgroundColor,
                 ),
         ),
@@ -49,13 +57,22 @@ class FavoriteButtonComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoriteButtonBloc, FavoriteButtonState>(
+    return BlocConsumer<FavoriteButtonBloc, FavoriteButtonState>(
       bloc: context.read<FavoriteButtonBloc>()
         ..add(OnInitilizeFavoriteButtonEvent(
-          productModel: productModel,
+          productModel: widget.productModel,
         )),
+      listener: (context, state) {
+        if ((state as FavoriteButtonInitialState).productModel.id ==
+                widget.productModel.id &&
+            state.productModel.isFavorite != _isFavorite) {
+          // print(state);
+          setState(() => _isFavorite = (state).productModel.isFavorite);
+        }
+      },
       builder: (context, state) {
-        bool isLiked = (state as FavoriteButtonInitialState).isLiked;
+        final ProductModel productModel =
+            (state as FavoriteButtonInitialState).productModel;
 
         return ClipOval(
           child: Material(
@@ -66,20 +83,20 @@ class FavoriteButtonComponent extends StatelessWidget {
                       productModel: productModel,
                     ),
                   ),
-              child: blurButton
+              child: widget.blurButton
                   ? BackdropFilter(
                       filter: ImageFilter.blur(
                         sigmaX: 10.0,
                         sigmaY: 10.0,
                       ),
                       child: _button(
-                        isLiked,
-                        isBlur: blurButton,
+                        _isFavorite,
+                        isBlur: widget.blurButton,
                       ),
                     )
                   : _button(
-                      isLiked,
-                      isBlur: blurButton,
+                      _isFavorite,
+                      isBlur: widget.blurButton,
                     ),
             ),
           ),

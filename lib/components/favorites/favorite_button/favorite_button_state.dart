@@ -8,14 +8,14 @@ abstract class FavoriteButtonState extends Equatable {
 }
 
 class FavoriteButtonInitialState extends FavoriteButtonState {
-  final bool isLiked;
+  final ProductModel productModel;
 
   const FavoriteButtonInitialState({
-    this.isLiked = false,
+    required this.productModel,
   });
 
   @override
   List<Object> get props => [
-        isLiked,
+        productModel,
       ];
 }

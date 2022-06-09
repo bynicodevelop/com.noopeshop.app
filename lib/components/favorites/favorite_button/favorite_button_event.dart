@@ -20,6 +20,19 @@ class OnInitilizeFavoriteButtonEvent extends FavoriteButtonEvent {
       ];
 }
 
+class OnUpdateFavoriteButtonEvent extends FavoriteButtonEvent {
+  final ProductModel productModel;
+
+  const OnUpdateFavoriteButtonEvent({
+    required this.productModel,
+  });
+
+  @override
+  List<Object> get props => [
+        productModel,
+      ];
+}
+
 class OnFavoriteButtonPressed extends FavoriteButtonEvent {
   final ProductModel productModel;
 
