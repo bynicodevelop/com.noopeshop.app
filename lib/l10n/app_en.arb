@@ -1,0 +1,6 @@
+{
+    "favoritesAppBar": "Mes Favoris",
+    "@favoritesAppBar": {
+      "description": "Titre mes favoris"
+    }
+}

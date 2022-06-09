@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
+import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,16 +12,13 @@ class FavoritesComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Favorites',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          ),
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        title: Text(
+          t(context)!.favoritesAppBar,
+          style: Theme.of(context).textTheme.headline6,
         ),
       ),
       body: BlocBuilder<FavoritesBloc, FavoritesState>(
@@ -32,11 +30,11 @@ class FavoritesComponent extends StatelessWidget {
           return favorites.isNotEmpty
               ? GridView.builder(
                   padding: const EdgeInsets.all(
-                    22.0,
+                    28.0,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
                     crossAxisCount: 2,
                     childAspectRatio: 9 / 14,
                   ),
@@ -92,16 +90,8 @@ class FavoritesComponent extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "${favorites[index].id} ${favorites[index].title} ",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: .9,
-                                ),
+                            favorites[index].title,
+                            style: Theme.of(context).textTheme.headline2!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

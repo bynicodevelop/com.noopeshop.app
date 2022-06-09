@@ -50,16 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedIconTheme: const IconThemeData(
-          color: Colors.grey,
-        ),
-        selectedIconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
         currentIndex: _currentIndex,
         onTap: (int index) {
           _pageController.animateToPage(

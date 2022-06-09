@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:com_noopeshop_app/config/theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/config/bloc_register.dart';
-import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/screens/home_screen.dart';
 import 'package:com_noopeshop_app/screens/splash_screen.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
@@ -14,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
@@ -83,23 +84,18 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'NoopEshop',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: kBackgroundColor,
-          textTheme: GoogleFonts.ralewayTextTheme().copyWith(
-            headline1: Theme.of(context).textTheme.headline1!.copyWith(
-              color: Colors.white,
-              fontSize: 35.0,
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withOpacity(.6),
-                  blurRadius: 5,
-                  offset: const Offset(1, 1),
-                ),
-              ],
-            ),
-          ),
-        ),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('fr', ''),
+        ],
+        theme: CustomThemeData.themeLight(context),
+        darkTheme: CustomThemeData.themeDark(context),
         home: BlocListener<SystemBloc, SystemState>(
           listener: (context, state) {
             if ((state as SystemInitialState).status ==
