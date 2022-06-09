@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
+import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/repositories/authentication_repository.dart';
 import 'package:com_noopeshop_app/repositories/favorite_repository.dart';
@@ -86,6 +87,12 @@ class BlocRegister extends StatelessWidget {
           create: (context) => SwipeBloc(
             swipeRepository: swipeRepository,
           ),
+        ),
+        BlocProvider<CurrentIndexBloc>(
+          create: (context) => CurrentIndexBloc()
+            ..add(const OnUpdateCurrentIndexEvent(
+              currentIndex: 0,
+            )),
         ),
       ],
       child: child,

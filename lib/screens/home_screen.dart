@@ -1,6 +1,8 @@
 import 'package:com_noopeshop_app/components/favorites/favotites_component.dart';
+import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,13 +29,23 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(
             50.0,
           ),
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (int index) => setState(() => _currentIndex = index),
-            children: const [
-              FeedComponent(),
-              FavoritesComponent(),
-            ],
+          child: BlocBuilder<CurrentIndexBloc, CurrentIndexState>(
+            builder: (context, state) {
+              return PageView(
+                controller: _pageController,
+                onPageChanged: (int index) =>
+                    setState(() => _currentIndex = index),
+                children: [
+                  FeedComponent(
+                    controller: PageController(
+                      initialPage:
+                          (state as CurrentIndexInitialState).currentIndex,
+                    ),
+                  ),
+                  const FavoritesComponent(),
+                ],
+              );
+            },
           ),
         ),
       ),
