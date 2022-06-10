@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 enum FavoriteStatusEnum {
   liked,
@@ -12,6 +13,7 @@ enum FavoriteStatusEnum {
 class FavoriteRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
+  final FirebaseStorage firebaseStorage;
 
   final StreamController<List<ProductModel>> _favoritesController =
       StreamController.broadcast();
@@ -21,6 +23,7 @@ class FavoriteRepository {
   FavoriteRepository({
     required this.firebaseAuth,
     required this.firebaseFirestore,
+    required this.firebaseStorage,
   });
 
   Future<void> loadFavorites() async {
@@ -49,10 +52,16 @@ class FavoriteRepository {
                   .doc(favorite.id)
                   .get();
 
+          final String media = productDocumentSnapshot.data()!['media'];
+
+          final String mediaUrl =
+              await firebaseStorage.ref().child(media).getDownloadURL();
+
           return ProductModel.fromJson({
             "id": productDocumentSnapshot.id,
             "reference": productDocumentSnapshot.reference,
             ...productDocumentSnapshot.data()!,
+            "media": mediaUrl,
             "isFavorite": true,
           });
         }),

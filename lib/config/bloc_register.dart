@@ -37,6 +37,7 @@ class BlocRegister extends StatelessWidget {
     final FeedRepository feedRepository = FeedRepository(
       firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
+      firebaseStorage: firebaseStorage,
     );
 
     final AuthenticationRepository authenticationRepository =
@@ -49,6 +50,7 @@ class BlocRegister extends StatelessWidget {
     final FavoriteRepository favoriteRepository = FavoriteRepository(
       firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
+      firebaseStorage: firebaseStorage,
     );
 
     return MultiBlocProvider(

@@ -92,7 +92,7 @@ class _FeedComponentState extends State<FeedComponent> {
                         fit: StackFit.expand,
                         children: [
                           feeds[index].mediaType == MediaTypeEnum.image
-                              ? Image.asset(
+                              ? Image.network(
                                   feeds[index].media,
                                   fit: BoxFit.cover,
                                 )

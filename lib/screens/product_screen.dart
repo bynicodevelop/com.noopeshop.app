@@ -46,7 +46,7 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Stack(fit: StackFit.expand, children: [
         widget.productModel.mediaType == MediaTypeEnum.image
-            ? Image.asset(
+            ? Image.network(
                 widget.productModel.media,
                 fit: BoxFit.cover,
               )

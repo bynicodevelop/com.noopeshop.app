@@ -51,6 +51,8 @@ Future<void> main() async {
     );
   }
 
+  // await FirebaseAuth.instance.signOut();
+
   await FirebaseFirestore.instance.terminate();
   await FirebaseFirestore.instance.clearPersistence();
 

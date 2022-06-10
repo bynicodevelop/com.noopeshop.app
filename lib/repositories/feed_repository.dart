@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 const List<Map<String, dynamic>> products = [
   {
@@ -38,6 +39,7 @@ const List<Map<String, dynamic>> products = [
 class FeedRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
+  final FirebaseStorage firebaseStorage;
 
   final int _limit = 2;
 
@@ -48,6 +50,7 @@ class FeedRepository {
   FeedRepository({
     required this.firebaseAuth,
     required this.firebaseFirestore,
+    required this.firebaseStorage,
   });
 
   Future<List<ProductModel>> getFeed(int index) async {
@@ -84,6 +87,11 @@ class FeedRepository {
     _feeds.addAll(
       await Future.wait(querySnapshot.docs.map(
         (product) async {
+          final String media = product.data()['media'];
+
+          final String mediaUrl =
+              await firebaseStorage.ref().child(media).getDownloadURL();
+
           DocumentSnapshot<Map<String, dynamic>> favoriteDocumentSnapshot =
               await firebaseFirestore
                   .collection("users")
@@ -96,6 +104,7 @@ class FeedRepository {
             "id": product.id,
             "reference": product.reference,
             ...product.data(),
+            "media": mediaUrl,
             "isFavorite": favoriteDocumentSnapshot.exists,
           });
         },
