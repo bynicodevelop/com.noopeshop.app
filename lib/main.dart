@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:com_noopeshop_app/config/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,7 +9,6 @@ import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -32,24 +29,24 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  if (kDebugMode) {
-    final String host = Platform.isAndroid ? "10.0.2.2" : "localhost";
+  // if (kDebugMode) {
+  //   final String host = Platform.isAndroid ? "10.0.2.2" : "localhost";
 
-    await FirebaseAuth.instance.useAuthEmulator(
-      host,
-      9099,
-    );
+  //   await FirebaseAuth.instance.useAuthEmulator(
+  //     host,
+  //     9099,
+  //   );
 
-    FirebaseFirestore.instance.useFirestoreEmulator(
-      host,
-      8080,
-    );
+  //   FirebaseFirestore.instance.useFirestoreEmulator(
+  //     host,
+  //     8080,
+  //   );
 
-    await FirebaseStorage.instance.useStorageEmulator(
-      host,
-      9199,
-    );
-  }
+  //   await FirebaseStorage.instance.useStorageEmulator(
+  //     host,
+  //     9199,
+  //   );
+  // }
 
   // await FirebaseAuth.instance.signOut();
 

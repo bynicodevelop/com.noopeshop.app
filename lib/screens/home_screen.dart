@@ -21,33 +21,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: Padding(
         padding: const EdgeInsets.only(
-          bottom: 20.0,
+          bottom: 0,
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(50.0),
-            bottomRight: Radius.circular(50.0),
-          ),
-          child: BlocBuilder<CurrentIndexBloc, CurrentIndexState>(
-            builder: (context, state) {
-              return PageView(
-                controller: _pageController,
-                onPageChanged: (int index) =>
-                    setState(() => _currentIndex = index),
-                children: [
-                  FeedComponent(
-                    controller: PageController(
-                      initialPage:
-                          (state as CurrentIndexInitialState).currentIndex,
-                    ),
+        child: BlocBuilder<CurrentIndexBloc, CurrentIndexState>(
+          builder: (context, state) {
+            return PageView(
+              controller: _pageController,
+              onPageChanged: (int index) =>
+                  setState(() => _currentIndex = index),
+              children: [
+                FeedComponent(
+                  controller: PageController(
+                    initialPage:
+                        (state as CurrentIndexInitialState).currentIndex,
                   ),
-                  const FavoritesComponent(),
-                ],
-              );
-            },
-          ),
+                ),
+                const FavoritesComponent(),
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -62,9 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() => _currentIndex = index);
         },
         items: [
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
+              color: _currentIndex == 0
+                  ? Colors.white
+                  : Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .unselectedItemColor,
             ),
             label: 'Home',
           ),
@@ -73,8 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
               _currentIndex == 1
                   ? Icons.favorite
                   : Icons.favorite_border_outlined,
+              color: _currentIndex == 0
+                  ? Colors.white
+                  : Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .unselectedItemColor,
             ),
-            label: 'Search',
+            label: 'Favorites',
           ),
         ],
       ),

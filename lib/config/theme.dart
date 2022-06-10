@@ -56,7 +56,7 @@ class CustomThemeData {
         ),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
     );

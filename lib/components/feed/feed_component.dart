@@ -108,7 +108,7 @@ class _FeedComponentState extends State<FeedComponent> {
                             alignment: Alignment.bottomCenter,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                bottom: 70.0,
+                                bottom: 110.0,
                               ),
                               child: SizedBox(
                                 width: double.infinity,
