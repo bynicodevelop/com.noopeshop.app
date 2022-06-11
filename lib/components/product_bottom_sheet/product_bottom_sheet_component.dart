@@ -25,7 +25,7 @@ class ProductBottomSheetComponent extends StatelessWidget {
         );
       },
       child: Container(
-        height: 180.0,
+        height: 140.0,
         width: double.infinity,
         padding: const EdgeInsets.symmetric(
           vertical: 32.0,

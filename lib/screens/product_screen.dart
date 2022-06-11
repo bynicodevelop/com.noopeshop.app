@@ -20,6 +20,44 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  int _currentIndex = 0;
+
+  Widget _bulletPoint(MapEntry<int, String> entry, int currentIndex) =>
+      SizedBox(
+        height: 10,
+        child: AnimatedContainer(
+          duration: const Duration(
+            milliseconds: 150,
+          ),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 4.0,
+          ),
+          height: entry.key == currentIndex ? 10 : 8.0,
+          width: entry.key == currentIndex ? 12 : 8.0,
+          decoration: BoxDecoration(
+            boxShadow: [
+              entry.key == currentIndex
+                  ? BoxShadow(
+                      color: Colors.blueGrey.withOpacity(0.72),
+                      blurRadius: 4.0,
+                      spreadRadius: 1.0,
+                      offset: const Offset(
+                        0.0,
+                        0.0,
+                      ),
+                    )
+                  : const BoxShadow(
+                      color: Colors.transparent,
+                    )
+            ],
+            shape: BoxShape.circle,
+            color: entry.key == currentIndex
+                ? Colors.blueGrey
+                : const Color(0XFFEAEAEA),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,27 +83,53 @@ class _ProductScreenState extends State<ProductScreen> {
           )
         ],
       ),
-      body: Stack(fit: StackFit.expand, children: [
-        widget.productModel.mediaType == MediaTypeEnum.image
-            ? Image.network(
-                widget.productModel.media[0],
-                fit: BoxFit.cover,
-              )
-            : VideoPlayerWidget(
-                productModel: widget.productModel,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          widget.productModel.mediaType == MediaTypeEnum.image
+              ? PageView(
+                  onPageChanged: (value) => setState(
+                    () => _currentIndex = value,
+                  ),
+                  children: widget.productModel.media
+                      .map((e) => Image.network(
+                            e,
+                            fit: BoxFit.cover,
+                          ))
+                      .toList(),
+                )
+              : VideoPlayerWidget(
+                  productModel: widget.productModel,
+                ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 160.0,
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.productModel.media
+                    .asMap()
+                    .entries
+                    .map(
+                      (MapEntry<int, String> entry) => _bulletPoint(
+                        entry,
+                        _currentIndex,
+                      ),
+                    )
+                    .toList(),
               ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.15),
+            ),
           ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ProductBottomSheetComponent(
-            productModel: widget.productModel,
-          ),
-        )
-      ]),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ProductBottomSheetComponent(
+              productModel: widget.productModel,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

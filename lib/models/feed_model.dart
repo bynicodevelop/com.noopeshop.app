@@ -26,8 +26,9 @@ class FeedModel extends Equatable {
       title: json['title'] as String,
       description: json['description'] as String,
       media: json['media'] as String,
-      mediaType: MediaTypeEnum.values
-          .firstWhere((element) => element.toString() == json['mediaType']),
+      mediaType: MediaTypeEnum.values.firstWhere(
+        (element) => element.toString() == json['mediaType'],
+      ),
     );
   }
 
