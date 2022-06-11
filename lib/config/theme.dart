@@ -71,7 +71,7 @@ class CustomThemeData {
       scaffoldBackgroundColor: kBackgroundColor,
       appBarTheme: base.appBarTheme.copyWith(
         iconTheme: const IconThemeData(
-          color: kBackgroundColor,
+          color: Colors.white,
         ),
       ),
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
