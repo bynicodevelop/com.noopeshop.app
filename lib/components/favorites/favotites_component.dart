@@ -105,6 +105,7 @@ class FavoritesComponent extends StatelessWidget {
                               style: Theme.of(context).textTheme.headline2!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
+                              softWrap: false,
                             ),
                           ),
                         ],

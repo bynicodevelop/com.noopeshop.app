@@ -1,5 +1,6 @@
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
+import 'package:com_noopeshop_app/components/product_bottom_sheet/product_bottom_sheet_component.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/widgets/video_play_widget.dart';
@@ -60,42 +61,9 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
-              height: 130.0,
-              width: double.infinity,
-              padding: const EdgeInsets.all(
-                16.0,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(
-                    16.0,
-                  ),
-                  topRight: Radius.circular(
-                    16.0,
-                  ),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 8.0,
-                    ),
-                    child: Text(
-                      widget.productModel.title,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ),
-                  Text(
-                    widget.productModel.description,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
-              )),
+          child: ProductBottomSheetComponent(
+            productModel: widget.productModel,
+          ),
         )
       ]),
     );

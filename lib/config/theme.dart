@@ -17,7 +17,7 @@ class CustomThemeData {
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
-          fontSize: 35.0,
+          fontSize: 28.0,
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
@@ -45,6 +45,7 @@ class CustomThemeData {
               color: kBackgroundColor,
               fontSize: 14.0,
               letterSpacing: .9,
+              height: 1.5,
             ),
       ),
       bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
@@ -76,7 +77,7 @@ class CustomThemeData {
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
-          fontSize: 35.0,
+          fontSize: 28.0,
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
@@ -104,6 +105,7 @@ class CustomThemeData {
               color: Colors.white,
               fontSize: 14.0,
               letterSpacing: .9,
+              height: 1.5,
             ),
       ),
       bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
@@ -115,7 +117,7 @@ class CustomThemeData {
         ),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        backgroundColor: kBackgroundColor,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
     );

@@ -2,6 +2,7 @@ import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
+import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/system_model.dart';
@@ -101,29 +102,72 @@ class _FeedComponentState extends State<FeedComponent> {
                                 ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.15),
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                stops: const [.01, .4],
+                                colors: [
+                                  kBackgroundColor.withOpacity(.9),
+                                  Colors.transparent,
+                                ],
+                              ),
                             ),
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                bottom: 110.0,
+                                bottom: 120.0,
                               ),
                               child: SizedBox(
                                 width: double.infinity,
+                                height: 120.0,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0,
                                   ),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Expanded(
-                                        child: Text(
-                                          feeds[index].title,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 8.0,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                feeds[index].title,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline1,
+                                              ),
+                                              Text(
+                                                feeds[index].description,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black
+                                                          .withOpacity(.6),
+                                                      blurRadius: 5,
+                                                      offset:
+                                                          const Offset(1, 1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                maxLines: 2,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       FavoriteButtonComponent(
@@ -131,7 +175,7 @@ class _FeedComponentState extends State<FeedComponent> {
                                         //un conflit avec tous les boutons like
                                         productModel: feeds[currentIndex],
                                         defaultSize: 25.0,
-                                        blurButton: true,
+                                        blurButton: false,
                                       )
                                     ],
                                   ),
