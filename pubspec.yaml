@@ -31,8 +31,10 @@ dependencies:
   cloud_functions: ^3.2.16
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
+  firebase_analytics: ^9.1.9
   firebase_auth: ^3.3.19
   firebase_core: ^1.17.1
+  firebase_crashlytics: ^2.8.1
   firebase_storage: ^10.2.17
   flutter:
     sdk: flutter

@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:com_noopeshop_app/config/theme.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,26 +34,30 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // if (kDebugMode) {
-  //   final String host = Platform.isAndroid ? "10.0.2.2" : "localhost";
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  //   await FirebaseAuth.instance.useAuthEmulator(
-  //     host,
-  //     9099,
-  //   );
+  if (kDebugMode) {
+    final String host = Platform.isAndroid ? "10.0.2.2" : "localhost";
 
-  //   FirebaseFirestore.instance.useFirestoreEmulator(
-  //     host,
-  //     8080,
-  //   );
+    await FirebaseAuth.instance.useAuthEmulator(
+      host,
+      9099,
+    );
 
-  //   await FirebaseStorage.instance.useStorageEmulator(
-  //     host,
-  //     9199,
-  //   );
-  // }
+    FirebaseFirestore.instance.useFirestoreEmulator(
+      host,
+      8080,
+    );
 
-  // await FirebaseAuth.instance.signOut();
+    await FirebaseStorage.instance.useStorageEmulator(
+      host,
+      9199,
+    );
+  } else {
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  }
+
+  await FirebaseAuth.instance.signOut();
 
   await FirebaseFirestore.instance.terminate();
   await FirebaseFirestore.instance.clearPersistence();
