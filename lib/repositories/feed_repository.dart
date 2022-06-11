@@ -65,8 +65,6 @@ class FeedRepository {
             ),
           );
 
-          print(mediaUrls);
-
           DocumentSnapshot<Map<String, dynamic>> favoriteDocumentSnapshot =
               await firebaseFirestore
                   .collection("users")

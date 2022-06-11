@@ -7,8 +7,8 @@ import 'package:com_noopeshop_app/screens/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoritesComponent extends StatelessWidget {
-  const FavoritesComponent({Key? key}) : super(key: key);
+class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

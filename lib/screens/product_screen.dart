@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/product_bottom_sheet/product_bottom_sheet_component.dart';
+import 'package:com_noopeshop_app/components/slider/slider_component.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/widgets/video_play_widget.dart';
@@ -20,7 +21,7 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   Widget _bulletPoint(MapEntry<int, String> entry, int currentIndex) =>
       SizedBox(
@@ -87,41 +88,12 @@ class _ProductScreenState extends State<ProductScreen> {
         fit: StackFit.expand,
         children: [
           widget.productModel.mediaType == MediaTypeEnum.image
-              ? PageView(
-                  onPageChanged: (value) => setState(
-                    () => _currentIndex = value,
-                  ),
-                  children: widget.productModel.media
-                      .map((e) => Image.network(
-                            e,
-                            fit: BoxFit.cover,
-                          ))
-                      .toList(),
+              ? SliderComponent(
+                  productModel: widget.productModel,
                 )
               : VideoPlayerWidget(
                   productModel: widget.productModel,
                 ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 160.0,
-            ),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: widget.productModel.media
-                    .asMap()
-                    .entries
-                    .map(
-                      (MapEntry<int, String> entry) => _bulletPoint(
-                        entry,
-                        _currentIndex,
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: ProductBottomSheetComponent(

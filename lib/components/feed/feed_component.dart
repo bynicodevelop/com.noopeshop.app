@@ -2,7 +2,7 @@ import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
-import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/components/slider/slider_component.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/system_model.dart';
@@ -93,53 +93,40 @@ class _FeedComponentState extends State<FeedComponent> {
                         fit: StackFit.expand,
                         children: [
                           feeds[index].mediaType == MediaTypeEnum.image
-                              ? Image.network(
-                                  feeds[index].media[0],
-                                  fit: BoxFit.cover,
+                              ? SliderComponent(
+                                  productModel: feeds[index],
                                 )
                               : VideoPlayerWidget(
                                   productModel: feeds[index],
                                 ),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                stops: const [.01, .4],
-                                colors: [
-                                  kBackgroundColor.withOpacity(.9),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                bottom: 120.0,
+                                bottom: 60.0,
                               ),
                               child: SizedBox(
                                 width: double.infinity,
-                                height: 120.0,
+                                height: 100.0,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                            right: 8.0,
+                                            right: 16.0,
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.end,
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 feeds[index].title,
