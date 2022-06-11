@@ -94,7 +94,7 @@ class _FeedComponentState extends State<FeedComponent> {
                         children: [
                           feeds[index].mediaType == MediaTypeEnum.image
                               ? Image.network(
-                                  feeds[index].media,
+                                  feeds[index].media[0],
                                   fit: BoxFit.cover,
                                 )
                               : VideoPlayerWidget(

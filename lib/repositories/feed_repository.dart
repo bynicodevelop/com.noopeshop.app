@@ -5,37 +5,6 @@ import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-const List<Map<String, dynamic>> products = [
-  {
-    "id": "1",
-    "title": "Body Lotion - Fitness extreme",
-    "description": "This is a product description",
-    "media": "assets/samples/1.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-  {
-    "id": "1",
-    "title": "Product 2",
-    "description": "This is a product description",
-    "media": "assets/samples/2.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-  {
-    "id": "1",
-    "title": "Product 3",
-    "description": "This is a product description",
-    "media": "assets/samples/3.png",
-    "mediaType": "MediaTypeEnum.image",
-  },
-  {
-    "id": "1",
-    "title": "Product 3",
-    "description": "This is a product description",
-    "media": "assets/samples/4.mp4",
-    "mediaType": "MediaTypeEnum.video",
-  },
-];
-
 class FeedRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
@@ -87,10 +56,14 @@ class FeedRepository {
     _feeds.addAll(
       await Future.wait(querySnapshot.docs.map(
         (product) async {
-          final String media = product.data()['media'];
+          final List<dynamic> media = product.data()['media'];
 
-          final String mediaUrl =
-              await firebaseStorage.ref().child(media).getDownloadURL();
+          final List<String> mediaUrls = await Future.wait(
+            media.map(
+              (mediaUrl) async =>
+                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+            ),
+          );
 
           DocumentSnapshot<Map<String, dynamic>> favoriteDocumentSnapshot =
               await firebaseFirestore
@@ -104,7 +77,7 @@ class FeedRepository {
             "id": product.id,
             "reference": product.reference,
             ...product.data(),
-            "media": mediaUrl,
+            "media": mediaUrls,
             "isFavorite": favoriteDocumentSnapshot.exists,
           });
         },

@@ -22,7 +22,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.initState();
 
     _controller = VideoPlayerController.asset(
-      widget.productModel.media,
+      widget.productModel.media[0],
     )..initialize().then((_) {
         setState(() {});
         _controller.play();

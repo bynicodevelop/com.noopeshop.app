@@ -6,7 +6,7 @@ class ProductModel extends Equatable {
   final String id;
   final String title;
   final String description;
-  final String media;
+  final List<String> media;
   final MediaTypeEnum mediaType;
   final DocumentReference? reference;
   final bool isFavorite;
@@ -26,7 +26,7 @@ class ProductModel extends Equatable {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      media: json['media'] as String,
+      media: json['media'] as List<String>,
       mediaType: MediaTypeEnum.values
           .firstWhere((element) => element.toString() == json['mediaType']),
       reference: json['reference'] as DocumentReference,
@@ -39,7 +39,7 @@ class ProductModel extends Equatable {
       id: '',
       title: '',
       description: '',
-      media: '',
+      media: [],
       mediaType: MediaTypeEnum.image,
       isFavorite: false,
     );

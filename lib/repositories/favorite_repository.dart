@@ -52,16 +52,20 @@ class FavoriteRepository {
                   .doc(favorite.id)
                   .get();
 
-          final String media = productDocumentSnapshot.data()!['media'];
+          final List<dynamic> media = productDocumentSnapshot.data()!['media'];
 
-          final String mediaUrl =
-              await firebaseStorage.ref().child(media).getDownloadURL();
+          final List<String> mediaUrls = await Future.wait(
+            media.map(
+              (mediaUrl) async =>
+                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+            ),
+          );
 
           return ProductModel.fromJson({
             "id": productDocumentSnapshot.id,
             "reference": productDocumentSnapshot.reference,
             ...productDocumentSnapshot.data()!,
-            "media": mediaUrl,
+            "media": mediaUrls,
             "isFavorite": true,
           });
         }),
@@ -127,10 +131,20 @@ class FavoriteRepository {
                 .doc(snapshot.id)
                 .get();
 
+        final List<dynamic> media = snapshot.data()!['media'];
+
+        final List<String> mediaUrls = await Future.wait(
+          media.map(
+            (mediaUrl) async =>
+                await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+          ),
+        );
+
         return ProductModel.fromJson({
           "id": snapshot.id,
           "reference": snapshot.reference,
           ...snapshot.data()!,
+          "media": mediaUrls,
           "isFavorite": favoriteDocumentSnapshot.exists,
         });
       },

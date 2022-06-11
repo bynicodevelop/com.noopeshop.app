@@ -67,7 +67,7 @@ class FavoritesComponent extends StatelessWidget {
                                   fit: StackFit.expand,
                                   children: [
                                     Image.network(
-                                      favorites[index].media,
+                                      favorites[index].media[0],
                                       fit: BoxFit.cover,
                                     ),
                                     Padding(

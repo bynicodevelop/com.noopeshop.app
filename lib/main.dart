@@ -54,10 +54,8 @@ Future<void> main() async {
       9199,
     );
   } else {
-    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    FirebaseAnalytics.instance;
   }
-
-  await FirebaseAuth.instance.signOut();
 
   await FirebaseFirestore.instance.terminate();
   await FirebaseFirestore.instance.clearPersistence();
