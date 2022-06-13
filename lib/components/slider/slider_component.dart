@@ -17,6 +17,20 @@ class SliderComponent extends StatefulWidget {
 class _SliderComponentState extends State<SliderComponent> {
   int _currentIndex = 0;
 
+  late List<Image> _media;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _media = widget.productModel.media
+        .map((e) => Image.network(
+              e,
+              fit: BoxFit.cover,
+            ))
+        .toList();
+  }
+
   Widget _bulletPoint(MapEntry<int, String> entry, int currentIndex) =>
       SizedBox(
         height: 10,
@@ -61,14 +75,11 @@ class _SliderComponentState extends State<SliderComponent> {
           onPageChanged: (value) => setState(
             () => _currentIndex = value,
           ),
-          children: widget.productModel.media
-              .map((e) => Stack(
+          children: _media
+              .map((media) => Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        e,
-                        fit: BoxFit.cover,
-                      ),
+                      media,
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
