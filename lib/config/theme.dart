@@ -17,7 +17,7 @@ class CustomThemeData {
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
-          fontSize: 28.0,
+          fontSize: 22.0,
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
@@ -77,7 +77,7 @@ class CustomThemeData {
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         headline1: Theme.of(context).textTheme.headline1!.copyWith(
           color: Colors.white,
-          fontSize: 28.0,
+          fontSize: 22.0,
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(

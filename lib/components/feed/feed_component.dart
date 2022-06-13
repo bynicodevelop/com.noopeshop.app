@@ -128,11 +128,16 @@ class _FeedComponentState extends State<FeedComponent> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                feeds[index].title,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline1,
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 8.0,
+                                                ),
+                                                child: Text(
+                                                  feeds[index].title,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline1,
+                                                ),
                                               ),
                                               Text(
                                                 feeds[index].description,

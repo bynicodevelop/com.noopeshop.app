@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +18,15 @@ class SliderComponent extends StatefulWidget {
 class _SliderComponentState extends State<SliderComponent> {
   int _currentIndex = 0;
 
-  late List<Image> _media;
+  late List<CachedNetworkImage> _media;
 
   @override
   void initState() {
     super.initState();
 
     _media = widget.productModel.media
-        .map((e) => Image.network(
-              e,
+        .map((e) => CachedNetworkImage(
+              imageUrl: e,
               fit: BoxFit.cover,
             ))
         .toList();
