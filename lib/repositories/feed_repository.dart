@@ -56,7 +56,23 @@ class FeedRepository {
     _feeds.addAll(
       await Future.wait(querySnapshot.docs.map(
         (product) async {
-          final List<dynamic> media = product.data()['media'];
+          final QuerySnapshot<Map<String, dynamic>> variantesQuerySnapshot =
+              await firebaseFirestore
+                  .collection('products')
+                  .doc(product.id)
+                  .collection("variantes")
+                  .get();
+
+          final List<dynamic> media = [
+            ...product.data()["media"] ?? [],
+            ...variantesQuerySnapshot.docs.isNotEmpty
+                ? variantesQuerySnapshot.docs
+                    .map((variante) => variante.data()["media"])
+                    .toList()
+                    .expand((element) => element)
+                    .toList()
+                : [],
+          ];
 
           final List<String> mediaUrls = await Future.wait(
             media.map(
@@ -77,6 +93,7 @@ class FeedRepository {
             "id": product.id,
             "reference": product.reference,
             ...product.data(),
+            "mediaType": "MediaTypeEnum.image",
             "media": mediaUrls,
             "isFavorite": favoriteDocumentSnapshot.exists,
           });

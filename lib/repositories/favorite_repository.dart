@@ -66,6 +66,7 @@ class FavoriteRepository {
             "reference": productDocumentSnapshot.reference,
             ...productDocumentSnapshot.data()!,
             "media": mediaUrls,
+            "mediaType": "MediaTypeEnum.image",
             "isFavorite": true,
           });
         }),
@@ -131,7 +132,18 @@ class FavoriteRepository {
                 .doc(snapshot.id)
                 .get();
 
-        final List<dynamic> media = snapshot.data()!['media'];
+        final QuerySnapshot<Map<String, dynamic>> variantesQuerySnapshot =
+            await firebaseFirestore
+                .collection('products')
+                .doc(snapshot.id)
+                .collection("variantes")
+                .get();
+
+        final List<dynamic> media = variantesQuerySnapshot.docs
+            .map((variante) => variante.data()["media"])
+            .toList()
+            .expand((element) => element)
+            .toList();
 
         final List<String> mediaUrls = await Future.wait(
           media.map(
@@ -145,6 +157,7 @@ class FavoriteRepository {
           "reference": snapshot.reference,
           ...snapshot.data()!,
           "media": mediaUrls,
+          "mediaType": "MediaTypeEnum.image",
           "isFavorite": favoriteDocumentSnapshot.exists,
         });
       },
