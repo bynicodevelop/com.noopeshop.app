@@ -82,8 +82,6 @@ Future<void> main() async {
     sound: true,
   );
 
-  print("settings.authorizationStatus ${settings.authorizationStatus}");
-
   final NotificationsBloc notification = NotificationsBloc();
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
