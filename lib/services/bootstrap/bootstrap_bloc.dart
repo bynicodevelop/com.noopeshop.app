@@ -46,6 +46,8 @@ class BootstrapBloc extends Bloc<BootstrapEvent, BootstrapState> {
     on<OnReadyBootstrapEvent>((event, emit) async {
       log("BootstrapBloc: OnReadyBootstrapEvent");
 
+      await authenticationRepository.updateNotificationToken();
+
       await Future.delayed(
         const Duration(
           milliseconds: 500,
