@@ -9,9 +9,12 @@ import 'package:com_noopeshop_app/repositories/feed_repository.dart';
 import 'package:com_noopeshop_app/repositories/system_repository.dart';
 import 'package:com_noopeshop_app/repositories/swipe_repository.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
+import 'package:com_noopeshop_app/services/notifications/notifications_bloc.dart';
+import 'package:com_noopeshop_app/services/product/product_bloc.dart';
 import 'package:com_noopeshop_app/services/swipe/swipe_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +23,8 @@ class BlocRegister extends StatelessWidget {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final FirebaseStorage firebaseStorage;
+  final FirebaseMessaging messaging;
+  final NotificationsBloc notification;
   final Widget child;
 
   const BlocRegister({
@@ -28,6 +33,8 @@ class BlocRegister extends StatelessWidget {
     required this.firebaseAuth,
     required this.firebaseFirestore,
     required this.firebaseStorage,
+    required this.messaging,
+    required this.notification,
   }) : super(key: key);
 
   @override
@@ -43,6 +50,8 @@ class BlocRegister extends StatelessWidget {
     final AuthenticationRepository authenticationRepository =
         AuthenticationRepository(
       firebaseAuth: firebaseAuth,
+      firebaseFirestore: firebaseFirestore,
+      messaging: messaging,
     );
 
     const SwipeRepository swipeRepository = SwipeRepository();
@@ -55,6 +64,9 @@ class BlocRegister extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider<NotificationsBloc>(
+          create: (context) => notification,
+        ),
         BlocProvider<SystemBloc>(
           create: (context) => SystemBloc(
             systemRepository: systemRepository,
@@ -95,6 +107,11 @@ class BlocRegister extends StatelessWidget {
             ..add(const OnUpdateCurrentIndexEvent(
               currentIndex: 0,
             )),
+        ),
+        BlocProvider<ProductBloc>(
+          create: (context) => ProductBloc(
+            favoriteRepository: favoriteRepository,
+          ),
         ),
       ],
       child: child,

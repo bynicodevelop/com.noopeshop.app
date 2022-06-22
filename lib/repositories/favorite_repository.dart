@@ -139,11 +139,14 @@ class FavoriteRepository {
                 .collection("variantes")
                 .get();
 
-        final List<dynamic> media = variantesQuerySnapshot.docs
-            .map((variante) => variante.data()["media"])
-            .toList()
-            .expand((element) => element)
-            .toList();
+        final List<dynamic> media = [
+          ...snapshot.data()!['media'],
+          ...variantesQuerySnapshot.docs
+              .map((variante) => variante.data()["media"])
+              .toList()
+              .expand((element) => element)
+              .toList()
+        ];
 
         final List<String> mediaUrls = await Future.wait(
           media.map(
