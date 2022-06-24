@@ -21,42 +21,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  // Widget _bulletPoint(MapEntry<int, String> entry, int currentIndex) =>
-  //     SizedBox(
-  //       height: 10,
-  //       child: AnimatedContainer(
-  //         duration: const Duration(
-  //           milliseconds: 150,
-  //         ),
-  //         margin: const EdgeInsets.symmetric(
-  //           horizontal: 4.0,
-  //         ),
-  //         height: entry.key == currentIndex ? 10 : 8.0,
-  //         width: entry.key == currentIndex ? 12 : 8.0,
-  //         decoration: BoxDecoration(
-  //           boxShadow: [
-  //             entry.key == currentIndex
-  //                 ? BoxShadow(
-  //                     color: Colors.blueGrey.withOpacity(0.72),
-  //                     blurRadius: 4.0,
-  //                     spreadRadius: 1.0,
-  //                     offset: const Offset(
-  //                       0.0,
-  //                       0.0,
-  //                     ),
-  //                   )
-  //                 : const BoxShadow(
-  //                     color: Colors.transparent,
-  //                   )
-  //           ],
-  //           shape: BoxShape.circle,
-  //           color: entry.key == currentIndex
-  //               ? Colors.blueGrey
-  //               : const Color(0XFFEAEAEA),
-  //         ),
-  //       ),
-  //     );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
