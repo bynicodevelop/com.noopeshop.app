@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/models/option_model.dart';
+import 'package:com_noopeshop_app/models/variante_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -63,6 +65,14 @@ class FeedRepository {
                   .collection("variantes")
                   .get();
 
+          int price = 0;
+
+          if (variantesQuerySnapshot.docs.isNotEmpty) {
+            price = variantesQuerySnapshot.docs
+                .map((e) => int.parse(e.data()['price']))
+                .reduce((curr, next) => curr < next ? curr : next);
+          }
+
           final List<dynamic> media = [
             ...product.data()["media"] ?? [],
             ...variantesQuerySnapshot.docs.isNotEmpty
@@ -73,6 +83,40 @@ class FeedRepository {
                     .toList()
                 : [],
           ];
+
+          List<VarianteModel> variantes =
+              (await Future.wait(variantesQuerySnapshot.docs.map(
+            (e) async {
+              late List<OptionModel> options;
+
+              if (e.data()["type"] == "size") {
+                options = Map<String, dynamic>.from(e.data()["optionId"])
+                    .entries
+                    .map((e) => OptionModel(
+                          key: e.key,
+                          value: e.value,
+                        ))
+                    .where((option) => option.value == true)
+                    .toList();
+              }
+
+              final String media = await firebaseStorage
+                  .ref()
+                  .child(e.data()["media"][0])
+                  .getDownloadURL();
+
+              return VarianteModel.fromJson({
+                "id": e.id,
+                ...e.data(),
+                "media": media,
+                "options": options,
+                "price": int.parse(e.data()["price"]),
+              });
+            },
+          )))
+                  .toList();
+
+          print(variantes);
 
           final List<String> mediaUrls = await Future.wait(
             media.map(
@@ -91,11 +135,13 @@ class FeedRepository {
 
           return ProductModel.fromJson({
             "id": product.id,
+            "price": price,
             "reference": product.reference,
             ...product.data(),
             "mediaType": "MediaTypeEnum.image",
             "media": mediaUrls,
             "isFavorite": favoriteDocumentSnapshot.exists,
+            "variantes": variantes,
           });
         },
       )),

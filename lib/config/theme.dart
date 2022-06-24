@@ -27,6 +27,12 @@ class CustomThemeData {
             ),
           ],
         ),
+        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: kBackgroundColor,
+              fontSize: 14.0,
+              letterSpacing: .9,
+              height: 1.5,
+            ),
         // Use to card title
         headline2: Theme.of(context).textTheme.headline2!.copyWith(
               color: kBackgroundColor,
@@ -34,18 +40,17 @@ class CustomThemeData {
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
+        // Use to app title type product (colors, size)
+        headline5: Theme.of(context).textTheme.headline5!.copyWith(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w600,
+            ),
         // Use to app bar title
         headline6: Theme.of(context).textTheme.headline2!.copyWith(
               color: kBackgroundColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
-            ),
-        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: kBackgroundColor,
-              fontSize: 14.0,
-              letterSpacing: .9,
-              height: 1.5,
             ),
       ),
       bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
@@ -87,6 +92,12 @@ class CustomThemeData {
             ),
           ],
         ),
+        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: Colors.white,
+              fontSize: 14.0,
+              letterSpacing: .9,
+              height: 1.5,
+            ),
         // Use to card title
         headline2: Theme.of(context).textTheme.headline2!.copyWith(
               color: Colors.white,
@@ -94,18 +105,17 @@ class CustomThemeData {
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
             ),
+        // Use to app title type product (colors, size)
+        headline5: Theme.of(context).textTheme.headline5!.copyWith(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w600,
+            ),
         // Use to app bar title
         headline6: Theme.of(context).textTheme.headline2!.copyWith(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: .9,
-            ),
-        bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: Colors.white,
-              fontSize: 14.0,
-              letterSpacing: .9,
-              height: 1.5,
             ),
       ),
       bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(

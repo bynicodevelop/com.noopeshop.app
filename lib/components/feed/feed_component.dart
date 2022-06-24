@@ -2,12 +2,14 @@ import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_
 import 'package:com_noopeshop_app/components/favorites/favorite_button_component.dart';
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
+import 'package:com_noopeshop_app/components/product_details/product_details_component.dart';
 import 'package:com_noopeshop_app/components/slider/slider_component.dart';
 import 'package:com_noopeshop_app/models/feed_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/system_model.dart';
 import 'package:com_noopeshop_app/services/swipe/swipe_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
+import 'package:com_noopeshop_app/widgets/feed_price_widget.dart';
 import 'package:com_noopeshop_app/widgets/tutorial_widget.dart';
 import 'package:com_noopeshop_app/widgets/video_play_widget.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +74,14 @@ class _FeedComponentState extends State<FeedComponent> {
                     )),
                   builder: (context, state) {
                     return GestureDetector(
+                      onTap: () => showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        builder: (context) => ProductDetailsComponent(
+                          productModel: feeds[index],
+                        ),
+                      ),
                       onDoubleTap: () {
                         // TODO: Ajouter une condition pour savoir si le système est configuré (à voir)
                         context.read<SystemBloc>().add(
@@ -100,6 +110,22 @@ class _FeedComponentState extends State<FeedComponent> {
                                   productModel: feeds[index],
                                 ),
                           Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 200.0,
+                                right: 25.0,
+                              ),
+                              child: FavoriteButtonComponent(
+                                // Important de prendre le currentIndex pour eviter
+                                //un conflit avec tous les boutons like
+                                productModel: feeds[currentIndex],
+                                defaultSize: 25.0,
+                                blurButton: false,
+                              ),
+                            ),
+                          ),
+                          Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -110,7 +136,7 @@ class _FeedComponentState extends State<FeedComponent> {
                                 height: 100.0,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
+                                    horizontal: 22.0,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -162,13 +188,9 @@ class _FeedComponentState extends State<FeedComponent> {
                                           ),
                                         ),
                                       ),
-                                      FavoriteButtonComponent(
-                                        // Important de prendre le currentIndex pour eviter
-                                        //un conflit avec tous les boutons like
-                                        productModel: feeds[currentIndex],
-                                        defaultSize: 25.0,
-                                        blurButton: false,
-                                      )
+                                      FeedPriceWidget(
+                                        price: feeds[index].price,
+                                      ),
                                     ],
                                   ),
                                 ),
