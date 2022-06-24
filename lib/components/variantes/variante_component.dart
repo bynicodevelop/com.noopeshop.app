@@ -36,6 +36,13 @@ class VarianteComponent extends StatelessWidget {
                     option: currentVariante.options.first,
                   ),
                 );
+
+            context.read<CartProductBloc>().add(
+                  OnUpdateCartProductEvent(
+                    varianteModel: currentVariante,
+                    optionModel: currentVariante.options.first,
+                  ),
+                );
           },
           builder: (context, state) {
             currentVariante = (state as VariantesInitialState).varianteModel;
