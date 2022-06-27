@@ -12,18 +12,22 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
   AddToCartBloc({
     required this.cartRepository,
   }) : super(const AddToCartInitialState()) {
-    on<OnLoadCartEvent>((event, emit) async {
-      final List<CartModel> carts = await cartRepository.getCarts();
+    cartRepository.cartStream.listen((carts) {
+      add(OnLoadedCartEvent(carts: carts));
+    });
 
+    on<OnLoadCartEvent>(((event, emit) {
+      cartRepository.loadCarts();
+    }));
+
+    on<OnLoadedCartEvent>((event, emit) {
       emit(AddToCartInitialState(
-        carts: carts,
+        carts: event.carts,
       ));
     });
 
     on<OnAddToCartEvent>((event, emit) async {
       final CartModel cartModel = event.cart;
-
-      print(cartModel);
 
       final List<CartModel> carts = (await Future.wait(
         (state as AddToCartInitialState).carts.map((cart) async {
@@ -51,7 +55,10 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
 
       CartModel cartModelFound = (state as AddToCartInitialState)
           .carts
-          .firstWhere((element) => element.id == cartModel.id,
+          .firstWhere(
+              (cart) =>
+                  cart.varianteModel.id == cartModel.varianteModel.id &&
+                  cart.optionModel.value == cartModel.optionModel.value,
               orElse: () => CartModel.empty());
 
       if (cartModelFound.isEmpty) {

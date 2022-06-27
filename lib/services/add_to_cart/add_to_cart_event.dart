@@ -9,6 +9,19 @@ abstract class AddToCartEvent extends Equatable {
 
 class OnLoadCartEvent extends AddToCartEvent {}
 
+class OnLoadedCartEvent extends AddToCartEvent {
+  final List<CartModel> carts;
+
+  const OnLoadedCartEvent({
+    required this.carts,
+  });
+
+  @override
+  List<Object> get props => [
+        carts,
+      ];
+}
+
 class OnAddToCartEvent extends AddToCartEvent {
   final CartModel cart;
 
