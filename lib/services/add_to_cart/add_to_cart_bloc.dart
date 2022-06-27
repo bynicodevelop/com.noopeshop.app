@@ -69,9 +69,9 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
         carts.add(newCartModel);
       }
 
-      emit(AddToCartInitialState(
-        carts: carts,
-      ));
+      // emit(AddToCartInitialState(
+      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
+      // ));
     });
 
     on<OnIncrementCartEvent>(((event, emit) async {
@@ -92,9 +92,9 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
       ))
           .toList();
 
-      emit(AddToCartInitialState(
-        carts: carts,
-      ));
+      // emit(AddToCartInitialState(
+      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
+      // ));
     }));
 
     on<OnDecrementCartEvent>(((event, emit) async {
@@ -115,9 +115,9 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
       ))
           .toList();
 
-      emit(AddToCartInitialState(
-        carts: carts,
-      ));
+      // emit(AddToCartInitialState(
+      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
+      // ));
     }));
   }
 }

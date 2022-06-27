@@ -15,6 +15,8 @@ class CartScreen extends StatelessWidget {
       builder: (context, state) {
         final List<CartModel> carts = (state as AddToCartInitialState).carts;
 
+        print(carts);
+
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.only(
@@ -126,30 +128,37 @@ class CartScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      ElevatedButton(
-                                        onPressed: () =>
-                                            context.read<AddToCartBloc>().add(
-                                                  OnDecrementCartEvent(
-                                                    cart: carts[index],
-                                                  ),
-                                                ),
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                            vertical: 2.0,
-                                          ),
-                                          minimumSize: Size.zero,
-                                          primary: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 10.0,
                                         ),
-                                        child: const Text(
-                                          "-",
-                                          style: TextStyle(
-                                            fontSize: 22.0,
-                                            color: kBackgroundColor,
+                                        child: ElevatedButton(
+                                          onPressed: () =>
+                                              context.read<AddToCartBloc>().add(
+                                                    OnDecrementCartEvent(
+                                                      cart: carts[index],
+                                                    ),
+                                                  ),
+                                          style: ElevatedButton.styleFrom(
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0,
+                                              vertical: 2.0,
+                                            ),
+                                            minimumSize: Size.zero,
+                                            primary: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            "-",
+                                            style: TextStyle(
+                                              fontSize: 22.0,
+                                              color: kBackgroundColor,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -157,7 +166,10 @@ class CartScreen extends StatelessWidget {
                                         "${carts[index].quantity}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .bodyText1!
+                                            .copyWith(
+                                              fontSize: 15.0,
+                                            ),
                                       ),
                                       ElevatedButton(
                                         onPressed: () =>
@@ -267,6 +279,7 @@ class CartScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                           ),
+                          onPressed: carts.isNotEmpty ? () {} : null,
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
@@ -290,7 +303,6 @@ class CartScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          onPressed: () {},
                         ),
                       )
                     ],
