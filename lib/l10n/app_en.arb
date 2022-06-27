@@ -6,5 +6,69 @@
     "notFavoritesYet": "No favorites yet",
     "@notFavoritesYet": {
       "description": "Pas de favoris pour l'instant"
+    },
+    "addressAppBar": "Address",
+    "@notFavoritesYet": {
+      "description": "Titre Adresse de la AppBar"
+    },
+    "payementAppBar": "Payement",
+    "@notFavoritesYet": {
+      "description": "Titre Payement de la AppBar"
+    },
+    "contactAppBar": "Contact",
+    "@notFavoritesYet": {
+      "description": "Titre Contact de la AppBar"
+    },
+    "thankyouAppBar": "Merci",
+    "@thankyouAppBar": {
+      "description": "Titre merci de la AppBar"
+    },
+    "deliveryLabelField": "Delivery",
+    "@deliveryLabelField": {
+      "description": "Label address"
+    },
+    "cityLabelField": "City",
+    "@cityLabelField": {
+      "description": "Label city"
+    },
+    "postalCodeField": "Zip Code",
+    "@postalCodeField": {
+      "description": "Label postal code"
+    },
+    "cardNumberField": "Card number",
+    "@postalCodeField": {
+      "description": "Label Card number"
+    },
+    "expirationField": "Expiration",
+    "@expirationField": {
+      "description": "Label Expiration"
+    },
+    "secureCodeField": "Secure code",
+    "@secureCodeField": {
+      "description": "Label Secure code"
+    },
+    "nameField": "Firt name and last name",
+    "@nameField": {
+      "description": "Label Firt name and last name"
+    },
+    "emailField": "E-mail",
+    "@emailField": {
+      "description": "Label E-mail"
+    },
+    "deliveryLabelButton": "Delivery",
+    "@deliveryLabelButton": {
+      "description": "Label Delivery"
+    },
+    "paymentLabelButton": "Payment",
+    "@paymentLabelButton": {
+      "description": "Label Payment"
+    },
+    "placeOrderLabelButton": "Place order",
+    "@placeOrderLabelButton": {
+      "description": "Label Place order"
+    },
+    "finishedLabelButton": "Finished",
+    "@placeOrderLabelButton": {
+      "description": "Label Finished"
     }
 }

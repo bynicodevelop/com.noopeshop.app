@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/models/option_model.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/variante_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,8 +15,12 @@ class CartProductBloc extends Bloc<CartProductEvent, CartProductState> {
         )) {
     on<OnUpdateCartProductEvent>((event, emit) {
       final CartModel cartModel = CartModel(
+        productId: event.productModel.id,
+        title: event.productModel.title,
+        price: event.varianteModel.price,
         varianteModel: event.varianteModel,
         optionModel: event.optionModel,
+        quantity: 0,
       );
 
       emit(CartProductInitialState(

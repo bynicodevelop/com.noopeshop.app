@@ -35,7 +35,7 @@ class FeedRepository {
       return _feeds;
     }
 
-    late QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    late QuerySnapshot<Map<String, dynamic>> productQuerySnapshot;
 
     Query<Map<String, dynamic>> query =
         firebaseFirestore.collection('products').orderBy(
@@ -47,16 +47,16 @@ class FeedRepository {
       query = query.startAfterDocument(_lastVisible!);
     }
 
-    querySnapshot = await query.limit(_limit).get();
+    productQuerySnapshot = await query.limit(_limit).get();
 
-    if (querySnapshot.docs.isEmpty) {
+    if (productQuerySnapshot.docs.isEmpty) {
       return _feeds;
     }
 
-    _lastVisible = querySnapshot.docs.last;
+    _lastVisible = productQuerySnapshot.docs.last;
 
     _feeds.addAll(
-      await Future.wait(querySnapshot.docs.map(
+      await Future.wait(productQuerySnapshot.docs.map(
         (product) async {
           final QuerySnapshot<Map<String, dynamic>> variantesQuerySnapshot =
               await firebaseFirestore
@@ -115,8 +115,6 @@ class FeedRepository {
             },
           )))
                   .toList();
-
-          print(variantes);
 
           final List<String> mediaUrls = await Future.wait(
             media.map(

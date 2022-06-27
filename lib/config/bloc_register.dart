@@ -4,10 +4,12 @@ import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed/feed_bloc.dart';
 import 'package:com_noopeshop_app/repositories/authentication_repository.dart';
+import 'package:com_noopeshop_app/repositories/cart_repository.dart';
 import 'package:com_noopeshop_app/repositories/favorite_repository.dart';
 import 'package:com_noopeshop_app/repositories/feed_repository.dart';
 import 'package:com_noopeshop_app/repositories/system_repository.dart';
 import 'package:com_noopeshop_app/repositories/swipe_repository.dart';
+import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
 import 'package:com_noopeshop_app/services/notifications/notifications_bloc.dart';
 import 'package:com_noopeshop_app/services/product/product_bloc.dart';
@@ -55,6 +57,12 @@ class BlocRegister extends StatelessWidget {
     );
 
     const SwipeRepository swipeRepository = SwipeRepository();
+
+    final CartRepository cartRepository = CartRepository(
+      firebaseAuth: firebaseAuth,
+      firebaseFirestore: firebaseFirestore,
+      firebaseStorage: firebaseStorage,
+    );
 
     final FavoriteRepository favoriteRepository = FavoriteRepository(
       firebaseAuth: firebaseAuth,
@@ -112,6 +120,11 @@ class BlocRegister extends StatelessWidget {
           create: (context) => ProductBloc(
             favoriteRepository: favoriteRepository,
           ),
+        ),
+        BlocProvider(
+          create: (context) => AddToCartBloc(
+            cartRepository: cartRepository,
+          )..add(OnLoadCartEvent()),
         ),
       ],
       child: child,

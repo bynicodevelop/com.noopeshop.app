@@ -25,6 +25,13 @@ class OptionModel extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'key': key,
+      'value': value,
+    };
+  }
+
   @override
   List<Object> get props => [
         key,

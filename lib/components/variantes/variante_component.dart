@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/components/options/options/options_bloc.dart';
 import 'package:com_noopeshop_app/components/options/options_component.dart';
 import 'package:com_noopeshop_app/components/variantes/variantes/variantes_bloc.dart';
+import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/variante_model.dart';
 import 'package:com_noopeshop_app/services/cart_product/cart_product_bloc.dart';
 import 'package:com_noopeshop_app/widgets/variante_selector_widget.dart';
@@ -8,16 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VarianteComponent extends StatelessWidget {
-  final List<VarianteModel> variantes;
+  final ProductModel productModel;
 
   const VarianteComponent({
     Key? key,
-    required this.variantes,
+    required this.productModel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    VarianteModel currentVariante = variantes.first;
+    VarianteModel currentVariante = productModel.variantes.first;
 
     return BlocProvider<VariantesBloc>(
       create: (context) => VariantesBloc(
@@ -39,6 +40,7 @@ class VarianteComponent extends StatelessWidget {
 
             context.read<CartProductBloc>().add(
                   OnUpdateCartProductEvent(
+                    productModel: productModel,
                     varianteModel: currentVariante,
                     optionModel: currentVariante.options.first,
                   ),
@@ -65,7 +67,7 @@ class VarianteComponent extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: VarianteSelectorWidget(
-                    variantes: variantes,
+                    variantes: productModel.variantes,
                     selectedVariante: currentVariante,
                     onSelected: (varianteModel) {
                       context.read<VariantesBloc>().add(
@@ -94,6 +96,7 @@ class VarianteComponent extends StatelessWidget {
                     onSelectOption: (optionModel) =>
                         context.read<CartProductBloc>().add(
                               OnUpdateCartProductEvent(
+                                productModel: productModel,
                                 varianteModel: currentVariante,
                                 optionModel: optionModel,
                               ),

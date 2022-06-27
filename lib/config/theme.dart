@@ -41,6 +41,12 @@ class CustomThemeData {
               letterSpacing: .9,
             ),
         // Use to app title type product (colors, size)
+        headline4: Theme.of(context).textTheme.headline4!.copyWith(
+              fontSize: 16.0,
+              height: 1.5,
+              color: kBackgroundColor,
+            ),
+        // Use to app title type product (colors, size)
         headline5: Theme.of(context).textTheme.headline5!.copyWith(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,

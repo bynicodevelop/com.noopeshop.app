@@ -1,7 +1,11 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:com_noopeshop_app/components/variantes/variante_component.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/cart_product/cart_product_bloc.dart';
+import 'package:com_noopeshop_app/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +46,9 @@ class ProductDetailsComponent extends StatelessWidget {
         child: Wrap(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.only(
+                bottom: 32.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -75,15 +81,24 @@ class ProductDetailsComponent extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                    NumberFormat.currency(
-                      locale: 'fr_FR',
-                      symbol: '€',
-                    ).format(productModel.price / 100),
-                    style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.black,
-                      shadows: [],
-                    ),
+                  BlocBuilder<CartProductBloc, CartProductState>(
+                    builder: (context, state) {
+                      final CartModel cartModel =
+                          (state as CartProductInitialState).cartModel;
+
+                      return Text(
+                        NumberFormat.currency(
+                          locale: 'fr_FR',
+                          symbol: '€',
+                        ).format(
+                          cartModel.price / 100,
+                        ),
+                        style: Theme.of(context).textTheme.headline1!.copyWith(
+                          color: Colors.black,
+                          shadows: [],
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -108,37 +123,48 @@ class ProductDetailsComponent extends StatelessWidget {
               ),
             ),
 
-            VarianteComponent(
-              variantes: productModel.variantes,
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 22.0,
+              ),
+              child: VarianteComponent(
+                productModel: productModel,
+              ),
             ),
 
             BlocBuilder<CartProductBloc, CartProductState>(
               builder: (context, state) {
-                return SizedBox(
-                  width: double.infinity,
-                  height: 55.0,
-                  child: ElevatedButton(
-                    onPressed:
-                        (state as CartProductInitialState).cartModel.isEmpty
-                            ? null
-                            : () {
-                                print(state.cartModel);
-                              },
-                    style: ElevatedButton.styleFrom(
-                      primary: kDefaultColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
+                final CartModel cartModel =
+                    (state as CartProductInitialState).cartModel;
+
+                return BlocListener<AddToCartBloc, AddToCartState>(
+                  listener: (context, state) {
+                    Flushbar(
+                      title: 'Ajout au panier',
+                      message: 'Le produit a été ajouté au panier',
+                      backgroundColor: Colors.green,
+                      duration: const Duration(
+                        seconds: 2,
                       ),
-                    ),
-                    child: Text(
-                      "Add to card".toUpperCase(),
-                      style: const TextStyle(
+                      flushbarPosition: FlushbarPosition.TOP,
+                      margin: const EdgeInsets.all(16.0),
+                      borderRadius: BorderRadius.circular(16.0),
+                      flushbarStyle: FlushbarStyle.FLOATING,
+                      icon: const Icon(
+                        Icons.check,
                         color: Colors.white,
-                        fontSize: 16.0,
-                        letterSpacing: 1.1,
-                        fontWeight: FontWeight.w600,
                       ),
-                    ),
+                    ).show(context);
+                  },
+                  child: MainButton(
+                    onPressed: () {
+                      context.read<AddToCartBloc>().add(
+                            OnAddToCartEvent(
+                              cart: cartModel,
+                            ),
+                          );
+                    },
+                    label: "Add to card".toUpperCase(),
                   ),
                 );
               },

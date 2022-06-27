@@ -38,6 +38,17 @@ class VarianteModel extends Equatable {
         options: [],
       );
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'type': type,
+      'media': media,
+      'options': options,
+    };
+  }
+
   @override
   List<Object> get props => [
         id,
