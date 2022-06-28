@@ -1,9 +1,73 @@
 import 'package:com_noopeshop_app/config/functions/translate.dart';
+import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  final TextEditingController _cardNumberController = TextEditingController();
+  final TextEditingController _cardExpiryController = TextEditingController();
+  final TextEditingController _cardCvvController = TextEditingController();
+
+  final FocusNode _cardNumberFocusNode = FocusNode();
+  final FocusNode _cardExpiryFocusNode = FocusNode();
+  final FocusNode _cardCvvFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _cardNumberController.addListener(() {
+      if (_cardNumberController.text.length == 19) {
+        _cardExpiryFocusNode.requestFocus();
+      }
+
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "cardNumber": _cardNumberController.text,
+            },
+          ));
+    });
+
+    _cardExpiryController.addListener(() {
+      if (_cardExpiryController.text.length == 5) {
+        _cardCvvFocusNode.requestFocus();
+      }
+
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "cardExpiry": _cardExpiryController.text,
+            },
+          ));
+    });
+
+    _cardCvvController.addListener(() {
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "cardCvv": _cardCvvController.text,
+            },
+          ));
+    });
+
+    _cardNumberFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _cardNumberController.dispose();
+    _cardExpiryController.dispose();
+    _cardCvvController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +105,19 @@ class PaymentScreen extends StatelessWidget {
                   ),
                 ),
                 TextField(
+                  controller: _cardNumberController,
+                  focusNode: _cardNumberFocusNode,
+                  autofocus: true,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  inputFormatters: [
+                    CreditCardNumberInputFormatter(
+                      onCardSystemSelected: (cardSystem) {
+                        print(cardSystem);
+                      },
+                      useSeparators: true,
+                    ),
+                  ],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 22.0,
@@ -98,12 +175,19 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       TextField(
+                        controller: _cardExpiryController,
+                        focusNode: _cardExpiryFocusNode,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        inputFormatters: [
+                          CreditCardExpirationDateFormatter(),
+                        ],
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 22.0,
                             vertical: 20.0,
                           ),
-                          hintText: "MM / YY",
+                          hintText: "MM/YY",
                           filled: true,
                           fillColor: Colors.grey.withOpacity(.1),
                           border: const OutlineInputBorder(
@@ -147,6 +231,13 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       TextField(
+                        controller: _cardCvvController,
+                        focusNode: _cardCvvFocusNode,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        inputFormatters: [
+                          CreditCardCvcInputFormatter(),
+                        ],
                         decoration: InputDecoration(
                           hintText: "000",
                           filled: true,

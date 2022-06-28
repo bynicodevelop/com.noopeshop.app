@@ -1,8 +1,68 @@
 import 'package:com_noopeshop_app/config/functions/translate.dart';
+import 'package:com_noopeshop_app/credential_options.dart';
+import 'package:com_noopeshop_app/screens/search_address_screen.dart';
+import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+
 import 'package:flutter/material.dart';
 
-class DeliveryScreen extends StatelessWidget {
+class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DeliveryScreen> createState() => _DeliveryScreenState();
+}
+
+class _DeliveryScreenState extends State<DeliveryScreen> {
+  final TextEditingController _shippingAddressController =
+      TextEditingController();
+  final TextEditingController _shippingCityController = TextEditingController();
+  final TextEditingController _shippingPostalCodeController =
+      TextEditingController();
+
+  final FocusNode _shippingAddressFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _shippingAddressController.addListener(() {
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "shippingAddress": _shippingAddressController.text,
+            },
+          ));
+    });
+
+    _shippingCityController.addListener(() {
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "shippingCity": _shippingCityController.text,
+            },
+          ));
+    });
+
+    _shippingPostalCodeController.addListener(() {
+      context.read<CheckoutBloc>().add(OnFormUpdatedCheckoutEvent(
+            formData: {
+              "shippingPostalCode": _shippingPostalCodeController.text,
+            },
+          ));
+    });
+
+    _shippingAddressFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _shippingAddressController.dispose();
+    _shippingCityController.dispose();
+    _shippingPostalCodeController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +100,57 @@ class DeliveryScreen extends StatelessWidget {
                   ),
                 ),
                 TextField(
+                  controller: _shippingAddressController,
+                  focusNode: _shippingAddressFocusNode,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  onTap: () async {
+                    final String? placeId = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchAddressScreen(
+                          placeApiKey: CredentialOptions.kGooglePlaceApi,
+                        ),
+                      ),
+                    );
+
+                    if (placeId == null) return;
+
+                    final GoogleMapsPlaces plist = GoogleMapsPlaces(
+                      apiKey: CredentialOptions.kGooglePlaceApi,
+                      apiHeaders: await const GoogleApiHeaders().getHeaders(),
+                      //from google_api_headers package
+                    );
+
+                    PlacesDetailsResponse placesDetailsResponse =
+                        await plist.getDetailsByPlaceId(placeId);
+
+                    final Map<String, dynamic> address = {
+                      'address': '',
+                      'city': '',
+                      'postalCode': '',
+                      'country': '',
+                    };
+
+                    for (var component
+                        in placesDetailsResponse.result.addressComponents) {
+                      if (component.types.contains('street_number')) {
+                        address['address'] = component.longName;
+                      } else if (component.types.contains('route')) {
+                        address['address'] += ' ${component.longName}';
+                      } else if (component.types.contains('locality')) {
+                        address['city'] = component.longName;
+                      } else if (component.types.contains('postal_code')) {
+                        address['postalCode'] = component.longName;
+                      } else if (component.types.contains('country')) {
+                        address['country'] = component.longName;
+                      }
+                    }
+
+                    _shippingAddressController.text = address['address'];
+                    _shippingCityController.text = address['city'];
+                    _shippingPostalCodeController.text = address['postalCode'];
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 22.0,
@@ -83,6 +194,9 @@ class DeliveryScreen extends StatelessWidget {
                       ),
                     ),
                     TextField(
+                      controller: _shippingCityController,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 22.0,
@@ -132,6 +246,9 @@ class DeliveryScreen extends StatelessWidget {
                       ),
                     ),
                     TextField(
+                      controller: _shippingPostalCodeController,
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         hintText: "Ex: 75000",
                         filled: true,

@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(
               right: 8.0,
+              bottom: 8.0,
             ),
             child: TextButton(
               child: Text(

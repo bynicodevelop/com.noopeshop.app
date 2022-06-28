@@ -41,8 +41,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
   if (kDebugMode) {
     final String host =
         Platform.isAndroid ? "10.0.2.2" : "localhost"; // 192.168.1.13
@@ -63,6 +61,7 @@ Future<void> main() async {
     );
   } else {
     FirebaseAnalytics.instance;
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
 
   // FirebaseAuth.instance.signOut();
@@ -243,6 +242,7 @@ class App extends StatelessWidget {
                   )..show(context);
                 },
                 child: const HomeScreen(),
+                // child: const CheckoutScreen(),
               );
             },
           ),

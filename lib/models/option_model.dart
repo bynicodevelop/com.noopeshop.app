@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class OptionModel extends Equatable {
   final String key;
-  final bool value;
+  final dynamic value;
 
   const OptionModel({
     required this.key,
@@ -12,7 +12,7 @@ class OptionModel extends Equatable {
   factory OptionModel.fromJson(Map<String, dynamic> json) {
     return OptionModel(
       key: json['key'] as String,
-      value: json['value'] as bool,
+      value: json['value'] as dynamic,
     );
   }
 

@@ -15,8 +15,6 @@ class CartScreen extends StatelessWidget {
       builder: (context, state) {
         final List<CartModel> carts = (state as AddToCartInitialState).carts;
 
-        print(carts);
-
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.only(

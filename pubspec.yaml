@@ -42,12 +42,19 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_google_places: ^0.3.0
+  flutter_keyboard_visibility: ^5.3.0
   flutter_localizations:
     sdk: flutter
+  flutter_multi_formatter: ^2.5.7
+  flutter_svg: ^1.1.0
+  formz: ^0.4.1
   google_fonts: ^3.0.1
   hive: ^2.2.1
   hive_flutter: ^1.1.0
   intl: ^0.17.0
+  uuid: ^3.0.6
+  validators: ^3.0.0
   video_player: ^2.4.4
 
 dev_dependencies:
@@ -71,6 +78,7 @@ flutter:
   assets:
     - assets/images/logo-light.png
     - assets/images/logo-black.png
+    - assets/logo.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

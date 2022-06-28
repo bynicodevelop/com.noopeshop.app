@@ -92,7 +92,7 @@ class VarianteComponent extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: OptionsComponent(
-                    options: currentVariante.options,
+                    variante: currentVariante,
                     onSelectOption: (optionModel) =>
                         context.read<CartProductBloc>().add(
                               OnUpdateCartProductEvent(

@@ -59,6 +59,15 @@ class CartRepository {
                   ))
               .where((option) => option.value == true)
               .toList();
+        } else if (varianteData["type"] == "customsize") {
+          options = List<String>.from(varianteData["optionId"])
+              .asMap()
+              .entries
+              .map((e) => OptionModel(
+                    key: e.key.toString(),
+                    value: e.value,
+                  ))
+              .toList();
         }
 
         final String media = await firebaseStorage
