@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:com_noopeshop_app/exceptions/payment_exception.dart';
 
 class PaymentRepository {
   final FirebaseFunctions firebaseFunctions;
@@ -55,13 +58,15 @@ class PaymentRepository {
       },
     };
 
-    // await Future.delayed(const Duration(seconds: 1));
-
     HttpsCallableResult httpsCallable =
         await firebaseFunctions.httpsCallable("onIntentPayment").call(params);
 
-    print(httpsCallable.data);
+    log(httpsCallable.data.toString());
 
-    // TODO: Stripe API - Error StripeCardError: Your card's expiration year is invalid
+    if (!httpsCallable.data["success"]) {
+      throw PaymentException(
+        code: PaymentException.invalidCard,
+      );
+    }
   }
 }

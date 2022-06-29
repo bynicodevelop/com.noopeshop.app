@@ -184,6 +184,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     if (state is PaymentSuccessState) {
                       _nextPage();
                     }
+
+                    Map<String, dynamic> errorMessages = {
+                      "invalidCard": t(context)!.invalidCardErrorMessage,
+                    };
+
+                    if (state is PaymentErrorState) {
+                      Flushbar(
+                        title: 'Erreur',
+                        message: errorMessages[state.error] ??
+                            t(context)!.unknownErrorMessage,
+                        backgroundColor: Colors.red,
+                        duration: const Duration(
+                          seconds: 2,
+                        ),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        margin: const EdgeInsets.all(16.0),
+                        borderRadius: BorderRadius.circular(16.0),
+                        flushbarStyle: FlushbarStyle.FLOATING,
+                      ).show(context);
+                    }
                   },
                   builder: (context, payementState) {
                     return BlocBuilder<AddToCartBloc, AddToCartState>(

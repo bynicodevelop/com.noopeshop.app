@@ -7,6 +7,7 @@ import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class CartScreen extends StatelessWidget {
@@ -47,7 +48,7 @@ class CartScreen extends StatelessWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OrdersScreen(),
+                          builder: (context) => const OrdersScreen(),
                         ),
                       ),
                     ),
@@ -55,11 +56,27 @@ class CartScreen extends StatelessWidget {
                 ),
                 if (carts.isEmpty)
                   SliverFillRemaining(
-                    child: Center(
-                      child: Text(
-                        "No carts in cart",
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 16.0,
+                          ),
+                          child: Opacity(
+                            opacity: 0.05,
+                            child: SvgPicture.asset(
+                              "assets/logo.svg",
+                              fit: BoxFit.contain,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          t(context)!.notProductInCartLabel,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ],
                     ),
                   ),
                 if (carts.isNotEmpty)

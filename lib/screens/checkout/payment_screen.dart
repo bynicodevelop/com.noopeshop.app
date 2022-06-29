@@ -68,7 +68,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (kDebugMode) {
       _cardNumberController.text = "4242424242424242";
-      _cardExpiryController.text = "12/24";
+      _cardExpiryController.text = "12/20";
       _cardCvvController.text = "123";
     }
   }
@@ -286,34 +286,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
+            ),
+            child: CartTotalWidget(
+              subtotal: widget.carts.fold(
+                0,
+                (previousValue, element) =>
+                    previousValue +
+                    int.parse(element.varianteModel.price.toString()) *
+                        int.parse(
+                          element.quantity.toString(),
+                        ),
               ),
-              child: CartTotalWidget(
-                subtotal: widget.carts.fold(
-                  0,
-                  (previousValue, element) =>
-                      previousValue +
-                      int.parse(element.varianteModel.price.toString()) *
-                          int.parse(
-                            element.quantity.toString(),
-                          ),
-                ),
-                tax: widget.carts.fold(
-                  0,
-                  (previousValue, element) =>
-                      previousValue +
-                      int.parse(0.toString()) *
-                          int.parse(
-                            element.quantity.toString(),
-                          ),
-                ),
-              )
-
-              // CartTotalWidget(
-              //   subtotal: 2344,
-              // ),
-              )
+              tax: widget.carts.fold(
+                0,
+                (previousValue, element) =>
+                    previousValue +
+                    int.parse(0.toString()) *
+                        int.parse(
+                          element.quantity.toString(),
+                        ),
+              ),
+            ),
+          )
         ],
       ),
     );

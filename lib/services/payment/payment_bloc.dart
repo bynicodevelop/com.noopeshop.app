@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:com_noopeshop_app/exceptions/payment_exception.dart';
 import 'package:com_noopeshop_app/repositories/payment_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,9 +15,15 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<OnIntentPaymentBloc>((event, emit) async {
       emit(PaymentLoadingState());
 
-      await paymentRepository.intentPayment(event.checkout);
+      try {
+        await paymentRepository.intentPayment(event.checkout);
 
-      emit(PaymentSuccessState());
+        emit(PaymentSuccessState());
+      } on PaymentException catch (e) {
+        emit(PaymentErrorState(
+          error: e.code,
+        ));
+      }
     });
   }
 }

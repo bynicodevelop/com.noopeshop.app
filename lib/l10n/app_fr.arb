@@ -22,5 +22,9 @@
     "paidOrderStatusLabel": "Payé",
     "processingOrderStatusLabel": "Traité",
     "shippingOrderStatusLabem": "Envoyé",
-    "deliveredOrderStatusLabem": "Livré"
+    "deliveredOrderStatusLabem": "Livré",
+    "notOrderFoundLabel": "Aucune commande",
+    "notProductInCartLabel": "Aucun produit dans le panier",
+    "invalidCardErrorMessage": "Carte non valide",
+    "unknownErrorMessage": "Une erreur est survenue"
 }

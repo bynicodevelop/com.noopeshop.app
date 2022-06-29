@@ -87,12 +87,28 @@
     "@processingOrderStatusLabel": {
       "description": "Label Processing (in cart_checkout)"
     },
-    "shippingOrderStatusLabem": "Shipping",
-    "@shippingOrderStatusLabem": {
+    "shippingOrderStatusLabel": "Shipping",
+    "@shippingOrderStatusLabel": {
       "description": "Label Shipping (in cart_checkout)"
     },
-    "deliveredOrderStatusLabem": "Delivered",
-    "@deliveredOrderStatusLabem": {
+    "deliveredOrderStatusLabel": "Delivered",
+    "@deliveredOrderStatusLabel": {
       "description": "Label Delivered (in cart_checkout)"
+    },
+    "notOrderFoundLabel": "No orders found",
+    "@notOrderFoundLabel": {
+      "description": "Label No orders found"
+    },
+    "notProductInCartLabel": "No products in cart",
+    "@notProductInCartLabel": {
+      "description": "Label No products in cart"
+    },
+    "invalidCardErrorMessage": "Invalid card",
+    "@invalidCardErrorMessage": {
+      "description": "Carte non valide message"
+    },
+    "unknownErrorMessage": "Unknown error",
+    "@unknownErrorMessage": {
+      "description": "Unknown error message"
     }
 }
