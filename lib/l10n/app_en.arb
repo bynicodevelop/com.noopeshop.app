@@ -23,6 +23,10 @@
     "@thankyouAppBar": {
       "description": "Titre merci de la AppBar"
     },
+    "ordersAppBar": "Orders",
+    "@ordersAppBar": {
+      "description": "Titre commandes de la AppBar"
+    },
     "deliveryLabelField": "Delivery",
     "@deliveryLabelField": {
       "description": "Label address"
@@ -74,5 +78,21 @@
     "continueLabelButton": "Continue",
     "@placeOrderLabelButton": {
       "description": "Label Continue (in cart_checkout)"
+    },
+    "paidOrderStatusLabel": "Paid",
+    "@paidOrderStatusLablm": {
+      "description": "Label Paid (in cart_checkout)"
+    },
+    "processingOrderStatusLabel": "Processing",
+    "@processingOrderStatusLabel": {
+      "description": "Label Processing (in cart_checkout)"
+    },
+    "shippingOrderStatusLabem": "Shipping",
+    "@shippingOrderStatusLabem": {
+      "description": "Label Shipping (in cart_checkout)"
+    },
+    "deliveredOrderStatusLabem": "Delivered",
+    "@deliveredOrderStatusLabem": {
+      "description": "Label Delivered (in cart_checkout)"
     }
 }

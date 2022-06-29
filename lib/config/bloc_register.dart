@@ -8,12 +8,14 @@ import 'package:com_noopeshop_app/repositories/authentication_repository.dart';
 import 'package:com_noopeshop_app/repositories/cart_repository.dart';
 import 'package:com_noopeshop_app/repositories/favorite_repository.dart';
 import 'package:com_noopeshop_app/repositories/feed_repository.dart';
+import 'package:com_noopeshop_app/repositories/orders_repository.dart';
 import 'package:com_noopeshop_app/repositories/payment_repository.dart';
 import 'package:com_noopeshop_app/repositories/system_repository.dart';
 import 'package:com_noopeshop_app/repositories/swipe_repository.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
 import 'package:com_noopeshop_app/services/notifications/notifications_bloc.dart';
+import 'package:com_noopeshop_app/services/orders/orders_bloc.dart';
 import 'package:com_noopeshop_app/services/payment/payment_bloc.dart';
 import 'package:com_noopeshop_app/services/product/product_bloc.dart';
 import 'package:com_noopeshop_app/services/swipe/swipe_bloc.dart';
@@ -70,6 +72,12 @@ class BlocRegister extends StatelessWidget {
     );
 
     final FavoriteRepository favoriteRepository = FavoriteRepository(
+      firebaseAuth: firebaseAuth,
+      firebaseFirestore: firebaseFirestore,
+      firebaseStorage: firebaseStorage,
+    );
+
+    final OrdersRepository ordersRepository = OrdersRepository(
       firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
       firebaseStorage: firebaseStorage,
@@ -134,6 +142,11 @@ class BlocRegister extends StatelessWidget {
           create: (context) => AddToCartBloc(
             cartRepository: cartRepository,
           )..add(OnLoadCartEvent()),
+        ),
+        BlocProvider<OrdersBloc>(
+          create: (context) => OrdersBloc(
+            ordersRepository: ordersRepository,
+          ),
         ),
         BlocProvider<PaymentBloc>(
           create: (context) => PaymentBloc(

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ProgressBulletWidget extends StatelessWidget {
   final bool isFirst;
   final bool isActive;
+  final double size;
 
   const ProgressBulletWidget({
     Key? key,
     this.isFirst = false,
     this.isActive = false,
+    this.size = 30,
   }) : super(key: key);
 
   @override
@@ -28,16 +30,16 @@ class ProgressBulletWidget extends StatelessWidget {
           duration: const Duration(
             milliseconds: 300,
           ),
-          height: 30.0,
-          width: 30.0,
-          padding: const EdgeInsets.all(12.0),
+          height: size,
+          width: size,
+          padding: EdgeInsets.all(size * .4),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(size),
             color: isActive ? kDefaultColor : kBackgroundColor.withOpacity(.1),
           ),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(size),
               color: Colors.white,
             ),
           ),

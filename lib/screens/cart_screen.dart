@@ -2,6 +2,7 @@ import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/screens/checkout/checkout_screen.dart';
+import 'package:com_noopeshop_app/screens/orders_screen.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,20 @@ class CartScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.local_shipping_rounded,
+                        color: kBackgroundColor,
+                      ),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrdersScreen(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 if (carts.isEmpty)
                   SliverFillRemaining(

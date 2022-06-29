@@ -4,7 +4,8 @@
     "addressAppBar": "Adresse",
     "contactAppBar": "Contact",
     "payementAppBar": "Paiement",
-    "thankyouAppBar": "Thank you",
+    "thankyouAppBar": "Merci",
+    "ordersAppBar": "Mes commandes",
     "deliveryLabelField": "Adresse de livraison",
     "cityLabelField": "Ville",
     "postalCodeField": "Code postal",
@@ -17,5 +18,9 @@
     "paymentLabelButton": "Paiement",
     "placeOrderLabelButton": "Payer",
     "finishedLabelButton": "Terminer",
-    "continueLabelButton": "Continuer"
+    "continueLabelButton": "Continuer",
+    "paidOrderStatusLabel": "Payé",
+    "processingOrderStatusLabel": "Traité",
+    "shippingOrderStatusLabem": "Envoyé",
+    "deliveredOrderStatusLabem": "Livré"
 }
