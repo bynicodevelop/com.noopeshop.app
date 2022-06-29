@@ -1,12 +1,19 @@
 import 'package:com_noopeshop_app/config/functions/translate.dart';
+import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({Key? key}) : super(key: key);
+  final List<CartModel> carts;
+
+  const PaymentScreen({
+    Key? key,
+    required this.carts,
+  }) : super(key: key);
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -58,6 +65,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
 
     _cardNumberFocusNode.requestFocus();
+
+    if (kDebugMode) {
+      _cardNumberController.text = "4242424242424242";
+      _cardExpiryController.text = "12/24";
+      _cardCvvController.text = "123";
+    }
   }
 
   @override
@@ -181,6 +194,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         textInputAction: TextInputAction.next,
                         inputFormatters: [
                           CreditCardExpirationDateFormatter(),
+                          // TODO: Verifier l'expiration de la date
                         ],
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
@@ -271,14 +285,35 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8.0,
-            ),
-            child: CartTotalWidget(
-              subtotal: 2344,
-            ),
-          )
+          Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: CartTotalWidget(
+                subtotal: widget.carts.fold(
+                  0,
+                  (previousValue, element) =>
+                      previousValue +
+                      int.parse(element.varianteModel.price.toString()) *
+                          int.parse(
+                            element.quantity.toString(),
+                          ),
+                ),
+                tax: widget.carts.fold(
+                  0,
+                  (previousValue, element) =>
+                      previousValue +
+                      int.parse(0.toString()) *
+                          int.parse(
+                            element.quantity.toString(),
+                          ),
+                ),
+              )
+
+              // CartTotalWidget(
+              //   subtotal: 2344,
+              // ),
+              )
         ],
       ),
     );

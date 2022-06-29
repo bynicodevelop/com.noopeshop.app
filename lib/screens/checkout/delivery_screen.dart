@@ -2,6 +2,7 @@ import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/credential_options.dart';
 import 'package:com_noopeshop_app/screens/search_address_screen.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -53,6 +54,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     });
 
     _shippingAddressFocusNode.requestFocus();
+
+    if (kDebugMode) {
+      _shippingAddressController.text = "123 Main St";
+      _shippingCityController.text = "New York";
+      _shippingPostalCodeController.text = "10001";
+    }
   }
 
   @override
@@ -109,7 +116,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SearchAddressScreen(
-                          placeApiKey: CredentialOptions.kGooglePlaceApi,
+                          placeApiKey: CredentialOptions.kGooglePlaceApiKey,
                         ),
                       ),
                     );
@@ -117,7 +124,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     if (placeId == null) return;
 
                     final GoogleMapsPlaces plist = GoogleMapsPlaces(
-                      apiKey: CredentialOptions.kGooglePlaceApi,
+                      apiKey: CredentialOptions.kGooglePlaceApiKey,
                       apiHeaders: await const GoogleApiHeaders().getHeaders(),
                       //from google_api_headers package
                     );

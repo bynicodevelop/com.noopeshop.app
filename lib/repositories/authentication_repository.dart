@@ -57,19 +57,23 @@ class AuthenticationRepository {
       return;
     }
 
-    final String? token = await messaging.getToken();
+    try {
+      final String? token = await messaging.getToken();
 
-    DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
-        await firebaseFirestore.collection('users').doc(user.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
+          await firebaseFirestore.collection('users').doc(user.uid).get();
 
-    if (userDocumentSnapshot.exists) {
-      await firebaseFirestore.collection('users').doc(user.uid).update({
-        'notificationToken': token,
-      });
-    } else {
-      await firebaseFirestore.collection('users').doc(user.uid).set({
-        'notificationToken': token,
-      });
+      if (userDocumentSnapshot.exists) {
+        await firebaseFirestore.collection('users').doc(user.uid).update({
+          'notificationToken': token,
+        });
+      } else {
+        await firebaseFirestore.collection('users').doc(user.uid).set({
+          'notificationToken': token,
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,11 @@ class _ContactScreenState extends State<ContactScreen> {
     });
 
     _nameFocusNode.requestFocus();
+
+    if (kDebugMode) {
+      _nameController.text = "John Doe";
+      _emailController.text = "john@domain.tld";
+    }
   }
 
   @override

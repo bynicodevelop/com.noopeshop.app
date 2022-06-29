@@ -16,5 +16,6 @@
     "deliveryLabelButton": "Livraison",
     "paymentLabelButton": "Paiement",
     "placeOrderLabelButton": "Payer",
-    "finishedLabelButton": "Terminer"
+    "finishedLabelButton": "Terminer",
+    "continueLabelButton": "Continuer"
 }

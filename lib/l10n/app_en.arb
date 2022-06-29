@@ -70,5 +70,9 @@
     "finishedLabelButton": "Finished",
     "@placeOrderLabelButton": {
       "description": "Label Finished"
+    },
+    "continueLabelButton": "Continue",
+    "@placeOrderLabelButton": {
+      "description": "Label Continue (in cart_checkout)"
     }
 }

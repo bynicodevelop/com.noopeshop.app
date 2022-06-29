@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:com_noopeshop_app/components/favorites/favorite_button/favorite_button_bloc.dart';
 import 'package:com_noopeshop_app/components/favorites/favorites/favorites_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
@@ -7,11 +8,13 @@ import 'package:com_noopeshop_app/repositories/authentication_repository.dart';
 import 'package:com_noopeshop_app/repositories/cart_repository.dart';
 import 'package:com_noopeshop_app/repositories/favorite_repository.dart';
 import 'package:com_noopeshop_app/repositories/feed_repository.dart';
+import 'package:com_noopeshop_app/repositories/payment_repository.dart';
 import 'package:com_noopeshop_app/repositories/system_repository.dart';
 import 'package:com_noopeshop_app/repositories/swipe_repository.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
 import 'package:com_noopeshop_app/services/notifications/notifications_bloc.dart';
+import 'package:com_noopeshop_app/services/payment/payment_bloc.dart';
 import 'package:com_noopeshop_app/services/product/product_bloc.dart';
 import 'package:com_noopeshop_app/services/swipe/swipe_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
@@ -25,6 +28,7 @@ class BlocRegister extends StatelessWidget {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final FirebaseStorage firebaseStorage;
+  final FirebaseFunctions firebaseFunctions;
   final FirebaseMessaging messaging;
   final NotificationsBloc notification;
   final Widget child;
@@ -35,6 +39,7 @@ class BlocRegister extends StatelessWidget {
     required this.firebaseAuth,
     required this.firebaseFirestore,
     required this.firebaseStorage,
+    required this.firebaseFunctions,
     required this.messaging,
     required this.notification,
   }) : super(key: key);
@@ -68,6 +73,10 @@ class BlocRegister extends StatelessWidget {
       firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
       firebaseStorage: firebaseStorage,
+    );
+
+    final PaymentRepository paymentRepository = PaymentRepository(
+      firebaseFunctions: firebaseFunctions,
     );
 
     return MultiBlocProvider(
@@ -125,6 +134,11 @@ class BlocRegister extends StatelessWidget {
           create: (context) => AddToCartBloc(
             cartRepository: cartRepository,
           )..add(OnLoadCartEvent()),
+        ),
+        BlocProvider<PaymentBloc>(
+          create: (context) => PaymentBloc(
+            paymentRepository: paymentRepository,
+          ),
         ),
       ],
       child: child,

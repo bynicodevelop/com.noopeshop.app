@@ -1,5 +1,7 @@
 import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
+import 'package:com_noopeshop_app/screens/checkout/checkout_screen.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
 import 'package:flutter/material.dart';
@@ -277,15 +279,23 @@ class CartScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                           ),
-                          onPressed: carts.isNotEmpty ? () {} : null,
+                          onPressed: carts.isNotEmpty
+                              ? () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CheckoutScreen(),
+                                    ),
+                                  )
+                              : null,
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
-                                  "Continuer",
-                                  style: TextStyle(
+                                  t(context)!.continueLabelButton,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     letterSpacing: 1.1,
                                     fontWeight: FontWeight.w600,
@@ -293,7 +303,7 @@ class CartScreen extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_ios,
                                   color: Colors.white,
                                   size: 16.0,

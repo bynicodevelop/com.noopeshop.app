@@ -14,6 +14,8 @@ class AddToCartInitialState extends AddToCartState {
     this.carts = const [],
   });
 
+  List<Map<String, dynamic>> toJson() => carts.map((e) => e.toJson()).toList();
+
   @override
   List<Object> get props => [
         carts,

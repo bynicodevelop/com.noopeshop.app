@@ -50,6 +50,19 @@ class CheckoutInitialState extends CheckoutState {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "email": email,
+      "shippingAddress": shippingAddress,
+      "shippingCity": shippingCity,
+      "shippingPostalCode": shippingPostalCode,
+      "cardNumber": cardNumber,
+      "cardExpiry": cardExpiry,
+      "cardCvv": cardCvv,
+    };
+  }
+
   @override
   List<Object> get props => [
         name,

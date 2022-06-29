@@ -1,3 +1,4 @@
 class CredentialOptions {
-  static const kGooglePlaceApi = "";
+  static const kGooglePlaceApiKey = "";
+  static const kStripeApiKey = "";
 }

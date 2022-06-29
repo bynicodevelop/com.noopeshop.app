@@ -104,8 +104,6 @@ class CartRepository {
       throw Exception('User not found');
     }
 
-    print(data["id"]);
-
     if (data["id"].isEmpty) {
       final Map<String, dynamic> cartProduct = {
         "title": data["title"],
@@ -120,6 +118,7 @@ class CartRepository {
             .collection('variantes')
             .doc(data["varianteModel"]["id"]),
         "options": data["optionModel"],
+        "createdAt": Timestamp.now(),
       };
 
       DocumentReference<Map<String, dynamic>> cartDocumentReference =
