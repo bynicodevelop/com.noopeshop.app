@@ -87,26 +87,24 @@ class FeedRepository {
           List<VarianteModel> variantes =
               (await Future.wait(variantesQuerySnapshot.docs.map(
             (e) async {
-              late List<OptionModel> options;
+              final List<OptionModel> options = [];
 
               if (e.data()["type"] == "size") {
-                options = Map<String, dynamic>.from(e.data()["optionId"])
+                options.addAll(Map<String, dynamic>.from(e.data()["optionId"])
                     .entries
                     .map((e) => OptionModel(
                           key: e.key,
                           value: e.value,
                         ))
-                    .where((option) => option.value == true)
-                    .toList();
+                    .where((option) => option.value == true));
               } else if (e.data()["type"] == "customsize") {
-                options = List<String>.from(e.data()["optionId"])
+                options.addAll(List<String>.from(e.data()["optionId"])
                     .asMap()
                     .entries
                     .map((e) => OptionModel(
                           key: e.key.toString(),
                           value: e.value,
-                        ))
-                    .toList();
+                        )));
               }
 
               final String media = await firebaseStorage

@@ -26,5 +26,7 @@
     "notOrderFoundLabel": "Aucune commande",
     "notProductInCartLabel": "Aucun produit dans le panier",
     "invalidCardErrorMessage": "Carte non valide",
-    "unknownErrorMessage": "Une erreur est survenue"
+    "unknownErrorMessage": "Une erreur est survenue",
+    "colorLabel": "Couleur",
+    "sizeLabel": "Taille"
 }

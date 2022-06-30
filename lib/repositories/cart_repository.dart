@@ -48,26 +48,24 @@ class CartRepository {
         final Map<String, dynamic> varianteData =
             varianteDocumentSnapshot.data() as Map<String, dynamic>;
 
-        late List<OptionModel> options;
+        final List<OptionModel> options = [];
 
         if (varianteData["type"] == "size") {
-          options = Map<String, dynamic>.from(varianteData["optionId"])
+          options.addAll(Map<String, dynamic>.from(varianteData["optionId"])
               .entries
               .map((e) => OptionModel(
                     key: e.key,
                     value: e.value,
                   ))
-              .where((option) => option.value == true)
-              .toList();
+              .where((option) => option.value == true));
         } else if (varianteData["type"] == "customsize") {
-          options = List<String>.from(varianteData["optionId"])
+          options.addAll(List<String>.from(varianteData["optionId"])
               .asMap()
               .entries
               .map((e) => OptionModel(
                     key: e.key.toString(),
                     value: e.value,
-                  ))
-              .toList();
+                  )));
         }
 
         final String media = await firebaseStorage
@@ -88,7 +86,9 @@ class CartRepository {
             "media": media,
             "options": options,
           },
-          "optionModel": options[0].toJson(),
+          "optionModel": options.isNotEmpty
+              ? options[0].toJson()
+              : OptionModel.empty().toJson(),
         });
       })))
               .toList();

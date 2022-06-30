@@ -110,5 +110,13 @@
     "unknownErrorMessage": "Unknown error",
     "@unknownErrorMessage": {
       "description": "Unknown error message"
+    },
+    "colorLabel": "Color",
+    "@colorLabel": {
+      "description": "Color label"
+    },
+    "sizeLabel": "Size",
+    "@sizeLabel": {
+      "description": "Size label"
     }
 }

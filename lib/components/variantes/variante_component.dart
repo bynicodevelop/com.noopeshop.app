@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/components/options/options/options_bloc.dart';
 import 'package:com_noopeshop_app/components/options/options_component.dart';
 import 'package:com_noopeshop_app/components/variantes/variantes/variantes_bloc.dart';
+import 'package:com_noopeshop_app/models/option_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/variante_model.dart';
 import 'package:com_noopeshop_app/services/cart_product/cart_product_bloc.dart';
@@ -32,9 +33,15 @@ class VarianteComponent extends StatelessWidget {
           listener: (context, state) {
             currentVariante = (state as VariantesInitialState).varianteModel;
 
+            OptionModel optionModel = OptionModel.empty();
+
+            if (currentVariante.options.isNotEmpty) {
+              optionModel = state.varianteModel.options.first;
+            }
+
             context.read<OptionsBloc>().add(
                   OnChangeOptionsEvent(
-                    option: currentVariante.options.first,
+                    option: optionModel,
                   ),
                 );
 
@@ -42,7 +49,7 @@ class VarianteComponent extends StatelessWidget {
                   OnUpdateCartProductEvent(
                     productModel: productModel,
                     varianteModel: currentVariante,
-                    optionModel: currentVariante.options.first,
+                    optionModel: optionModel,
                   ),
                 );
           },
@@ -78,31 +85,37 @@ class VarianteComponent extends StatelessWidget {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16.0,
+                if (productModel.variantes
+                    .where((element) => element.options.isNotEmpty)
+                    .isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 16.0,
+                    ),
+                    child: Text(
+                      "Size",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
                   ),
-                  child: Text(
-                    "Size",
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16.0,
-                  ),
-                  child: OptionsComponent(
-                    variante: currentVariante,
-                    onSelectOption: (optionModel) =>
-                        context.read<CartProductBloc>().add(
-                              OnUpdateCartProductEvent(
-                                productModel: productModel,
-                                varianteModel: currentVariante,
-                                optionModel: optionModel,
+                if (productModel.variantes
+                    .where((element) => element.options.isNotEmpty)
+                    .isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 16.0,
+                    ),
+                    child: OptionsComponent(
+                      variante: currentVariante,
+                      onSelectOption: (optionModel) =>
+                          context.read<CartProductBloc>().add(
+                                OnUpdateCartProductEvent(
+                                  productModel: productModel,
+                                  varianteModel: currentVariante,
+                                  optionModel: optionModel,
+                                ),
                               ),
-                            ),
+                    ),
                   ),
-                ),
               ],
             );
           },
