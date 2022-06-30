@@ -118,5 +118,37 @@
     "sizeLabel": "Size",
     "@sizeLabel": {
       "description": "Size label"
+    },
+    "nameRequiredErrorMessage": "Your name is required",
+    "@nameRequiredErrorMessage": {
+      "description": "Your name is required"
+    },
+    "emailValidRequiredErrorMessage": "A valid email is required",
+    "@emailValidRequiredErrorMessage": {
+      "description": "A valid email is required"
+    },
+    "shippingAddressRequiredErrorMessage": "Shipping address is required",
+    "@shippingAddressRequiredErrorMessage": {
+      "description": "Shipping address is required"
+    },
+    "shippingCityRequiredErrorMessage": "City is required",
+    "@shippingCityRequiredErrorMessage": {
+      "description": "City is required"
+    },
+    "shippingPostalCodeRequiredErrorMessage": "Postal code is required",
+    "@shippingPostalCodeRequiredErrorMessage": {
+      "description": "Postal code is required"
+    },
+    "cardNumberRequiredErrorMessage": "Card number is required",
+    "@cardNumberRequiredErrorMessage": {
+      "description": "Card number is required"
+    },
+    "cardExpiryRequiredErrorMessage": "Expiration is required",
+    "@cardExpiryRequiredErrorMessage": {
+      "description": "Expiration is required"
+    },
+    "cardCVCRequiredErrorMessage": "CVC is required",
+    "@cardCVCRequiredErrorMessage": {
+      "description": "CVC is required"
     }
 }

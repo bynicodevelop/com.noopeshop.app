@@ -254,7 +254,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir un nom",
+                                                    t(context)!
+                                                        .nameRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -264,7 +265,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir un e-mail valide",
+                                                    t(context)!
+                                                        .emailValidRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -277,7 +279,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir une adresse de livraison",
+                                                    t(context)!
+                                                        .shippingAddressRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -288,7 +291,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir une ville",
+                                                    t(context)!
+                                                        .shippingCityRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -299,7 +303,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir un code postal",
+                                                    t(context)!
+                                                        .shippingPostalCodeRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -312,7 +317,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir un numéro de carte",
+                                                    t(context)!
+                                                        .cardNumberRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -323,7 +329,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir une date d'expiration",
+                                                    t(context)!
+                                                        .cardExpiryRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }
@@ -333,7 +340,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 ).valid) {
                                                   _errorMessage(
                                                     context,
-                                                    "Merci de saisir un code de sécurité",
+                                                    t(context)!
+                                                        .cardCVCRequiredErrorMessage,
                                                   );
                                                   return;
                                                 }

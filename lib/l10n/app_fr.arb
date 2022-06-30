@@ -28,5 +28,13 @@
     "invalidCardErrorMessage": "Carte non valide",
     "unknownErrorMessage": "Une erreur est survenue",
     "colorLabel": "Couleur",
-    "sizeLabel": "Taille"
+    "sizeLabel": "Taille",
+    "nameRequiredErrorMessage": "Votre nom est requis",
+    "emailValidRequiredErrorMessage": "Merci d'entrer une adresse e-mail valide",
+    "shippingAddressRequiredErrorMessage": "Votre adresse de livraison est requise",
+    "shippingCityRequiredErrorMessage": "Merci de saisir une ville",
+    "shippingPostalCodeRequiredErrorMessage": "Merci de saisir un code postal",
+    "cardNumberRequiredErrorMessage": "Merci de saisir un numéro de carte",
+    "cardExpiryRequiredErrorMessage": "Merci de saisir une date d'expiration",
+    "cardCVCRequiredErrorMessage": "Merci de saisir un code de sécurité (CVC)"
 }
