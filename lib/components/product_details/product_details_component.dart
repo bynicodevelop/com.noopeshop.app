@@ -5,6 +5,7 @@ import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/cart_product/cart_product_bloc.dart';
+import 'package:com_noopeshop_app/utils/currency_formatter.dart';
 import 'package:com_noopeshop_app/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,12 +88,7 @@ class ProductDetailsComponent extends StatelessWidget {
                           (state as CartProductInitialState).cartModel;
 
                       return Text(
-                        NumberFormat.currency(
-                          locale: 'fr_FR',
-                          symbol: '€',
-                        ).format(
-                          cartModel.price / 100,
-                        ),
+                        currenryFormatter(cartModel.price),
                         style: Theme.of(context).textTheme.headline1!.copyWith(
                           color: Colors.black,
                           shadows: [],

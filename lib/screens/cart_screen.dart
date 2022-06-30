@@ -4,11 +4,12 @@ import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/screens/checkout/checkout_screen.dart';
 import 'package:com_noopeshop_app/screens/orders_screen.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
+import 'package:com_noopeshop_app/utils/currency_formatter.dart';
+import 'package:com_noopeshop_app/utils/math_sum.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -140,12 +141,7 @@ class CartScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        NumberFormat.currency(
-                                          locale: "fr_FR",
-                                          symbol: "€",
-                                        ).format(
-                                          carts[index].price / 100,
-                                        ),
+                                        currenryFormatter(carts[index].price),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
@@ -281,25 +277,10 @@ class CartScreen extends StatelessWidget {
                   child: Wrap(
                     children: [
                       CartTotalWidget(
-                        subtotal: carts.fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue +
-                              int.parse(
-                                      element.varianteModel.price.toString()) *
-                                  int.parse(
-                                    element.quantity.toString(),
-                                  ),
+                        subtotal: calculateSumPrice(
+                          carts.map((cart) => cart.toJson()).toList(),
                         ),
-                        tax: carts.fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue +
-                              int.parse(0.toString()) *
-                                  int.parse(
-                                    element.quantity.toString(),
-                                  ),
-                        ),
+                        tax: calculateSumTax([]),
                       ),
                       SizedBox(
                         height: 60.0,

@@ -2,11 +2,11 @@ import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/order_model.dart';
 import 'package:com_noopeshop_app/services/orders/orders_bloc.dart';
+import 'package:com_noopeshop_app/utils/currency_formatter.dart';
 import 'package:com_noopeshop_app/widgets/progress_bullet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -118,12 +118,7 @@ class OrdersScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  NumberFormat.currency(
-                                    locale: "fr_FR",
-                                    symbol: "€",
-                                  ).format(
-                                    orderModel.amount / 100,
-                                  ),
+                                  currenryFormatter(orderModel.amount),
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5!

@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
+import 'package:com_noopeshop_app/utils/math_sum.dart';
 import 'package:com_noopeshop_app/widgets/cart_total_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -291,24 +292,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 horizontal: 8.0,
               ),
               child: CartTotalWidget(
-                subtotal: widget.carts.fold(
-                  0,
-                  (previousValue, element) =>
-                      previousValue +
-                      int.parse(element.varianteModel.price.toString()) *
-                          int.parse(
-                            element.quantity.toString(),
-                          ),
+                subtotal: calculateSumPrice(
+                  widget.carts.map((cart) => cart.toJson()).toList(),
                 ),
-                tax: widget.carts.fold(
-                  0,
-                  (previousValue, element) =>
-                      previousValue +
-                      int.parse(0.toString()) *
-                          int.parse(
-                            element.quantity.toString(),
-                          ),
-                ),
+                tax: calculateSumTax([]),
               ),
             )
           ],

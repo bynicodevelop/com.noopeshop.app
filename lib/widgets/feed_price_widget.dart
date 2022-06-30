@@ -1,5 +1,5 @@
+import 'package:com_noopeshop_app/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class FeedPriceWidget extends StatelessWidget {
   final int price;
@@ -34,12 +34,7 @@ class FeedPriceWidget extends StatelessWidget {
           ),
         ),
         Text(
-          NumberFormat.currency(
-            locale: 'fr_FR',
-            symbol: '€',
-          ).format(
-            price / 100,
-          ),
+          currenryFormatter(price),
           style: Theme.of(context).textTheme.headline1,
         )
       ],

@@ -1,7 +1,7 @@
 import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:intl/intl.dart';
 
 class CartTotalWidget extends StatelessWidget {
   final int subtotal;
@@ -50,10 +50,7 @@ class CartTotalWidget extends StatelessWidget {
                             "Subtotal",
                           ),
                           Text(
-                            NumberFormat.currency(
-                              locale: "fr_FR",
-                              symbol: "€",
-                            ).format(subtotal / 100),
+                            currenryFormatter(subtotal),
                           ),
                         ],
                       ),
@@ -62,12 +59,7 @@ class CartTotalWidget extends StatelessWidget {
                         children: [
                           const Text("Taxes"),
                           Text(
-                            tax == 0
-                                ? "Free"
-                                : NumberFormat.currency(
-                                    locale: "fr_FR",
-                                    symbol: "€",
-                                  ).format(tax / 100),
+                            tax == 0 ? "Free" : currenryFormatter(tax),
                           ),
                         ],
                       )
@@ -92,10 +84,7 @@ class CartTotalWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      NumberFormat.currency(
-                        locale: "fr_FR",
-                        symbol: "€",
-                      ).format((subtotal + tax) / 100),
+                      currenryFormatter(subtotal + tax),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -126,10 +115,7 @@ class CartTotalWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  NumberFormat.currency(
-                    locale: "fr_FR",
-                    symbol: "€",
-                  ).format(subtotal / 100),
+                  currenryFormatter(subtotal),
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
@@ -147,12 +133,7 @@ class CartTotalWidget extends StatelessWidget {
               children: [
                 const Text("Taxes"),
                 Text(
-                  tax == 0
-                      ? "Free"
-                      : NumberFormat.currency(
-                          locale: "fr_FR",
-                          symbol: "€",
-                        ).format(tax / 100),
+                  tax == 0 ? "Free" : currenryFormatter(tax),
                 ),
               ],
             ),
@@ -172,10 +153,7 @@ class CartTotalWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  NumberFormat.currency(
-                    locale: "fr_FR",
-                    symbol: "€",
-                  ).format((subtotal + tax) / 100),
+                  currenryFormatter(subtotal + tax),
                   style: const TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.w600,

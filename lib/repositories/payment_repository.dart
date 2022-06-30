@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:com_noopeshop_app/exceptions/payment_exception.dart';
+import 'package:com_noopeshop_app/utils/math_sum.dart';
 
 class PaymentRepository {
   final FirebaseFunctions firebaseFunctions;
@@ -12,26 +13,9 @@ class PaymentRepository {
 
   Future<void> intentPayment(Map<String, dynamic> data) async {
     // TODO: try catch
+    final int price = calculateSumPrice(data["carts"]);
 
-    final int price = data["carts"].fold(
-      0,
-      (previousValue, element) =>
-          previousValue +
-          int.parse(element["varianteModel"]["price"].toString()) *
-              int.parse(
-                element["quantity"].toString(),
-              ),
-    );
-
-    final int tax = data["carts"].fold(
-      0,
-      (previousValue, element) =>
-          previousValue +
-          int.parse(0.toString()) *
-              int.parse(
-                element["quantity"].toString(),
-              ),
-    );
+    final int tax = calculateSumTax(data["carts"]);
 
     final Map<String, dynamic> params = {
       "billingDetails": {

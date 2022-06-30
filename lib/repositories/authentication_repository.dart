@@ -28,9 +28,6 @@ class AuthenticationRepository {
 
   Stream<RemoteMessage> get notifications =>
       FirebaseMessaging.onMessageOpenedApp.map((RemoteMessage event) {
-        print(event.messageId);
-        print(event.data);
-        print(event);
         return event;
       });
 
