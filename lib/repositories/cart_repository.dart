@@ -24,6 +24,21 @@ class CartRepository extends OptionsRepositoryAbstract {
 
   Stream<List<CartModel>> get cartStream => _cartController.stream;
 
+  Future<void> _updateIncrementOfCart(
+    String userId,
+    String cartId,
+    int number,
+  ) async {
+    await firebaseFirestore
+        .collection('users')
+        .doc(userId)
+        .collection('carts')
+        .doc(cartId)
+        .update({
+      "quantity": FieldValue.increment(number),
+    });
+  }
+
   Future<void> loadCarts() async {
     final User user = getUser();
 
@@ -130,26 +145,20 @@ class CartRepository extends OptionsRepositoryAbstract {
   Future<void> incrementCart(String cartId) async {
     final User user = getUser();
 
-    await firebaseFirestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('carts')
-        .doc(cartId)
-        .update({
-      "quantity": FieldValue.increment(1),
-    });
+    await _updateIncrementOfCart(
+      user.uid,
+      cartId,
+      1,
+    );
   }
 
   Future<void> decrementCart(String cartId) async {
     final User user = getUser();
 
-    await firebaseFirestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('carts')
-        .doc(cartId)
-        .update({
-      "quantity": FieldValue.increment(-1),
-    });
+    await _updateIncrementOfCart(
+      user.uid,
+      cartId,
+      -1,
+    );
   }
 }
