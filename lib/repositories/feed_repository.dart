@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/models/option_model.dart';
 import 'package:com_noopeshop_app/models/variante_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class FeedRepository {
+class FeedRepository extends OptionsRepositoryAbstract {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
 
   final int _limit = 2;
 
@@ -21,8 +21,10 @@ class FeedRepository {
   FeedRepository({
     required this.firebaseAuth,
     required this.firebaseFirestore,
-    required this.firebaseStorage,
-  });
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+        );
 
   Future<List<ProductModel>> getFeed(int index) async {
     final User? user = firebaseAuth.currentUser;
@@ -87,30 +89,11 @@ class FeedRepository {
           List<VarianteModel> variantes =
               (await Future.wait(variantesQuerySnapshot.docs.map(
             (e) async {
-              final List<OptionModel> options = [];
+              final List<OptionModel> options = createOptions(e.data());
 
-              if (e.data()["type"] == "size") {
-                options.addAll(Map<String, dynamic>.from(e.data()["optionId"])
-                    .entries
-                    .map((e) => OptionModel(
-                          key: e.key,
-                          value: e.value,
-                        ))
-                    .where((option) => option.value == true));
-              } else if (e.data()["type"] == "customsize") {
-                options.addAll(List<String>.from(e.data()["optionId"])
-                    .asMap()
-                    .entries
-                    .map((e) => OptionModel(
-                          key: e.key.toString(),
-                          value: e.value,
-                        )));
-              }
-
-              final String media = await firebaseStorage
-                  .ref()
-                  .child(e.data()["media"][0])
-                  .getDownloadURL();
+              final String media = await getMediaUrlFromStorage(
+                e.data()["media"][0],
+              );
 
               return VarianteModel.fromJson({
                 "id": e.id,
@@ -125,8 +108,7 @@ class FeedRepository {
 
           final List<String> mediaUrls = await Future.wait(
             media.map(
-              (mediaUrl) async =>
-                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+              (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
             ),
           );
 

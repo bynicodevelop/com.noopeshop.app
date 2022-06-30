@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -10,10 +11,9 @@ enum FavoriteStatusEnum {
   unliked,
 }
 
-class FavoriteRepository {
+class FavoriteRepository extends OptionsRepositoryAbstract {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
 
   final StreamController<List<ProductModel>> _favoritesController =
       StreamController.broadcast();
@@ -23,8 +23,10 @@ class FavoriteRepository {
   FavoriteRepository({
     required this.firebaseAuth,
     required this.firebaseFirestore,
-    required this.firebaseStorage,
-  });
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+        );
 
   Future<void> loadFavorites() async {
     final User? user = firebaseAuth.currentUser;
@@ -56,8 +58,7 @@ class FavoriteRepository {
 
           final List<String> mediaUrls = await Future.wait(
             media.map(
-              (mediaUrl) async =>
-                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+              (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
             ),
           );
 
@@ -150,8 +151,7 @@ class FavoriteRepository {
 
         final List<String> mediaUrls = await Future.wait(
           media.map(
-            (mediaUrl) async =>
-                await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+            (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
           ),
         );
 

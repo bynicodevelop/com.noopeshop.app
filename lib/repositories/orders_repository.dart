@@ -2,19 +2,21 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/order_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class OrdersRepository {
+class OrdersRepository extends OptionsRepositoryAbstract {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
 
   OrdersRepository({
     required this.firebaseAuth,
     required this.firebaseFirestore,
-    required this.firebaseStorage,
-  });
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+        );
 
   Future<List<OrderModel>> loadOrders() async {
     final User? user = firebaseAuth.currentUser;
@@ -49,10 +51,9 @@ class OrdersRepository {
         final Map<String, dynamic> productData =
             productDocumentSnapshot.data()!;
 
-        final String media = await firebaseStorage
-            .ref()
-            .child(productData["media"].first)
-            .getDownloadURL();
+        final String media = await getMediaUrlFromStorage(
+          productData["media"].first,
+        );
 
         return OrderModel.fromJson({
           'id': e.id,

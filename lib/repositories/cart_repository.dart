@@ -3,19 +3,21 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/models/option_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class CartRepository {
+class CartRepository extends OptionsRepositoryAbstract {
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
   final FirebaseAuth firebaseAuth;
 
   CartRepository({
     required this.firebaseFirestore,
-    required this.firebaseStorage,
     required this.firebaseAuth,
-  });
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+        );
 
   final StreamController<List<CartModel>> _cartController =
       StreamController<List<CartModel>>.broadcast();
@@ -48,30 +50,11 @@ class CartRepository {
         final Map<String, dynamic> varianteData =
             varianteDocumentSnapshot.data() as Map<String, dynamic>;
 
-        final List<OptionModel> options = [];
+        final List<OptionModel> options = createOptions(varianteData);
 
-        if (varianteData["type"] == "size") {
-          options.addAll(Map<String, dynamic>.from(varianteData["optionId"])
-              .entries
-              .map((e) => OptionModel(
-                    key: e.key,
-                    value: e.value,
-                  ))
-              .where((option) => option.value == true));
-        } else if (varianteData["type"] == "customsize") {
-          options.addAll(List<String>.from(varianteData["optionId"])
-              .asMap()
-              .entries
-              .map((e) => OptionModel(
-                    key: e.key.toString(),
-                    value: e.value,
-                  )));
-        }
-
-        final String media = await firebaseStorage
-            .ref()
-            .child(varianteData["media"][0])
-            .getDownloadURL();
+        final String media = await getMediaUrlFromStorage(
+          varianteData["media"][0],
+        );
 
         return CartModel.fromJson({
           "id": doc.id,

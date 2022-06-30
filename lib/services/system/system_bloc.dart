@@ -18,6 +18,8 @@ class SystemBloc extends Bloc<SystemEvent, SystemState> {
     on<OnInitSystemEvent>((event, emit) async {
       final SystemModel systemModel = await systemRepository.init();
 
+      // Permet de mettre supprimer les données de l'application
+      // stockées sur le téléphone.
       // await systemRepository.reset();
 
       emit(SystemInitialState(
