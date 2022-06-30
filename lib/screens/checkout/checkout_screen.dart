@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/config/validators/card_number_validator.dart';
@@ -17,6 +16,7 @@ import 'package:com_noopeshop_app/screens/home_screen.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
 import 'package:com_noopeshop_app/services/payment/payment_bloc.dart';
+import 'package:com_noopeshop_app/utils/notifications.dart';
 import 'package:com_noopeshop_app/widgets/progress_bullet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,23 +35,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   );
 
   int _currentPage = 0;
-
-  void _errorMessage(
-    BuildContext context,
-    String message,
-  ) =>
-      Flushbar(
-        title: 'Erreur',
-        message: message,
-        backgroundColor: Colors.red,
-        duration: const Duration(
-          seconds: 2,
-        ),
-        flushbarPosition: FlushbarPosition.TOP,
-        margin: const EdgeInsets.all(16.0),
-        borderRadius: BorderRadius.circular(16.0),
-        flushbarStyle: FlushbarStyle.FLOATING,
-      ).show(context);
 
   void _animateToPage(int currentPage) => _pageController.animateToPage(
         currentPage,
@@ -190,19 +173,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     };
 
                     if (state is PaymentErrorState) {
-                      Flushbar(
-                        title: 'Erreur',
-                        message: errorMessages[state.error] ??
+                      sendErrorNotification(
+                        context,
+                        errorMessages[state.error] ??
                             t(context)!.unknownErrorMessage,
-                        backgroundColor: Colors.red,
-                        duration: const Duration(
-                          seconds: 2,
-                        ),
-                        flushbarPosition: FlushbarPosition.TOP,
-                        margin: const EdgeInsets.all(16.0),
-                        borderRadius: BorderRadius.circular(16.0),
-                        flushbarStyle: FlushbarStyle.FLOATING,
-                      ).show(context);
+                      );
                     }
                   },
                   builder: (context, payementState) {
@@ -212,7 +187,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       builder: (context, addToCartState) {
                         return BlocBuilder<CheckoutBloc, CheckoutState>(
                           builder: (context, state) {
-                            print(state);
                             return KeyboardVisibilityBuilder(
                                 builder: (context, isVisible) {
                               return Align(
@@ -252,7 +226,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 if (!NameInput.dirty(
                                                   value: checkoutState.name,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .nameRequiredErrorMessage,
@@ -263,7 +237,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 if (!EmailInput.dirty(
                                                   value: checkoutState.email,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .emailValidRequiredErrorMessage,
@@ -277,7 +251,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   value: checkoutState
                                                       .shippingAddress,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .shippingAddressRequiredErrorMessage,
@@ -289,7 +263,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   value: checkoutState
                                                       .shippingCity,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .shippingCityRequiredErrorMessage,
@@ -301,7 +275,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   value: checkoutState
                                                       .shippingPostalCode,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .shippingPostalCodeRequiredErrorMessage,
@@ -315,7 +289,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   value:
                                                       checkoutState.cardNumber,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .cardNumberRequiredErrorMessage,
@@ -327,7 +301,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   value:
                                                       checkoutState.cardExpiry,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .cardExpiryRequiredErrorMessage,
@@ -338,7 +312,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 if (!CVCCodeInput.dirty(
                                                   value: checkoutState.cardCvv,
                                                 ).valid) {
-                                                  _errorMessage(
+                                                  sendErrorNotification(
                                                     context,
                                                     t(context)!
                                                         .cardCVCRequiredErrorMessage,

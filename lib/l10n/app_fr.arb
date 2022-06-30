@@ -36,5 +36,7 @@
     "shippingPostalCodeRequiredErrorMessage": "Merci de saisir un code postal",
     "cardNumberRequiredErrorMessage": "Merci de saisir un numéro de carte",
     "cardExpiryRequiredErrorMessage": "Merci de saisir une date d'expiration",
-    "cardCVCRequiredErrorMessage": "Merci de saisir un code de sécurité (CVC)"
+    "cardCVCRequiredErrorMessage": "Merci de saisir un code de sécurité (CVC)",
+    "addToCartTitle": "Ajout au panier",
+    "addToCartMessage": "Produit ajouté au panier"
 }

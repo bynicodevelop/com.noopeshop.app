@@ -1,15 +1,15 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:com_noopeshop_app/components/variantes/variante_component.dart';
 import 'package:com_noopeshop_app/config/constants.dart';
+import 'package:com_noopeshop_app/config/functions/translate.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
 import 'package:com_noopeshop_app/services/add_to_cart/add_to_cart_bloc.dart';
 import 'package:com_noopeshop_app/services/cart_product/cart_product_bloc.dart';
 import 'package:com_noopeshop_app/utils/currency_formatter.dart';
+import 'package:com_noopeshop_app/utils/notifications.dart';
 import 'package:com_noopeshop_app/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class ProductDetailsComponent extends StatelessWidget {
   final ProductModel productModel;
@@ -135,22 +135,11 @@ class ProductDetailsComponent extends StatelessWidget {
 
                 return BlocListener<AddToCartBloc, AddToCartState>(
                   listener: (context, state) {
-                    Flushbar(
-                      title: 'Ajout au panier',
-                      message: 'Le produit a été ajouté au panier',
-                      backgroundColor: Colors.green,
-                      duration: const Duration(
-                        seconds: 2,
-                      ),
-                      flushbarPosition: FlushbarPosition.TOP,
-                      margin: const EdgeInsets.all(16.0),
-                      borderRadius: BorderRadius.circular(16.0),
-                      flushbarStyle: FlushbarStyle.FLOATING,
-                      icon: const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      ),
-                    ).show(context);
+                    sendSuccessNotification(
+                      context,
+                      t(context)!.addToCartMessage,
+                      title: t(context)!.addToCartTitle,
+                    );
                   },
                   child: MainButton(
                     onPressed: () {

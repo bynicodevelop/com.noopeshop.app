@@ -150,5 +150,13 @@
     "cardCVCRequiredErrorMessage": "CVC is required",
     "@cardCVCRequiredErrorMessage": {
       "description": "CVC is required"
+    },
+    "addToCartTitle": "Add to cart",
+    "@addToCartTitle": {
+      "description": "Add to cart"
+    },
+    "addToCartMessage": "Product added to cart",
+    "@addToCartMessage": {
+      "description": "Product added to cart"
     }
 }
