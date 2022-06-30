@@ -11,7 +11,7 @@
     "@notFavoritesYet": {
       "description": "Titre Adresse de la AppBar"
     },
-    "payementAppBar": "Payement",
+    "paymentAppBar": "Payement",
     "@notFavoritesYet": {
       "description": "Titre Payement de la AppBar"
     },

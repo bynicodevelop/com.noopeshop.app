@@ -88,229 +88,231 @@ class _PaymentScreenState extends State<PaymentScreen> {
       padding: const EdgeInsets.symmetric(
         horizontal: 28.0,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 52.0,
-            ),
-            child: Text(
-              t(context)!.payementAppBar.toUpperCase(),
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 22.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16.0,
-                    bottom: 16.0,
-                  ),
-                  child: Text(
-                    t(context)!.deliveryLabelField,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                TextField(
-                  controller: _cardNumberController,
-                  focusNode: _cardNumberFocusNode,
-                  autofocus: true,
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    CreditCardNumberInputFormatter(
-                      onCardSystemSelected: (cardSystem) {
-                        print(cardSystem);
-                      },
-                      useSeparators: true,
-                    ),
-                  ],
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 22.0,
-                      vertical: 20.0,
-                    ),
-                    hintText: "XXXX XXXX XXXX XXXX",
-                    filled: true,
-                    fillColor: Colors.grey.withOpacity(.1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: const Padding(
-                      padding: EdgeInsets.only(
-                        left: 20.0,
-                        right: 16.0,
-                      ),
-                      child: Icon(
-                        Icons.credit_card,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 52.0,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16.0,
-                          bottom: 16.0,
-                        ),
-                        child: Text(
-                          t(context)!.expirationField,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      TextField(
-                        controller: _cardExpiryController,
-                        focusNode: _cardExpiryFocusNode,
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.next,
-                        inputFormatters: [
-                          CreditCardExpirationDateFormatter(),
-                          // TODO: Verifier l'expiration de la date
-                        ],
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 22.0,
-                            vertical: 20.0,
-                          ),
-                          hintText: "MM/YY",
-                          filled: true,
-                          fillColor: Colors.grey.withOpacity(.1),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              topLeft: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              topLeft: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              topLeft: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 16.0,
-                        ),
-                        child: Text(
-                          t(context)!.secureCodeField,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      TextField(
-                        controller: _cardCvvController,
-                        focusNode: _cardCvvFocusNode,
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.done,
-                        inputFormatters: [
-                          CreditCardCvcInputFormatter(),
-                        ],
-                        decoration: InputDecoration(
-                          hintText: "000",
-                          filled: true,
-                          fillColor: Colors.grey.withOpacity(.1),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(15),
-                              topRight: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(15),
-                              topRight: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(15),
-                              topRight: Radius.circular(15),
-                            ),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-            ),
-            child: CartTotalWidget(
-              subtotal: widget.carts.fold(
-                0,
-                (previousValue, element) =>
-                    previousValue +
-                    int.parse(element.varianteModel.price.toString()) *
-                        int.parse(
-                          element.quantity.toString(),
-                        ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 52.0,
               ),
-              tax: widget.carts.fold(
-                0,
-                (previousValue, element) =>
-                    previousValue +
-                    int.parse(0.toString()) *
-                        int.parse(
-                          element.quantity.toString(),
-                        ),
+              child: Text(
+                t(context)!.paymentAppBar.toUpperCase(),
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 22.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      bottom: 16.0,
+                    ),
+                    child: Text(
+                      t(context)!.deliveryLabelField,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                  TextField(
+                    controller: _cardNumberController,
+                    focusNode: _cardNumberFocusNode,
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      CreditCardNumberInputFormatter(
+                        onCardSystemSelected: (cardSystem) {
+                          print(cardSystem);
+                        },
+                        useSeparators: true,
+                      ),
+                    ],
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 22.0,
+                        vertical: 20.0,
+                      ),
+                      hintText: "XXXX XXXX XXXX XXXX",
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: const Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.0,
+                          right: 16.0,
+                        ),
+                        child: Icon(
+                          Icons.credit_card,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 52.0,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            bottom: 16.0,
+                          ),
+                          child: Text(
+                            t(context)!.expirationField,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        TextField(
+                          controller: _cardExpiryController,
+                          focusNode: _cardExpiryFocusNode,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.next,
+                          inputFormatters: [
+                            CreditCardExpirationDateFormatter(),
+                            // TODO: Verifier l'expiration de la date
+                          ],
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 22.0,
+                              vertical: 20.0,
+                            ),
+                            hintText: "MM/YY",
+                            filled: true,
+                            fillColor: Colors.grey.withOpacity(.1),
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 16.0,
+                          ),
+                          child: Text(
+                            t(context)!.secureCodeField,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        TextField(
+                          controller: _cardCvvController,
+                          focusNode: _cardCvvFocusNode,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            CreditCardCvcInputFormatter(),
+                          ],
+                          decoration: InputDecoration(
+                            hintText: "000",
+                            filled: true,
+                            fillColor: Colors.grey.withOpacity(.1),
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: CartTotalWidget(
+                subtotal: widget.carts.fold(
+                  0,
+                  (previousValue, element) =>
+                      previousValue +
+                      int.parse(element.varianteModel.price.toString()) *
+                          int.parse(
+                            element.quantity.toString(),
+                          ),
+                ),
+                tax: widget.carts.fold(
+                  0,
+                  (previousValue, element) =>
+                      previousValue +
+                      int.parse(0.toString()) *
+                          int.parse(
+                            element.quantity.toString(),
+                          ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
