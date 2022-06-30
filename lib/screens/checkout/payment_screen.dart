@@ -196,7 +196,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           textInputAction: TextInputAction.next,
                           inputFormatters: [
                             CreditCardExpirationDateFormatter(),
-                            // TODO: Verifier l'expiration de la date
                           ],
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(

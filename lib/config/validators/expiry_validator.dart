@@ -1,3 +1,4 @@
+import 'package:com_noopeshop_app/utils/validate_expiry_date.dart';
 import 'package:formz/formz.dart';
 import 'package:validators/validators.dart';
 
@@ -19,6 +20,10 @@ class ExpiryInput extends FormzInput<String, ExpiryInputError> {
     }
 
     if (value.length != 4) {
+      return ExpiryInputError.invalide;
+    }
+
+    if (!validateExpiryDate(value, DateTime.now())) {
       return ExpiryInputError.invalide;
     }
 
