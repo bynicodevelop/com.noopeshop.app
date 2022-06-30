@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:com_noopeshop_app/models/cart_model.dart';
 import 'package:com_noopeshop_app/repositories/cart_repository.dart';
@@ -68,16 +69,12 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
 
         carts.add(newCartModel);
       }
-
-      // emit(AddToCartInitialState(
-      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
-      // ));
     });
 
     on<OnIncrementCartEvent>(((event, emit) async {
       final CartModel cartModel = event.cart;
 
-      final List<CartModel> carts = (await Future.wait(
+      (await Future.wait(
         (state as AddToCartInitialState).carts.map((cart) async {
           if (cart.varianteModel.id == cartModel.varianteModel.id &&
               cart.optionModel.value == cartModel.optionModel.value) {
@@ -91,16 +88,12 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
         }),
       ))
           .toList();
-
-      // emit(AddToCartInitialState(
-      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
-      // ));
     }));
 
     on<OnDecrementCartEvent>(((event, emit) async {
       final CartModel cartModel = event.cart;
 
-      final List<CartModel> carts = (await Future.wait(
+      (await Future.wait(
         (state as AddToCartInitialState).carts.map((cart) async {
           if (cart.varianteModel.id == cartModel.varianteModel.id &&
               cart.optionModel.value == cartModel.optionModel.value) {
@@ -114,10 +107,6 @@ class AddToCartBloc extends Bloc<AddToCartEvent, AddToCartState> {
         }),
       ))
           .toList();
-
-      // emit(AddToCartInitialState(
-      //   carts: carts.where((cart) => cart.quantity > 0).toList(),
-      // ));
     }));
   }
 }

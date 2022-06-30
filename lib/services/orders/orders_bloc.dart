@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:com_noopeshop_app/models/order_model.dart';
 import 'package:com_noopeshop_app/repositories/orders_repository.dart';

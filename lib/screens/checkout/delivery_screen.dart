@@ -4,6 +4,7 @@ import 'package:com_noopeshop_app/screens/search_address_screen.dart';
 import 'package:com_noopeshop_app/services/checkout/checkout_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 

@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:com_noopeshop_app/exceptions/payment_exception.dart';
 import 'package:com_noopeshop_app/repositories/payment_repository.dart';

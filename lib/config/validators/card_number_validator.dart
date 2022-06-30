@@ -1,6 +1,5 @@
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:formz/formz.dart';
-import 'package:validators/validators.dart';
 
 enum CardNumberInputError { empty, invalide }
 

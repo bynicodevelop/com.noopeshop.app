@@ -1,6 +1,7 @@
 import 'package:com_noopeshop_app/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_maps_webservice/places.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_svg/flutter_svg.dart';

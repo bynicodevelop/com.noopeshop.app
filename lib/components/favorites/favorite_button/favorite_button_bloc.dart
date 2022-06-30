@@ -33,8 +33,6 @@ class FavoriteButtonBloc
     });
 
     on<OnFavoriteButtonPressed>((event, emit) async {
-      print(
-          "OnFavoriteButtonPressed event.productModel.id: ${event.productModel.id}");
       final ProductModel productModel = await favoriteRepository.toggleFavorite(
         event.productModel.toJson(),
       );
