@@ -9,14 +9,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class CartRepository extends OptionsRepositoryAbstract {
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseAuth firebaseAuth;
 
   CartRepository({
     required this.firebaseFirestore,
-    required this.firebaseAuth,
+    required FirebaseAuth firebaseAuth,
     required FirebaseStorage firebaseStorage,
   }) : super(
           firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
         );
 
   final StreamController<List<CartModel>> _cartController =
@@ -25,11 +25,7 @@ class CartRepository extends OptionsRepositoryAbstract {
   Stream<List<CartModel>> get cartStream => _cartController.stream;
 
   Future<void> loadCarts() async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not found');
-    }
+    final User user = getUser();
 
     final Stream<QuerySnapshot<Map<String, dynamic>>> cartsQuerySnapshot =
         firebaseFirestore
@@ -81,11 +77,7 @@ class CartRepository extends OptionsRepositoryAbstract {
   }
 
   Future<CartModel> addToCart(Map<String, dynamic> data) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not found');
-    }
+    final User user = getUser();
 
     if (data["id"].isEmpty) {
       final Map<String, dynamic> cartProduct = {
@@ -136,11 +128,7 @@ class CartRepository extends OptionsRepositoryAbstract {
   }
 
   Future<void> incrementCart(String cartId) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not found');
-    }
+    final User user = getUser();
 
     await firebaseFirestore
         .collection('users')
@@ -153,11 +141,7 @@ class CartRepository extends OptionsRepositoryAbstract {
   }
 
   Future<void> decrementCart(String cartId) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not found');
-    }
+    final User user = getUser();
 
     await firebaseFirestore
         .collection('users')

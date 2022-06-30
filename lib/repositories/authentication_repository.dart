@@ -2,19 +2,21 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/user_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/authentication_repository_abstract.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class AuthenticationRepository {
-  final FirebaseAuth firebaseAuth;
+class AuthenticationRepository extends AuthenticationRepositoryAbstract {
   final FirebaseFirestore firebaseFirestore;
   final FirebaseMessaging messaging;
 
-  const AuthenticationRepository({
-    required this.firebaseAuth,
+  AuthenticationRepository({
     required this.firebaseFirestore,
     required this.messaging,
-  });
+    required FirebaseAuth firebaseAuth,
+  }) : super(
+          firebaseAuth: firebaseAuth,
+        );
 
   Stream<UserModel> get user {
     return firebaseAuth.authStateChanges().map((user) {
@@ -52,11 +54,7 @@ class AuthenticationRepository {
   Future<void> updateNotificationToken() async {
     log('AuthenticationRepository.updateNotificationToken: Updating notification token');
 
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      return;
-    }
+    final User user = getUser();
 
     NotificationSettings settings = await messaging.getNotificationSettings();
 

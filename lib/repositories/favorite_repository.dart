@@ -12,7 +12,6 @@ enum FavoriteStatusEnum {
 }
 
 class FavoriteRepository extends OptionsRepositoryAbstract {
-  final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
   final StreamController<List<ProductModel>> _favoritesController =
@@ -21,19 +20,16 @@ class FavoriteRepository extends OptionsRepositoryAbstract {
   Stream<List<ProductModel>> get favorites => _favoritesController.stream;
 
   FavoriteRepository({
-    required this.firebaseAuth,
     required this.firebaseFirestore,
+    required FirebaseAuth firebaseAuth,
     required FirebaseStorage firebaseStorage,
   }) : super(
           firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
         );
 
   Future<void> loadFavorites() async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = await getUser();
 
     firebaseFirestore
         .collection("users")
@@ -79,11 +75,7 @@ class FavoriteRepository extends OptionsRepositoryAbstract {
   }
 
   Future<ProductModel> toggleFavorite(Map<String, dynamic> data) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = await getUser();
 
     final DocumentReference userRef =
         firebaseFirestore.collection("users").doc(user.uid);
@@ -113,11 +105,7 @@ class FavoriteRepository extends OptionsRepositoryAbstract {
   }
 
   Stream<ProductModel> getProductModel(Map<String, dynamic> data) {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = getUser();
 
     return firebaseFirestore
         .collection("products")

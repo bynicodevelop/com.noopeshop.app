@@ -7,23 +7,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class OrdersRepository extends OptionsRepositoryAbstract {
-  final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
   OrdersRepository({
-    required this.firebaseAuth,
     required this.firebaseFirestore,
+    required FirebaseAuth firebaseAuth,
     required FirebaseStorage firebaseStorage,
   }) : super(
           firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
         );
 
   Future<List<OrderModel>> loadOrders() async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not found');
-    }
+    final User user = getUser();
 
     final QuerySnapshot<Map<String, dynamic>> ordersQuerySnapshot =
         await firebaseFirestore

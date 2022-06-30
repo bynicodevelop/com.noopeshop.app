@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class FeedRepository extends OptionsRepositoryAbstract {
-  final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
   final int _limit = 2;
@@ -19,19 +18,16 @@ class FeedRepository extends OptionsRepositoryAbstract {
   final List<ProductModel> _feeds = [];
 
   FeedRepository({
-    required this.firebaseAuth,
     required this.firebaseFirestore,
+    required FirebaseAuth firebaseAuth,
     required FirebaseStorage firebaseStorage,
   }) : super(
           firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
         );
 
   Future<List<ProductModel>> getFeed(int index) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception("User is not logged in");
-    }
+    final User user = getUser();
 
     if (index != 0 && (index + 1) < _feeds.length) {
       return _feeds;

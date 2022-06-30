@@ -1,11 +1,16 @@
 import 'package:com_noopeshop_app/models/option_model.dart';
 import 'package:com_noopeshop_app/repositories/abstracts/media_repository_abstract.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class OptionsRepositoryAbstract extends MediaRepositoryAbstract {
   OptionsRepositoryAbstract({
     required FirebaseStorage firebaseStorage,
-  }) : super(firebaseStorage: firebaseStorage);
+    required FirebaseAuth firebaseAuth,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
+        );
 
   List<OptionModel> createOptions(
     Map<String, dynamic> varianteData,
