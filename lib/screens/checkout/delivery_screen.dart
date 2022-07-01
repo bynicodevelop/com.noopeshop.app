@@ -78,218 +78,221 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
       padding: const EdgeInsets.symmetric(
         horizontal: 28.0,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 52.0,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 52.0,
+              ),
+              child: Text(
+                t(context)!.addressAppBar.toUpperCase(),
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
-            child: Text(
-              t(context)!.addressAppBar.toUpperCase(),
-              style: Theme.of(context).textTheme.headline6,
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 22.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      bottom: 16.0,
+                    ),
+                    child: Text(
+                      t(context)!.deliveryLabelField,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                  TextField(
+                    controller: _shippingAddressController,
+                    focusNode: _shippingAddressFocusNode,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    onTap: () async {
+                      final String? placeId = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchAddressScreen(
+                            placeApiKey: CredentialOptions.kGooglePlaceApiKey,
+                          ),
+                        ),
+                      );
+
+                      if (placeId == null) return;
+
+                      final GoogleMapsPlaces plist = GoogleMapsPlaces(
+                        apiKey: CredentialOptions.kGooglePlaceApiKey,
+                        apiHeaders: await const GoogleApiHeaders().getHeaders(),
+                        //from google_api_headers package
+                      );
+
+                      PlacesDetailsResponse placesDetailsResponse =
+                          await plist.getDetailsByPlaceId(placeId);
+
+                      final Map<String, dynamic> address = {
+                        'address': '',
+                        'city': '',
+                        'postalCode': '',
+                        'country': '',
+                      };
+
+                      for (var component
+                          in placesDetailsResponse.result.addressComponents) {
+                        if (component.types.contains('street_number')) {
+                          address['address'] = component.longName;
+                        } else if (component.types.contains('route')) {
+                          address['address'] += ' ${component.longName}';
+                        } else if (component.types.contains('locality')) {
+                          address['city'] = component.longName;
+                        } else if (component.types.contains('postal_code')) {
+                          address['postalCode'] = component.longName;
+                        } else if (component.types.contains('country')) {
+                          address['country'] = component.longName;
+                        }
+                      }
+
+                      _shippingAddressController.text = address['address'];
+                      _shippingCityController.text = address['city'];
+                      _shippingPostalCodeController.text =
+                          address['postalCode'];
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 22.0,
+                        vertical: 20.0,
+                      ),
+                      hintText: "Ex: Rue du commerce",
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 22.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16.0,
-                    bottom: 16.0,
-                  ),
-                  child: Text(
-                    t(context)!.deliveryLabelField,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                TextField(
-                  controller: _shippingAddressController,
-                  focusNode: _shippingAddressFocusNode,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  onTap: () async {
-                    final String? placeId = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchAddressScreen(
-                          placeApiKey: CredentialOptions.kGooglePlaceApiKey,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16.0,
+                          bottom: 16.0,
+                        ),
+                        child: Text(
+                          t(context)!.cityLabelField,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                    );
-
-                    if (placeId == null) return;
-
-                    final GoogleMapsPlaces plist = GoogleMapsPlaces(
-                      apiKey: CredentialOptions.kGooglePlaceApiKey,
-                      apiHeaders: await const GoogleApiHeaders().getHeaders(),
-                      //from google_api_headers package
-                    );
-
-                    PlacesDetailsResponse placesDetailsResponse =
-                        await plist.getDetailsByPlaceId(placeId);
-
-                    final Map<String, dynamic> address = {
-                      'address': '',
-                      'city': '',
-                      'postalCode': '',
-                      'country': '',
-                    };
-
-                    for (var component
-                        in placesDetailsResponse.result.addressComponents) {
-                      if (component.types.contains('street_number')) {
-                        address['address'] = component.longName;
-                      } else if (component.types.contains('route')) {
-                        address['address'] += ' ${component.longName}';
-                      } else if (component.types.contains('locality')) {
-                        address['city'] = component.longName;
-                      } else if (component.types.contains('postal_code')) {
-                        address['postalCode'] = component.longName;
-                      } else if (component.types.contains('country')) {
-                        address['country'] = component.longName;
-                      }
-                    }
-
-                    _shippingAddressController.text = address['address'];
-                    _shippingCityController.text = address['city'];
-                    _shippingPostalCodeController.text = address['postalCode'];
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 22.0,
-                      vertical: 20.0,
-                    ),
-                    hintText: "Ex: Rue du commerce",
-                    filled: true,
-                    fillColor: Colors.grey.withOpacity(.1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
+                      TextField(
+                        controller: _shippingCityController,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 22.0,
+                            vertical: 20.0,
+                          ),
+                          hintText: "Ex: Paris",
+                          filled: true,
+                          fillColor: Colors.grey.withOpacity(.1),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              topLeft: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              topLeft: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              topLeft: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 16.0,
+                        ),
+                        child: Text(
+                          t(context)!.postalCodeField,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      TextField(
+                        controller: _shippingPostalCodeController,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          hintText: "Ex: 75000",
+                          filled: true,
+                          fillColor: Colors.grey.withOpacity(.1),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(15),
+                              topRight: Radius.circular(15),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16.0,
-                        bottom: 16.0,
-                      ),
-                      child: Text(
-                        t(context)!.cityLabelField,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    TextField(
-                      controller: _shippingCityController,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 22.0,
-                          vertical: 20.0,
-                        ),
-                        hintText: "Ex: Paris",
-                        filled: true,
-                        fillColor: Colors.grey.withOpacity(.1),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            topLeft: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            topLeft: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            topLeft: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 16.0,
-                      ),
-                      child: Text(
-                        t(context)!.postalCodeField,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    TextField(
-                      controller: _shippingPostalCodeController,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        hintText: "Ex: 75000",
-                        filled: true,
-                        fillColor: Colors.grey.withOpacity(.1),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

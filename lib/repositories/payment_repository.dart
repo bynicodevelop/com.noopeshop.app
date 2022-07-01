@@ -12,10 +12,10 @@ class PaymentRepository {
   });
 
   Future<void> intentPayment(Map<String, dynamic> data) async {
-    // TODO: try catch
+    // TODO: try catch pour gérer le retour des erreurs.
     final int price = calculateSumPrice(data["carts"]);
 
-    final int tax = calculateSumTax(data["carts"]);
+    final int tax = calculateSumTax([]);
 
     final Map<String, dynamic> params = {
       "billingDetails": {
