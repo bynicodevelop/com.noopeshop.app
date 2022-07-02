@@ -163,6 +163,9 @@ class _FeedComponentState extends State<FeedComponent> {
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headline1,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               Text(
@@ -183,6 +186,7 @@ class _FeedComponentState extends State<FeedComponent> {
                                                   ],
                                                 ),
                                                 maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
                                               )
                                             ],
                                           ),

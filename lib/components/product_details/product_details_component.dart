@@ -74,11 +74,14 @@ class ProductDetailsComponent extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    productModel.title,
-                    style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.black,
-                      shadows: [],
+                  Expanded(
+                    flex: 4,
+                    child: Text(
+                      productModel.title,
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.black,
+                        shadows: [],
+                      ),
                     ),
                   ),
                   const Spacer(),
