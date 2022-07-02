@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:com_noopeshop_app/config/theme.dart';
 import 'package:com_noopeshop_app/models/notification_model.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/screens/home_screen.dart';
 import 'package:com_noopeshop_app/screens/product_screen.dart';
 import 'package:com_noopeshop_app/services/notifications/notifications_bloc.dart';
 import 'package:com_noopeshop_app/services/product/product_bloc.dart';
@@ -15,7 +17,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/config/bloc_register.dart';
-import 'package:com_noopeshop_app/screens/home_screen.dart';
 import 'package:com_noopeshop_app/screens/splash_screen.dart';
 import 'package:com_noopeshop_app/services/bootstrap/bootstrap_bloc.dart';
 import 'package:com_noopeshop_app/services/system/system_bloc.dart';
@@ -41,8 +42,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
   if (kDebugMode) {
     final String host =
         Platform.isAndroid ? "10.0.2.2" : "localhost"; // 192.168.1.13
@@ -61,8 +60,14 @@ Future<void> main() async {
       host,
       9199,
     );
+
+    FirebaseFunctions.instance.useFunctionsEmulator(
+      host,
+      5001,
+    );
   } else {
     FirebaseAnalytics.instance;
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
 
   // FirebaseAuth.instance.signOut();
@@ -94,6 +99,7 @@ Future<void> main() async {
     firebaseAuth: FirebaseAuth.instance,
     firebaseFirestore: FirebaseFirestore.instance,
     firebaseStorage: FirebaseStorage.instance,
+    firebaseFunctions: FirebaseFunctions.instance,
     messaging: FirebaseMessaging.instance,
     notification: notification,
   ));
@@ -103,6 +109,7 @@ class App extends StatelessWidget {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final FirebaseStorage firebaseStorage;
+  final FirebaseFunctions firebaseFunctions;
   final FirebaseMessaging messaging;
   final NotificationsBloc notification;
 
@@ -113,6 +120,7 @@ class App extends StatelessWidget {
     required this.firebaseAuth,
     required this.firebaseFirestore,
     required this.firebaseStorage,
+    required this.firebaseFunctions,
     required this.messaging,
     required this.notification,
   }) : super(key: key);
@@ -123,6 +131,7 @@ class App extends StatelessWidget {
       firebaseAuth: firebaseAuth,
       firebaseFirestore: firebaseFirestore,
       firebaseStorage: firebaseStorage,
+      firebaseFunctions: firebaseFunctions,
       messaging: messaging,
       notification: notification,
       child: MaterialApp(
@@ -243,6 +252,7 @@ class App extends StatelessWidget {
                   )..show(context);
                 },
                 child: const HomeScreen(),
+                // child: const CheckoutScreen(),
               );
             },
           ),

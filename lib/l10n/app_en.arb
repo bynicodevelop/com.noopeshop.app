@@ -6,5 +6,157 @@
     "notFavoritesYet": "No favorites yet",
     "@notFavoritesYet": {
       "description": "Pas de favoris pour l'instant"
+    },
+    "addressAppBar": "Address",
+    "@notFavoritesYet": {
+      "description": "Titre Adresse de la AppBar"
+    },
+    "paymentAppBar": "Payement",
+    "@notFavoritesYet": {
+      "description": "Titre Payement de la AppBar"
+    },
+    "contactAppBar": "Contact",
+    "@notFavoritesYet": {
+      "description": "Titre Contact de la AppBar"
+    },
+    "thankyouAppBar": "Merci",
+    "@thankyouAppBar": {
+      "description": "Titre merci de la AppBar"
+    },
+    "ordersAppBar": "Orders",
+    "@ordersAppBar": {
+      "description": "Titre commandes de la AppBar"
+    },
+    "deliveryLabelField": "Delivery",
+    "@deliveryLabelField": {
+      "description": "Label address"
+    },
+    "cityLabelField": "City",
+    "@cityLabelField": {
+      "description": "Label city"
+    },
+    "postalCodeField": "Zip Code",
+    "@postalCodeField": {
+      "description": "Label postal code"
+    },
+    "cardNumberField": "Card number",
+    "@postalCodeField": {
+      "description": "Label Card number"
+    },
+    "expirationField": "Expiration",
+    "@expirationField": {
+      "description": "Label Expiration"
+    },
+    "secureCodeField": "Secure code",
+    "@secureCodeField": {
+      "description": "Label Secure code"
+    },
+    "nameField": "Firt name and last name",
+    "@nameField": {
+      "description": "Label Firt name and last name"
+    },
+    "emailField": "E-mail",
+    "@emailField": {
+      "description": "Label E-mail"
+    },
+    "deliveryLabelButton": "Delivery",
+    "@deliveryLabelButton": {
+      "description": "Label Delivery"
+    },
+    "paymentLabelButton": "Payment",
+    "@paymentLabelButton": {
+      "description": "Label Payment"
+    },
+    "placeOrderLabelButton": "Place order",
+    "@placeOrderLabelButton": {
+      "description": "Label Place order"
+    },
+    "finishedLabelButton": "Finished",
+    "@placeOrderLabelButton": {
+      "description": "Label Finished"
+    },
+    "continueLabelButton": "Continue",
+    "@placeOrderLabelButton": {
+      "description": "Label Continue (in cart_checkout)"
+    },
+    "paidOrderStatusLabel": "Paid",
+    "@paidOrderStatusLablm": {
+      "description": "Label Paid (in cart_checkout)"
+    },
+    "processingOrderStatusLabel": "Processing",
+    "@processingOrderStatusLabel": {
+      "description": "Label Processing (in cart_checkout)"
+    },
+    "shippingOrderStatusLabel": "Shipping",
+    "@shippingOrderStatusLabel": {
+      "description": "Label Shipping (in cart_checkout)"
+    },
+    "deliveredOrderStatusLabel": "Delivered",
+    "@deliveredOrderStatusLabel": {
+      "description": "Label Delivered (in cart_checkout)"
+    },
+    "notOrderFoundLabel": "No orders found",
+    "@notOrderFoundLabel": {
+      "description": "Label No orders found"
+    },
+    "notProductInCartLabel": "No products in cart",
+    "@notProductInCartLabel": {
+      "description": "Label No products in cart"
+    },
+    "invalidCardErrorMessage": "Invalid card",
+    "@invalidCardErrorMessage": {
+      "description": "Carte non valide message"
+    },
+    "unknownErrorMessage": "Unknown error",
+    "@unknownErrorMessage": {
+      "description": "Unknown error message"
+    },
+    "colorLabel": "Color",
+    "@colorLabel": {
+      "description": "Color label"
+    },
+    "sizeLabel": "Size",
+    "@sizeLabel": {
+      "description": "Size label"
+    },
+    "nameRequiredErrorMessage": "Your name is required",
+    "@nameRequiredErrorMessage": {
+      "description": "Your name is required"
+    },
+    "emailValidRequiredErrorMessage": "A valid email is required",
+    "@emailValidRequiredErrorMessage": {
+      "description": "A valid email is required"
+    },
+    "shippingAddressRequiredErrorMessage": "Shipping address is required",
+    "@shippingAddressRequiredErrorMessage": {
+      "description": "Shipping address is required"
+    },
+    "shippingCityRequiredErrorMessage": "City is required",
+    "@shippingCityRequiredErrorMessage": {
+      "description": "City is required"
+    },
+    "shippingPostalCodeRequiredErrorMessage": "Postal code is required",
+    "@shippingPostalCodeRequiredErrorMessage": {
+      "description": "Postal code is required"
+    },
+    "cardNumberRequiredErrorMessage": "Card number is required",
+    "@cardNumberRequiredErrorMessage": {
+      "description": "Card number is required"
+    },
+    "cardExpiryRequiredErrorMessage": "Expiration is required",
+    "@cardExpiryRequiredErrorMessage": {
+      "description": "Expiration is required"
+    },
+    "cardCVCRequiredErrorMessage": "CVC is required",
+    "@cardCVCRequiredErrorMessage": {
+      "description": "CVC is required"
+    },
+    "addToCartTitle": "Add to cart",
+    "@addToCartTitle": {
+      "description": "Add to cart"
+    },
+    "addToCartMessage": "Product added to cart",
+    "@addToCartMessage": {
+      "description": "Product added to cart"
     }
 }

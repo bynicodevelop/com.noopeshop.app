@@ -1,6 +1,6 @@
-// ignore: depend_on_referenced_packages
 import 'dart:developer';
 
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:com_noopeshop_app/models/user_model.dart';
 import 'package:com_noopeshop_app/repositories/authentication_repository.dart';

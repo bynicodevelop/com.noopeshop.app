@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -10,10 +11,8 @@ enum FavoriteStatusEnum {
   unliked,
 }
 
-class FavoriteRepository {
-  final FirebaseAuth firebaseAuth;
+class FavoriteRepository extends OptionsRepositoryAbstract {
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
 
   final StreamController<List<ProductModel>> _favoritesController =
       StreamController.broadcast();
@@ -21,17 +20,16 @@ class FavoriteRepository {
   Stream<List<ProductModel>> get favorites => _favoritesController.stream;
 
   FavoriteRepository({
-    required this.firebaseAuth,
     required this.firebaseFirestore,
-    required this.firebaseStorage,
-  });
+    required FirebaseAuth firebaseAuth,
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
+        );
 
   Future<void> loadFavorites() async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = await getUser();
 
     firebaseFirestore
         .collection("users")
@@ -56,8 +54,7 @@ class FavoriteRepository {
 
           final List<String> mediaUrls = await Future.wait(
             media.map(
-              (mediaUrl) async =>
-                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+              (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
             ),
           );
 
@@ -78,11 +75,7 @@ class FavoriteRepository {
   }
 
   Future<ProductModel> toggleFavorite(Map<String, dynamic> data) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = await getUser();
 
     final DocumentReference userRef =
         firebaseFirestore.collection("users").doc(user.uid);
@@ -112,11 +105,7 @@ class FavoriteRepository {
   }
 
   Stream<ProductModel> getProductModel(Map<String, dynamic> data) {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
+    final User user = getUser();
 
     return firebaseFirestore
         .collection("products")
@@ -150,8 +139,7 @@ class FavoriteRepository {
 
         final List<String> mediaUrls = await Future.wait(
           media.map(
-            (mediaUrl) async =>
-                await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+            (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
           ),
         );
 

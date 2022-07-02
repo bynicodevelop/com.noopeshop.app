@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:com_noopeshop_app/models/product_model.dart';
+import 'package:com_noopeshop_app/models/option_model.dart';
+import 'package:com_noopeshop_app/models/variante_model.dart';
+import 'package:com_noopeshop_app/repositories/abstracts/options_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class FeedRepository {
-  final FirebaseAuth firebaseAuth;
+class FeedRepository extends OptionsRepositoryAbstract {
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
 
   final int _limit = 2;
 
@@ -17,23 +18,22 @@ class FeedRepository {
   final List<ProductModel> _feeds = [];
 
   FeedRepository({
-    required this.firebaseAuth,
     required this.firebaseFirestore,
-    required this.firebaseStorage,
-  });
+    required FirebaseAuth firebaseAuth,
+    required FirebaseStorage firebaseStorage,
+  }) : super(
+          firebaseStorage: firebaseStorage,
+          firebaseAuth: firebaseAuth,
+        );
 
   Future<List<ProductModel>> getFeed(int index) async {
-    final User? user = firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw Exception("User is not logged in");
-    }
+    final User user = getUser();
 
     if (index != 0 && (index + 1) < _feeds.length) {
       return _feeds;
     }
 
-    late QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    late QuerySnapshot<Map<String, dynamic>> productQuerySnapshot;
 
     Query<Map<String, dynamic>> query =
         firebaseFirestore.collection('products').orderBy(
@@ -45,16 +45,16 @@ class FeedRepository {
       query = query.startAfterDocument(_lastVisible!);
     }
 
-    querySnapshot = await query.limit(_limit).get();
+    productQuerySnapshot = await query.limit(_limit).get();
 
-    if (querySnapshot.docs.isEmpty) {
+    if (productQuerySnapshot.docs.isEmpty) {
       return _feeds;
     }
 
-    _lastVisible = querySnapshot.docs.last;
+    _lastVisible = productQuerySnapshot.docs.last;
 
     _feeds.addAll(
-      await Future.wait(querySnapshot.docs.map(
+      await Future.wait(productQuerySnapshot.docs.map(
         (product) async {
           final QuerySnapshot<Map<String, dynamic>> variantesQuerySnapshot =
               await firebaseFirestore
@@ -62,6 +62,14 @@ class FeedRepository {
                   .doc(product.id)
                   .collection("variantes")
                   .get();
+
+          int price = 0;
+
+          if (variantesQuerySnapshot.docs.isNotEmpty) {
+            price = variantesQuerySnapshot.docs
+                .map((e) => int.parse(e.data()['price']))
+                .reduce((curr, next) => curr < next ? curr : next);
+          }
 
           final List<dynamic> media = [
             ...product.data()["media"] ?? [],
@@ -74,10 +82,29 @@ class FeedRepository {
                 : [],
           ];
 
+          List<VarianteModel> variantes =
+              (await Future.wait(variantesQuerySnapshot.docs.map(
+            (e) async {
+              final List<OptionModel> options = createOptions(e.data());
+
+              final String media = await getMediaUrlFromStorage(
+                e.data()["media"][0],
+              );
+
+              return VarianteModel.fromJson({
+                "id": e.id,
+                ...e.data(),
+                "media": media,
+                "options": options,
+                "price": int.parse(e.data()["price"]),
+              });
+            },
+          )))
+                  .toList();
+
           final List<String> mediaUrls = await Future.wait(
             media.map(
-              (mediaUrl) async =>
-                  await firebaseStorage.ref().child(mediaUrl).getDownloadURL(),
+              (mediaUrl) async => await getMediaUrlFromStorage(mediaUrl),
             ),
           );
 
@@ -91,11 +118,13 @@ class FeedRepository {
 
           return ProductModel.fromJson({
             "id": product.id,
+            "price": price,
             "reference": product.reference,
             ...product.data(),
             "mediaType": "MediaTypeEnum.image",
             "media": mediaUrls,
             "isFavorite": favoriteDocumentSnapshot.exists,
+            "variantes": variantes,
           });
         },
       )),

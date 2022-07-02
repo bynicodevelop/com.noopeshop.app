@@ -1,3 +1,5 @@
+import 'package:com_noopeshop_app/components/cart_button/cart_button_component.dart';
+import 'package:com_noopeshop_app/screens/cart_screen.dart';
 import 'package:com_noopeshop_app/screens/favotites_screen.dart';
 import 'package:com_noopeshop_app/components/feed/current_index/current_index_bloc.dart';
 import 'package:com_noopeshop_app/components/feed/feed_component.dart';
@@ -23,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(
-              right: 20.0,
+              right: 8.0,
+              bottom: 8.0,
             ),
             child: TextButton(
               child: Text(
@@ -36,6 +39,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context) => const FavoritesScreen(),
                 ),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 16.0,
+            ),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                  ),
+                ),
+                const CartButtonComponent(),
+              ],
             ),
           ),
         ],
